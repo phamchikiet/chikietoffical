@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -10,4 +10,16 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'fechikiet';
+  counter = 0;
+  @HostListener('scroll')
+  handleKeyDown(event: KeyboardEvent) {
+    console.log("adasdsa");
+    
+    this.counter++;
+    console.log(event);
+    
+  }
+  resetCounter() {
+    this.counter = 0;
+  }
 }

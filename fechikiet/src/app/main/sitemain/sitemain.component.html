@@ -1,0 +1,58 @@
+<div class="h-14 px-4 border-b flex flex-row justify-between items-center">
+    <img src="" alt="" srcset="">
+    <div></div>
+    <div class="flex flex-row space-x-2 items-center justify-center h-full">
+        <span class="material-symbols-outlined p-2 hover:bg-slate-100 rounded-lg">search</span>
+        <span class="material-symbols-outlined p-2 hover:bg-slate-100 rounded-lg">notifications</span>
+        <span class="material-symbols-outlined p-2 hover:bg-slate-100 rounded-lg">person</span>
+    </div>
+</div>
+<mat-drawer-container class="flex w-screen h-screen" autosize>
+    <mat-drawer [mode]="DrawerMode" [opened]="isOpen" class="!min-w-48 p-2" #drawer opened="true" mode="side">
+        <mat-tree [dataSource]="treedataSource" [treeControl]="treeControl">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                <div class="hover:bg-slate-100 rounded-lg p-2 w-full group flex flex-row space-x-2 items-center justify-between">
+                    <span>{{node.Title}}</span>
+                </div>
+            </mat-tree-node>
+            <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+                <div class="hover:bg-slate-100 rounded-lg p-2 w-full group flex flex-row space-x-2 items-center justify-between">
+                    <div class="flex flex-row space-x-2 items-center">
+                        <span>{{node.Title}}</span>
+                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                            <span class="material-symbols-outlined">
+                                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                            </span>
+                        </button>
+                    </div>
+                    <!-- <div class="flex flex-row space-x-2 items-center">
+                        <span class="hidden group-hover:block material-symbols-outlined p-2 border rounded-full 
+                    bg-slate-200 text-blue-500 
+                    hover:bg-blue-500 hover:text-white">
+                            edit_square
+                        </span>
+                        <span class="hidden group-hover:block material-symbols-outlined p-2 border rounded-full 
+                    bg-slate-200 text-red-500 
+                    hover:bg-red-500 hover:text-white">
+                            delete
+                        </span>
+                    </div> -->
+                </div>
+            </mat-tree-node>
+        </mat-tree>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div onscroll="onScroll()">
+            <div class="flex flex-col" id="myDivId">
+                <button type="button" mat-button (click)="drawer.toggle()">
+                    Toggle sidenav
+                </button>
+                @for (item of [1,2,3,4,5,6]; track $index) {
+                <div class="w-60 h-60">{{item}}</div>
+                }
+
+            </div>
+
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

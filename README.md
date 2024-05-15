@@ -1,2 +1,1 @@
-# chikietoffical
-Product By Chi Kiet
+npx ng g c shared/customeditor --skip-tests --standalone

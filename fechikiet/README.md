@@ -1,1 +1,0 @@
-npx ng g c shared/customeditor --skip-tests --standalone

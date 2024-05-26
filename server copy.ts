@@ -44,14 +44,31 @@ export function app(): express.Express {
   return server;
 }
 
-function run(): void {
-  const port = process.env['PORT'] || 4000;
+function isRunningOnApachePassenger(): boolean {
+  return moduleFilename.includes('lsnode.js');
+}
 
+function run(): void {
   // Start up the Node server
   const server = app();
+
+  if (isRunningOnApachePassenger()) {
+    server.listen(() => {
+      console.log('Node Express listening to Passenger Apache');
+    });
+    return;
+  }
+
+  const port = process.env['PORT'] || 4000;
+
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
-
-run();
+if (
+  moduleFilename === __filename ||
+  moduleFilename.includes('iisnode') ||
+  isRunningOnApachePassenger()
+) {
+  run();
+}

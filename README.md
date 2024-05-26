@@ -1,2 +1,3 @@
-# chikietoffical
-Product By Chi Kiet
+git add .
+git commit -m "update"
+git push

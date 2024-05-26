@@ -17,3 +17,5 @@ npx tailwindcss init
 @tailwind utilities;
 npx ng add @angular/pwa
 npx ng g c ketoan --standalone --skip-tests
+npx ng g s ketoan --skip-tests
+npx ng g environments

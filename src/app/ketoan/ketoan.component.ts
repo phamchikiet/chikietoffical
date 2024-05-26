@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ketoan',
@@ -7,6 +7,12 @@ import { Component } from '@angular/core';
   templateUrl: './ketoan.component.html',
   styleUrl: './ketoan.component.scss'
 })
-export class KetoanComponent {
+export class KetoanComponent implements OnInit{
+  List:any[]=[]
+  Detail:any={}
+  
+  constructor(){}
+  ngOnInit(): void {
 
+  }
 }

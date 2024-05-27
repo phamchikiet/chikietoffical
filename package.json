@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server/server.mjs",
-    "build": "ng build",
+    "build": "ng build --aot --output-hashing=all",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:fechikiet": "node dist/fechikiet/server/server.mjs"

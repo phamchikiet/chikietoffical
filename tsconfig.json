@@ -1,4 +1,14 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
+// {
+//   "compilerOptions": {
+//     "moduleResolution": "node",  // Important for resolving module paths
+//     "esModuleInterop": true,      // Helps with CommonJS/ES module compatibility
+//     "typeRoots": [
+//       "./node_modules/@types"  // Tells TypeScript where to look for types
+//     ]
+//   }
+// }
+
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -10,10 +20,14 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "typeRoots": [
+      "./node_modules/@types"  // Tells TypeScript where to look for types
+    ],
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
+    // "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",

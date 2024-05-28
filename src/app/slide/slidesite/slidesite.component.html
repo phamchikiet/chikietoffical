@@ -1,0 +1,42 @@
+<!-- @if(Config.slidesPerView==1){
+  <section class="w-full grid grid-cols-1 relative border rounded-lg bg-[#EAEAEA]">
+    <div>
+      <swiper-container class="mySwiper">
+        @for (item of Detail?.Slides; track $index) {
+        <swiper-slide class="w-full flex flex-col space-y-2 justify-between">
+          <img loading="lazy"[src]="item?.Image?.Hinhchinh?.src" class="w-full h-full">
+        </swiper-slide>
+        }
+      </swiper-container>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </div>
+  </section>
+}
+@else {
+  <section class="w-full grid grid-cols-1 relative border rounded-lg bg-[#EAEAEA]">
+    <div>
+      <swiper-container class="mySwiper">
+        @for (item of Detail?.Slides; track $index) {
+        <swiper-slide class="w-full flex flex-col space-y-2 justify-between">
+          <img loading="lazy"[src]="item?.Image?.Hinhchinh?.src" class="w-full h-full">
+        </swiper-slide>
+        }
+      </swiper-container>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </div>
+  </section>
+} -->
+
+
+<section class="w-full {{Detail.isShowMobile?'':'lg:block hidden'}} grid grid-cols-1 relative border rounded-lg bg-[#EAEAEA]">
+  <div>
+    <swiper-container loop="true" class="mySwiper{{GetID(Detail.id)}}">
+      @for (item of Detail?.Slides; track $index) {
+      <swiper-slide class="w-full flex flex-col space-y-2 justify-between">
+        <img loading="lazy"[src]="item?.Image?.Hinhchinh?.src" class="w-full h-full">
+      </swiper-slide>
+      }
+    </swiper-container>
+    <div class="swiper-pagination" slot="pagination"></div>
+  </div>
+</section>

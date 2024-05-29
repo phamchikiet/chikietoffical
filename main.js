@@ -3,7 +3,7 @@ async function run() {
       // Import the app from the ES module
       const server = await import("./server/server.mjs");
       const app = await server.app();
-      const port = process.env["PORT"] || 4001;
+      const port = process.env["PORT"] || 4000;
   
       // Start up the Node server
       app.listen(port, () => {

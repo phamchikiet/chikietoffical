@@ -1,11 +1,21 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KetoanService {
   constructor() { }
+  private _ketoans: BehaviorSubject<any[] | null> = new BehaviorSubject<any[] | null>(null);
+  private _ketoan: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
+  get ketoans$(): Observable<any[] | null> {
+    return this._ketoans.asObservable();
+  }
+  get ketoan$(): Observable<any | null> {
+    return this._ketoan.asObservable();
+  }
+
 // Create
 create = async (data: any) => {
   try {

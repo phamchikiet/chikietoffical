@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit {
     private _snackBar:MatSnackBar,
   ) {
     this._AppService.isDarkTheme$.subscribe((isDarkTheme:any) => {
-      document.body.classList.toggle('dark', isDarkTheme);
+     // document.body.classList.toggle('dark', isDarkTheme);
     });
     this._GiohangService.getDonhang()
     this._GiohangService.donhang$.subscribe((data: any) => {

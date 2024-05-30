@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
@@ -65,6 +65,7 @@ export class UsergroupadminComponent implements OnInit {
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private breakpointObserver: BreakpointObserver,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
   private _transformer = (node: any, level: number) => {
     return {
@@ -229,14 +230,16 @@ export class UsergroupadminComponent implements OnInit {
     this.saveAsExcelFile(excelBuffer, 'Usergroup_' + moment().format("DD_MM_YYYY"));
   }
   saveAsExcelFile(buffer: any, fileName: string) {
-    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
-    const url: string = window.URL.createObjectURL(data);
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.href = url;
-    link.download = `${fileName}.xlsx`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-    link.remove();
+    if (isPlatformBrowser(this.platformId)) {
+      const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+      const url: string = window.URL.createObjectURL(data);
+      const link: HTMLAnchorElement = document.createElement('a');
+      link.href = url;
+      link.download = `${fileName}.xlsx`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      link.remove();
+      }
   }
   UpdateStatusUsergroup(item: any) {
     item.Status = 0

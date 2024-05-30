@@ -24,10 +24,10 @@ export class AuthService {
     this._secret = 'rausachtrangia';
   }
   set accessToken(token: string) {
-    this._LocalStorageService.setItem('token', token);
+      this._LocalStorageService.setItem('token', token);
   }
-  get accessToken(): string {
-   return this._LocalStorageService.getItem('token') ?? '';
+  get accessToken(): string|null {
+      return this._LocalStorageService.getItem('token') ?? '';
   }
   async Dangnhap(user: any){
     if (this._authenticated) {

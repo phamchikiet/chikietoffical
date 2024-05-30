@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
@@ -56,6 +56,7 @@ export class BaivietAdminComponent implements OnInit {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
   constructor(
     private dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
   }
 
@@ -191,13 +192,15 @@ export class BaivietAdminComponent implements OnInit {
     this.saveAsExcelFile(excelBuffer, 'data');
   }
   saveAsExcelFile(buffer: any, fileName: string) {
-    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
-    const url: string = window.URL.createObjectURL(data);
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.href = url;
-    link.download = `${fileName}.xlsx`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-    link.remove();
+    if (isPlatformBrowser(this.platformId)) {
+      const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+      const url: string = window.URL.createObjectURL(data);
+      const link: HTMLAnchorElement = document.createElement('a');
+      link.href = url;
+      link.download = `${fileName}.xlsx`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      link.remove();
+      }
   }
 }

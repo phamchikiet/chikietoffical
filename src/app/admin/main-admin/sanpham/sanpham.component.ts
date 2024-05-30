@@ -237,14 +237,16 @@ export class SanphamComponent implements OnInit {
     this.saveAsExcelFile(excelBuffer, 'Sanpham_' + moment().format("DD_MM_YYYY"));
   }
   saveAsExcelFile(buffer: any, fileName: string) {
-    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
-    const url: string = window.URL.createObjectURL(data);
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.href = url;
-    link.download = `${fileName}.xlsx`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-    link.remove();
+    if (isPlatformBrowser(this.platformId)) {
+      const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+      const url: string = window.URL.createObjectURL(data);
+      const link: HTMLAnchorElement = document.createElement('a');
+      link.href = url;
+      link.download = `${fileName}.xlsx`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      link.remove();
+      }
   }
   UpdateStatusSanpham(item: any) {
     item.Status = 0

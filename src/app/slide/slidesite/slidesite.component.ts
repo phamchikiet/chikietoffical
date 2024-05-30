@@ -14,8 +14,7 @@ export class SlidesiteComponent implements OnInit {
   @Input() Detail:any={}
   constructor() {
    }
-   ngOnInit() {
-
+   ngOnInit() {    
   }
   ngAfterViewInit()
   {

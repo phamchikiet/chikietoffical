@@ -30,7 +30,7 @@ export class SlideSanphamComponent implements OnInit {
   @Input() Soluong=8;
   @Input() Filter='';
   @Input() idDM=0;
-  @Input() Danhmuc:any={};
+  @Input() Danhmuc:any={Slug:''};
   @Input() Type='NGANG';
   @Input() Ordering=0;
   _SanphamService:SanphamService = inject(SanphamService)
@@ -48,14 +48,14 @@ export class SlideSanphamComponent implements OnInit {
     private breakpointObserver: BreakpointObserver
   ) { }
 
-  async ngOnInit() {
+  async ngOnInit() {    
     this.breakpointObserver.observe([Breakpoints.XSmall])
     .subscribe(async (breakpoints:any) => {
       // console.log(breakpoints.matches);
       if (breakpoints.matches) {
         this.Sohang = 2
         this.SearchParams.Filter = this.Filter
-        if(this.Danhmuc.hasOwnProperty('id')){ this.SearchParams.idDM = this.Danhmuc.id}
+        if(this.Danhmuc?.hasOwnProperty('id')){ this.SearchParams.idDM = this.Danhmuc.id}
        if(this.Type=='DOC')
        {
          this.Lists = await this._SanphamService.SearchSanpham(this.SearchParams)
@@ -77,7 +77,7 @@ export class SlideSanphamComponent implements OnInit {
       } else {
         this.Sohang = 1
         this.SearchParams.Filter = this.Filter
-        if(this.Danhmuc.hasOwnProperty('id')){ this.SearchParams.idDM = this.Danhmuc.id}
+        if(this.Danhmuc?.hasOwnProperty('id')){ this.SearchParams.idDM = this.Danhmuc.id}
        if(this.Type=='DOC')
        {
          this.Lists = await this._SanphamService.SearchSanpham(this.SearchParams)

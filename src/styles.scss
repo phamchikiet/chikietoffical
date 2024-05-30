@@ -1,5 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html, body { height: 100%; }
+html, body { 
+    height: 100%; 
+    --mat-tree-container-background-color: white;
+    --mat-sidenav-container-background-color:white;
+    --mdc-outlined-text-field-container-shape:20px;
+    --mat-form-field-container-vertical-padding:10px;
+    --mat-form-field-container-height: 0px;
+    --mat-sidenav-container-shape:0px;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-drawer {
+    width: auto !important;
+}
+.mdc-notched-outline__notch
+{
+  border: 0;
+}
+.mdc-dialog .mdc-dialog__content {
+  padding: 15px;
+}
+.mdc-data-table__cell, .mdc-data-table__header-cell{
+  padding: 16px !important;
+}
+

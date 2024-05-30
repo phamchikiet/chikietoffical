@@ -7,12 +7,14 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: '**',
-        loadComponent: () => import('./ketoan/ketoan.component').then(m => m.KetoanComponent)
-    },
-    {
         path: 'ketoan',
-        loadComponent: () => import('./ketoan/ketoan.component').then(m => m.KetoanComponent)
+        loadComponent: () => import('./ketoan/ketoan.component').then(m => m.KetoanComponent),
+        children:[
+            {
+                path: 'hoadon',
+                loadComponent: () => import('./ketoan/hoadon/hoadon.component').then(m => m.HoadonComponent)
+            },
+        ]
     },
 ];
 

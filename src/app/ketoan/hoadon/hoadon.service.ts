@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, of, switchMap, take } from 'rxjs';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class KetoanService {
-  private _ketoans: BehaviorSubject<any[] | null> = new BehaviorSubject<any[] | null>(null);
-  private _ketoan: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
+export class HoadonService {
+  private _hoadons: BehaviorSubject<any[] | null> = new BehaviorSubject<any[] | null>(null);
+  private _hoadon: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
   private _totalCount: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
-  get ketoans$(): Observable<any[] | null> {
-    return this._ketoans.asObservable();
+  get hoadons$(): Observable<any[] | null> {
+    return this._hoadons.asObservable();
   }
-  get ketoan$(): Observable<any | null> {
-    return this._ketoan.asObservable();
+  get hoadon$(): Observable<any | null> {
+    return this._hoadon.asObservable();
   }
   get totalCount$(): Observable<any | null> {
     return this._totalCount.asObservable();
@@ -28,13 +28,24 @@ export class KetoanService {
       };
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1sofaJI5e9s6TMIvDTk57HktSsumlXPjFSqmwkGD-9zU/values/Thang1?key=AIzaSyCWh10EgrjVBm8qKpnsGOgXrIsT5uqroMc`,options);
     const data = await response.json();  
-          //this._ketoans.next(data)                 
-    return data;
+          //this._hoadons.next(data)    
+          console.log(data);
+          
+    return  data?.values?.slice(1).map((row:any) => {      
+            return {
+              shdon: row[0],
+              nbten: row[1],
+              tdlap: row[3],
+              tgtcthue: row[4],
+              tgtthue: row[5],
+              tgtttbso: row[6]
+            };
+          });                     
       } catch (error) {
           return console.error(error);
       }
   }
-  async getAllKetoan() {
+  async getAllHoadon() {
     try {
       const options = {
         method:'GET',
@@ -42,15 +53,15 @@ export class KetoanService {
           'Content-Type': 'application/json',
         },
       };
-          const response = await fetch(`${environment.APIURL}/ketoan`,options);
+          const response = await fetch(`${environment.APIURL}/hoadon`,options);
           const data = await response.json(); 
-          this._ketoans.next(data)                 
+          this._hoadons.next(data)                 
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async getKetoanBySlug(Slug:any) {
+  async getHoadonBySlug(Slug:any) {
     try {
       const options = {
         method:'GET',
@@ -58,15 +69,15 @@ export class KetoanService {
           'Content-Type': 'application/json',
         },
       };
-          const response = await fetch(`${environment.APIURL}/ketoan/findslug/${Slug}`,options);
+          const response = await fetch(`${environment.APIURL}/hoadon/findslug/${Slug}`,options);
           const data = await response.json();    
-          this._ketoan.next(data)                      
+          this._hoadon.next(data)                      
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async getKetoanByid(id:any) {
+  async getHoadonByid(id:any) {
     try {
       const options = {
         method:'GET',
@@ -74,18 +85,18 @@ export class KetoanService {
           'Content-Type': 'application/json',
         },
       };
-          const response = await fetch(`${environment.APIURL}/ketoan/findid/${id}`,options);
+          const response = await fetch(`${environment.APIURL}/hoadon/findid/${id}`,options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();   
-          this._ketoan.next(data)              
+          this._hoadon.next(data)              
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async SearchKetoan(SearchParams:any) {    
+  async SearchHoadon(SearchParams:any) {    
     try {
       const options = {
         method:'POST',
@@ -94,19 +105,19 @@ export class KetoanService {
         },
         body: JSON.stringify(SearchParams),
       };
-          const response = await fetch(`${environment.APIURL}/ketoan/search`,options);
+          const response = await fetch(`${environment.APIURL}/hoadon/search`,options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();   
-          this._ketoans.next(data.items)              
+          this._hoadons.next(data.items)              
           this._totalCount.next(data.totalCount)              
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async CreateKetoan(item:any) {
+  async CreateHoadon(item:any) {
     try {
         const options = {
             method:'POST',
@@ -115,7 +126,7 @@ export class KetoanService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/ketoan`, options);          
+          const response = await fetch(`${environment.APIURL}/hoadon`, options);          
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -127,7 +138,7 @@ export class KetoanService {
           return console.error(error);
       }
   }  
-  async SyncKetoan(item:any) {
+  async SyncHoadon(item:any) {
     try {
         const options = {
             method:'POST',
@@ -136,7 +147,7 @@ export class KetoanService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/ketoan/sync`, options);          
+          const response = await fetch(`${environment.APIURL}/hoadon/sync`, options);          
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -148,8 +159,8 @@ export class KetoanService {
           return console.error(error);
       }
   }  
-  async UpdateKetoan(item:any) {
-    const ketoans:any = await this.ketoans$.pipe(take(1)).toPromise();
+  async UpdateHoadon(item:any) {
+    const hoadons:any = await this.hoadons$.pipe(take(1)).toPromise();
     try {
         const options = {
             method:'PATCH',
@@ -158,23 +169,23 @@ export class KetoanService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/ketoan/${item.id}`, options);
+          const response = await fetch(`${environment.APIURL}/hoadon/${item.id}`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._ketoan.next(data) 
-          const updateKetoans = ketoans.map((v:any) =>
+          this._hoadon.next(data) 
+          const updateHoadons = hoadons.map((v:any) =>
             v.id === data.id ? data : v
           );
-          this._ketoans.next(updateKetoans);               
+          this._hoadons.next(updateHoadons);               
           return data;  
       } catch (error) {
           return console.error(error);
       }
   }  
   
-  async DeleteKetoan(item:any) {
+  async DeleteHoadon(item:any) {
     try {
         const options = {
             method:'DELETE',
@@ -182,7 +193,7 @@ export class KetoanService {
               'Content-Type': 'application/json',
             },
           };
-          const response = await fetch(`${environment.APIURL}/ketoan/${item.id}`, options);
+          const response = await fetch(`${environment.APIURL}/hoadon/${item.id}`, options);
           return await response.json();         
       } catch (error) {
           return console.error(error);

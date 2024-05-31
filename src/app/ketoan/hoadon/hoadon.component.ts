@@ -44,12 +44,14 @@ import { KetoanComponent } from '../ketoan.component';
       MatPaginatorModule,
       MatTableModule,
       MatSortModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      KetoanComponent
     ],
   templateUrl: './hoadon.component.html',
   styleUrls: ['./hoadon.component.scss']
 })
 export class HoadonComponent implements OnInit {
+    Token:any = localStorage.getItem('Token')||null
     Detail: any = {};
     Lists: any={}
     FilterLists: any[] = []
@@ -86,13 +88,13 @@ export class HoadonComponent implements OnInit {
     async ngOnInit(): Promise<void> {
       const Drives = await this._HoadonService.getDrive();
       console.log(Drives);
-      
+
      // this.Lists = await this._GiohangService.SearchDonhang(this.SearchParams)
       this.FilterLists = this.Lists.items
       this.pageSizeOptions = [10, 20, this.Lists.totalCount].filter(v => v < this.Lists.totalCount);
       this.dataSource = new MatTableDataSource(Drives);
       console.log(this.FilterLists);
-      
+
       this.dataSource.sortingDataAccessor = (item, property) => {
         switch(property) {
           case 'Diachi': return item.Giohangs.Khachhang.Diachi;
@@ -108,6 +110,14 @@ export class HoadonComponent implements OnInit {
     toggledraw()
     {
       this._KetoanComponent.drawer.toggle();
+    }
+    GetChitiet(item:any)
+    {
+      this._HoadonService.getChitiet(item.nbmst,item.khhdon,item.shdon,item.khmshdon,this.Token)
+    }
+    UpdateToken()
+    {
+      localStorage.setItem('Token',this.Token)
     }
     applyFilter(event: Event) {
       const value = (event.target as HTMLInputElement).value;
@@ -167,14 +177,14 @@ export class HoadonComponent implements OnInit {
     writeExcelFile() {
       let Giagoc:any=[]
       let item:any={}
-      this.FilterLists.forEach((v:any) => {  
+      this.FilterLists.forEach((v:any) => {
           item.idSP =v.id
           item.TenSP =v.Title
           v.Giagoc.forEach((gg:any) => {
             item = {...item,...gg}
             Giagoc.push(item)
           });
-      });    
+      });
       const workbook = XLSX.utils.book_new();
       const worksheet1: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.FilterLists);
       const worksheet2: XLSX.WorkSheet = XLSX.utils.json_to_sheet(Giagoc);
@@ -205,7 +215,7 @@ export class HoadonComponent implements OnInit {
       // if(result){return result[field]}
       return true
     }
-    ChangeStatus(item: any, item1: any) {    
+    ChangeStatus(item: any, item1: any) {
        item.Status=item1.id
         // this._GiohangService.UpdateDonhang(item).then(() => {
         //   this._snackBar.open('Cập Nhật Thành Công', '', {
@@ -226,4 +236,5 @@ export class HoadonComponent implements OnInit {
           }
         });
       }
+
   }

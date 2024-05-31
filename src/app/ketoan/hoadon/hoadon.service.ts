@@ -33,14 +33,34 @@ export class HoadonService {
           
     return  data?.values?.slice(1).map((row:any) => {      
             return {
-              shdon: row[0],
-              nbten: row[1],
-              tdlap: row[3],
-              tgtcthue: row[4],
-              tgtthue: row[5],
-              tgtttbso: row[6]
+              nbmst: row[0],
+              khmshdon: row[1],
+              khhdon: row[2],
+              shdon: row[3],
+              nbten: row[28],
+              tdlap: row[49],
+              tgtcthue: row[51],
+              tgtthue: row[52],
+              tgtttbso: row[54]
             };
           });                     
+      } catch (error) {
+          return console.error(error);
+      }
+  }
+  async getChitiet(nbmst: any,khhdon: any,shdon: any,khmshdon: any,token:any) {
+    try {
+      const options = {
+        method:'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+      };
+    const response = await fetch(`https://hoadondientu.gdt.gov.vn:30000/query/invoices/detail?nbmst=${nbmst}&khhdon=${khhdon}&shdon=${shdon}&khmshdon=${khmshdon}`,options);
+    const data = await response.json();  
+          //this._hoadons.next(data)    
+          console.log(data);                    
       } catch (error) {
           return console.error(error);
       }

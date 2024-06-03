@@ -1,0 +1,39 @@
+<div class="relative w-screen h-screen grid lg:grid-cols-1 gap-3 items-center justify-center">
+    <img src="/bg-tra.jpg" class="w-screen h-screen opacity-70">
+    <div class="lg:w-1/3  absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 p-4">
+        <div class="w-full bg-white rounded-lg shadow-lg lg:p-16 p-8">
+            <div class="flex flex-col items-center mx-auto">
+                <h1 class="text-2xl font-bold mb-4">Login</h1>
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
+                    <mat-label>Phone Number</mat-label>
+                    <input type="text" matInput class="w-full border border-gray-200 rounded" [placeholder]="'Phone Number'"/>
+                    <button class="mx-2" matPrefix mat-icon-button>
+                        <span class="material-symbols-outlined">call</span>
+                    </button>
+                </mat-form-field>
+                  <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full mt-4">
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput class="w-full border border-gray-200 rounded" [placeholder]="'Password'"/>
+                    <button class="mx-2" matPrefix mat-icon-button>
+                        <span class="material-symbols-outlined">lock</span>
+                    </button>
+    
+                </mat-form-field>
+                  <div class="w-full flex flex-row justify-between items-center mt-4">
+                    <mat-checkbox>Remember me</mat-checkbox>
+                    <a routerLink="/forgot-password" class="text-blue-500">Forgot password?</a>
+                  </div>
+                  <button mat-raised-button color="primary" class="w-full mt-4">Login</button>
+                  <div class="grid grid-cols-3 gap-4 mt-4">
+                    <button mat-raised-button color="primary" class="w-full mt-4">Google</button>
+                    <button mat-raised-button color="primary" class="w-full mt-4">Facebook</button>
+                    <button mat-raised-button color="primary" class="w-full mt-4">Zalo</button>
+                  </div>
+                  <div class="flex justify-center mt-4">
+                    <p>Don't have an account? <a routerLink="/register" class="text-blue-500">Register</a></p>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+</div>

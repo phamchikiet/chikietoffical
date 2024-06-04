@@ -17,3 +17,5 @@ npx tailwindcss init
 @tailwind utilities;
 npx ng add @angular/pwa
 npx ng g c login --skip-tests --standalone
+
+npx ng g c facecomparison --skip-tests --standalone

@@ -4,8 +4,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { environment } from '../environments/environment';
 import  * as Auth  from 'firebase/auth';
+import { environment } from '../../environments/environment.development';
 @Component({
   selector: 'app-login',
   standalone: true,

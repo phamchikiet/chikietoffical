@@ -1,13 +1,6 @@
-import express from "express";
+import { db } from "./db";
+import { sql } from "drizzle-orm";
 
-const app = express();
-const port = 8080;
-
-app.get("/", (req, res) => {
-  // send a simple json response
-  res.json({ message: "Hello World! sadasdasd" });
-});
-
-app.listen(port, () => {
-  console.log(`Listening on port ${port}...`);
-});
+const query = sql`select "hello world" as text`;
+const result = db.get<{ text: string }>(query);
+console.log(result);

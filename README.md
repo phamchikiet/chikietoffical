@@ -6,3 +6,9 @@ npx bun add drizzle-orm
 npx bun add drizzle-orm @planetscale/database
 npx bun add -D drizzle-kit
 bunx drizzle-kit generate
+npm install --save @knaadh/nestjs-drizzle-mysql2 mysql2 drizzle-orm
+
+bun run build
+git add .
+git commit -m "update"
+git push

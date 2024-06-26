@@ -31,10 +31,10 @@ COPY . .
 # copy production dependencies and source code into final image
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/index.ts .
+COPY --from=prerelease /usr/src/app/dist ./dist
 COPY --from=prerelease /usr/src/app/package.json .
 
 # run the app
 USER bun
 EXPOSE 3000/tcp
-CMD ["bun", "run", "dev"]
+CMD ["bun", "run", "start"]

@@ -1,0 +1,32 @@
+export declare function ConvertDriveData(data: any): any;
+export declare function genMaDonhang(startNumber: any): any;
+export interface SearchParams {
+    idChinhanh?: string;
+    Dateranger?: {};
+    SDT?: string;
+    take?: number;
+    skip?: number;
+}
+export declare const LIST_CHI_NHANH: any[];
+export declare const ListTrangthailichhen: any[];
+export declare const ListHinhthucthanhtoan: any[];
+export declare const ListTrangThaiDonhang: any[];
+export declare const ListRole: any[];
+export declare const ListNotifyType: any;
+export declare const TYPE_TEMPLATE: any;
+export declare function Trangthai_Lichhen(item: any): any;
+export declare function TYPE_ZNS(item: any): any;
+export declare function ZALO_OA(item: any): any;
+export declare function CHI_NHANH(item: any): any;
+export declare function convertPhoneNum(phoneNumber: any): any;
+export declare function Phone_To_0(phoneNumber: any): any;
+export declare function nest(items: any[], id?: any, link?: any): any;
+export declare function getInitials(name: any): any;
+export declare function convertToSlug(str: any): any;
+export declare function GenId(length: number, onlynumber?: boolean): string;
+export declare function mergeNoDup(arr1: any, arr2: any, key: any): unknown[];
+export declare function dateVNPAY(date: Date): string;
+export declare function sortObject(obj: Record<string, any>): Record<string, string>;
+export declare function groupBy(data: any): unknown[];
+export declare function groupByfield(data: any[]): any[];
+export declare function flattenData(data: any): any[];

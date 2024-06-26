@@ -22,3 +22,7 @@ npx ng g c facecomparison --skip-tests --standalone
 
 
 docker build -t fechikiet . 
+
+docker build -t gcr.io/chikietcom-62cf8/fechikiet . 
+
+gcloud docker --quiet --project chikietcom-62cf8 push gcr.io/chikietcom-62cf8/fechikiet

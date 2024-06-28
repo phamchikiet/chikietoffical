@@ -12,7 +12,7 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const users_module_1 = require("./users/users.module");
 const typeorm_1 = require("@nestjs/typeorm");
-const hoadonchitiet_module_1 = require("./hoadonchitiet/hoadonchitiet.module");
+const user_entity_1 = require("./users/entities/user.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -20,18 +20,13 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: '103.221.221.14',
-                port: 3306,
-                username: 'jtnkwfpz_chikiet88',
-                password: '@Hikiet1988',
-                database: 'jtnkwfpz_chikiet',
+                type: 'postgres',
+                url: "postgres://default:QKsghOH17GBE@ep-crimson-haze-a10m0yu9.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require",
                 autoLoadEntities: true,
+                entities: [user_entity_1.UsersEntity],
                 synchronize: true,
-                charset: "utf8mb4",
             }),
             users_module_1.UsersModule,
-            hoadonchitiet_module_1.HoadonchitietModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -10,17 +10,17 @@ import {
 export class UsergroupEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  @Column({ type: 'text'})
   idDM: string;
-  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  @Column({ type: 'text'})
   Title: string;
-  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  @Column({ type: 'text'})
   Mota: string;
   @Column({ default: '' })
   Slug: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
+  @Column({type:"simple-json",default: () => "('{}')" })
   Image: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({type:"simple-json",default: () => "('[]')" })
   ListMenu: string;
   @Column({ default: '' })
   Type: string;

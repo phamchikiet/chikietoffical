@@ -19,15 +19,15 @@ __decorate([
     __metadata("design:type", String)
 ], UsergroupEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)
 ], UsergroupEntity.prototype, "idDM", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)
 ], UsergroupEntity.prototype, "Title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)
 ], UsergroupEntity.prototype, "Mota", void 0);
 __decorate([
@@ -35,11 +35,11 @@ __decorate([
     __metadata("design:type", String)
 ], UsergroupEntity.prototype, "Slug", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('{}')" }),
     __metadata("design:type", String)
 ], UsergroupEntity.prototype, "Image", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], UsergroupEntity.prototype, "ListMenu", void 0);
 __decorate([

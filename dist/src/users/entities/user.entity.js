@@ -20,51 +20,51 @@ __decorate([
     __metadata("design:type", String)
 ], UsersEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "gid", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "fid", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "zid", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "pid", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "SDT", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "idGroup", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Code", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Hoten", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "text", collation: "utf8_general_ci" }),
+    (0, typeorm_1.Column)({ type: "text" }),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Gioitinh", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "EditChinhanhs", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Diachi", void 0);
 __decorate([
@@ -72,11 +72,11 @@ __decorate([
     __metadata("design:type", String)
 ], UsersEntity.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "ListImage", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Profile", void 0);
 __decorate([
@@ -84,15 +84,15 @@ __decorate([
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Role", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Phanquyen", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    (0, typeorm_1.Column)({ type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Menu", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-array" }),
+    (0, typeorm_1.Column)({ type: "simple-array" }),
     __metadata("design:type", Array)
 ], UsersEntity.prototype, "fcmToken", void 0);
 __decorate([

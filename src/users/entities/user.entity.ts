@@ -11,43 +11,43 @@ import { Role } from '../dto/create-user.dto';
  export class UsersEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   gid: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   fid: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   zid: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   pid: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   SDT: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   idGroup: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   Code: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   Hoten: string;
-  @Column({collation: "utf8_general_ci"})
+  @Column()
   email: string;
-  @Column({ type: "text", collation: "utf8_general_ci" })
+  @Column({ type: "text"})
   Gioitinh: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({type:"simple-json",default: () => "('[]')" })
   EditChinhanhs: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({type:"simple-json",default: () => "('[]')" })
   Diachi: string;
   @Column()
   password: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({type:"simple-json",default: () => "('[]')" })
   ListImage: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({type:"simple-json",default: () => "('[]')" })
   Profile: string;
   @Column({type: 'enum', enum: Role, default: Role.User})
   Role: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({type:"simple-json",default: () => "('[]')" })
   Phanquyen: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({type:"simple-json",default: () => "('[]')" })
   Menu: string;
-  @Column({collation: "utf8_general_ci",type:"simple-array"})
+  @Column({type:"simple-array"})
   fcmToken: string[];
   @Column({ default: '' })
   Type: string;

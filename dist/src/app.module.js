@@ -20,15 +20,10 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: '103.221.221.14',
-                port: 3306,
-                username: 'jtnkwfpz_chikiet88',
-                password: '@Hikiet1988',
-                database: 'jtnkwfpz_chikiet',
+                type: 'mongodb',
+                url: 'mongodb+srv://admin:@Hikiet1988@cluster0.mkgmoln.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
                 autoLoadEntities: true,
                 synchronize: true,
-                charset: "utf8mb4",
             }),
             users_module_1.UsersModule,
             hoadonchitiet_module_1.HoadonchitietModule

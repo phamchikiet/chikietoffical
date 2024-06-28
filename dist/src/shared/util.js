@@ -1,6 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flattenData = exports.groupByfield = exports.groupBy = exports.sortObject = exports.dateVNPAY = exports.mergeNoDup = exports.GenId = exports.convertToSlug = exports.getInitials = exports.nest = exports.Phone_To_0 = exports.convertPhoneNum = exports.CHI_NHANH = exports.ZALO_OA = exports.TYPE_ZNS = exports.Trangthai_Lichhen = exports.TYPE_TEMPLATE = exports.ListNotifyType = exports.ListRole = exports.ListTrangThaiDonhang = exports.ListHinhthucthanhtoan = exports.ListTrangthailichhen = exports.LIST_CHI_NHANH = exports.genMaDonhang = exports.ConvertDriveData = void 0;
+exports.TYPE_TEMPLATE = exports.ListNotifyType = exports.ListRole = exports.ListTrangThaiDonhang = exports.ListHinhthucthanhtoan = exports.ListTrangthailichhen = exports.LIST_CHI_NHANH = void 0;
+exports.ConvertDriveData = ConvertDriveData;
+exports.genMaDonhang = genMaDonhang;
+exports.Trangthai_Lichhen = Trangthai_Lichhen;
+exports.TYPE_ZNS = TYPE_ZNS;
+exports.ZALO_OA = ZALO_OA;
+exports.CHI_NHANH = CHI_NHANH;
+exports.convertPhoneNum = convertPhoneNum;
+exports.Phone_To_0 = Phone_To_0;
+exports.nest = nest;
+exports.getInitials = getInitials;
+exports.convertToSlug = convertToSlug;
+exports.GenId = GenId;
+exports.mergeNoDup = mergeNoDup;
+exports.dateVNPAY = dateVNPAY;
+exports.sortObject = sortObject;
+exports.groupBy = groupBy;
+exports.groupByfield = groupByfield;
+exports.flattenData = flattenData;
 function ConvertDriveData(data) {
     return data.slice(1).map((row) => {
         return {
@@ -10,7 +28,6 @@ function ConvertDriveData(data) {
         };
     });
 }
-exports.ConvertDriveData = ConvertDriveData;
 function genMaDonhang(startNumber) {
     let code = startNumber.toString();
     while (code.length < 3) {
@@ -20,7 +37,6 @@ function genMaDonhang(startNumber) {
     startNumber++;
     return code;
 }
-exports.genMaDonhang = genMaDonhang;
 exports.LIST_CHI_NHANH = [
     { id: '268b7a06-d2c5-4c98-af1d-334144ae280f', BranchCode: 'Q_T', idtempdanhgia: '304742', idtemp: '301891', idtoken: '9e148d63-1716-4aa8-b760-ad3700393d4c', idVttech: 3, Title: 'Taza Skin Clinic Gò Vấp' },
     { id: 'f54de1e1-66bd-4690-8015-ad7315d6f14e', BranchCode: 'PVD', idtempdanhgia: '304997', idtemp: '302261', idtoken: '22ddea78-f244-4dea-838a-c4c5d8e40a16', idVttech: 1, Title: 'Taza Skin Clinic Thủ Đức' },
@@ -92,7 +108,6 @@ function Trangthai_Lichhen(item) {
     ];
     return ListType.find((v) => v.id == item);
 }
-exports.Trangthai_Lichhen = Trangthai_Lichhen;
 function TYPE_ZNS(item) {
     const ListType = {
         user_received_message: "Sự kiện người dùng nhận thông báo ZNS",
@@ -104,7 +119,6 @@ function TYPE_ZNS(item) {
     };
     return ListType[item];
 }
-exports.TYPE_ZNS = TYPE_ZNS;
 function ZALO_OA(item) {
     const ListType = {
         "3605866963832105989": "Taza Skin Clinic Quận 10",
@@ -112,7 +126,6 @@ function ZALO_OA(item) {
     };
     return ListType[item];
 }
-exports.ZALO_OA = ZALO_OA;
 function CHI_NHANH(item) {
     const ListType = {
         "268b7a06-d2c5-4c98-af1d-334144ae280f": "Gò Vấp",
@@ -124,7 +137,6 @@ function CHI_NHANH(item) {
     };
     return ListType[item];
 }
-exports.CHI_NHANH = CHI_NHANH;
 function convertPhoneNum(phoneNumber) {
     if (phoneNumber.startsWith("0")) {
         return phoneNumber.replace(/^0/, "84");
@@ -136,7 +148,6 @@ function convertPhoneNum(phoneNumber) {
         throw new Error("Invalid phone number format");
     }
 }
-exports.convertPhoneNum = convertPhoneNum;
 function Phone_To_0(phoneNumber) {
     if (phoneNumber.startsWith("84")) {
         return "0" + phoneNumber.slice(2);
@@ -145,7 +156,6 @@ function Phone_To_0(phoneNumber) {
         return phoneNumber;
     }
 }
-exports.Phone_To_0 = Phone_To_0;
 function nest(items, id = '', link = 'pid') {
     if (items) {
         return items.filter((item) => item[link] == id)
@@ -156,13 +166,11 @@ function nest(items, id = '', link = 'pid') {
     }
     ;
 }
-exports.nest = nest;
 function getInitials(name) {
     const words = name.split(' ');
     const initials = words.map((word) => word[0].toUpperCase()).join('');
     return initials;
 }
-exports.getInitials = getInitials;
 function convertToSlug(str) {
     return str
         .toLowerCase()
@@ -176,7 +184,6 @@ function convertToSlug(str) {
         .replace(/đ/g, 'd')
         .replace(/[^a-z0-9-]/g, '');
 }
-exports.convertToSlug = convertToSlug;
 function GenId(length, onlynumber = true) {
     let result = '';
     let characters = '';
@@ -192,7 +199,6 @@ function GenId(length, onlynumber = true) {
     }
     return result;
 }
-exports.GenId = GenId;
 function mergeNoDup(arr1, arr2, key) {
     const mergedArray = arr1.concat(arr2);
     const uniqueItems = mergedArray.reduce((acc, item) => {
@@ -203,7 +209,6 @@ function mergeNoDup(arr1, arr2, key) {
     }, {});
     return Object.values(uniqueItems);
 }
-exports.mergeNoDup = mergeNoDup;
 function dateVNPAY(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -213,7 +218,6 @@ function dateVNPAY(date) {
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${year}${month}${day}${hours}${minutes}${seconds}`;
 }
-exports.dateVNPAY = dateVNPAY;
 function sortObject(obj) {
     let sorted = {};
     let str = [];
@@ -229,7 +233,6 @@ function sortObject(obj) {
     }
     return sorted;
 }
-exports.sortObject = sortObject;
 function groupBy(data) {
     if (data) {
         return Object.values(data.reduce((result, currentItem) => {
@@ -244,7 +247,6 @@ function groupBy(data) {
     else
         return null;
 }
-exports.groupBy = groupBy;
 ;
 function groupByfield(data) {
     const convertedData = {};
@@ -261,7 +263,6 @@ function groupByfield(data) {
     });
     return Object.values(convertedData);
 }
-exports.groupByfield = groupByfield;
 ;
 function flattenData(data) {
     const flattenedData = [];
@@ -273,6 +274,5 @@ function flattenData(data) {
     });
     return flattenedData;
 }
-exports.flattenData = flattenData;
 ;
 //# sourceMappingURL=util.js.map

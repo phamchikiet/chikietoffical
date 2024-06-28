@@ -20,10 +20,15 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
-                type: 'mongodb',
-                url: 'mongodb+srv://admin:@Hikiet1988@cluster0.mkgmoln.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-                autoLoadEntities: true,
+                type: 'postgres',
+                host: 'db',
+                port: 5432,
+                username: 'postgres',
+                password: 'postgres',
+                database: 'postgres',
+                entities: [],
                 synchronize: true,
+                autoLoadEntities: true,
             }),
             users_module_1.UsersModule,
             hoadonchitiet_module_1.HoadonchitietModule

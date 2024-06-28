@@ -6,6 +6,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HoadonchitietModule } from './hoadonchitiet/hoadonchitiet.module';
 @Module({
   imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'db',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'postgres',
+      entities: [],
+      synchronize: true,
+      autoLoadEntities: true,
+    }),
     // TypeOrmModule.forRoot({
     //   type: 'mysql',
     //   host: '103.221.221.14',
@@ -17,12 +28,12 @@ import { HoadonchitietModule } from './hoadonchitiet/hoadonchitiet.module';
     //   synchronize: true,
     //   charset: "utf8mb4",
     // }),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: 'mongodb+srv://admin:@Hikiet1988@cluster0.mkgmoln.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'mongodb',
+    //   url: 'mongodb+srv://admin:@Hikiet1988@cluster0.mkgmoln.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    //   autoLoadEntities: true,
+    //   synchronize: true,
+    // }),
     UsersModule,
     HoadonchitietModule
   ],

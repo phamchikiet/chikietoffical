@@ -17,12 +17,12 @@ import { HoadonchitietModule } from './hoadonchitiet/hoadonchitiet.module';
     //   synchronize: true,
     //   charset: "utf8mb4",
     // }),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: 'mongodb+srv://admin:@Hikiet1988@cluster0.mkgmoln.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'mongodb',
+    //   url: 'mongodb+srv://admin:@Hikiet1988@cluster0.mkgmoln.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    //   autoLoadEntities: true,
+    //   synchronize: true,
+    // }),
     UsersModule,
     HoadonchitietModule
   ],

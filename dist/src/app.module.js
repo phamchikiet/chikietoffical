@@ -21,14 +21,12 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: 'db',
+                host: 'ep-crimson-haze-a10m0yu9-pooler.ap-southeast-1.aws.neon.tech',
+                url: 'postgres://default:QKsghOH17GBE@ep-crimson-haze-a10m0yu9-pooler.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require',
                 port: 5432,
-                username: 'postgres',
-                password: 'postgres',
-                database: 'postgres',
-                entities: [],
-                synchronize: true,
-                autoLoadEntities: true,
+                username: 'default',
+                password: 'QKsghOH17GBE',
+                database: 'verceldb',
             }),
             users_module_1.UsersModule,
             hoadonchitiet_module_1.HoadonchitietModule

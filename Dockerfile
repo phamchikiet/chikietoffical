@@ -36,5 +36,5 @@ COPY --from=prerelease /usr/src/app/package.json .
 
 # run the app
 USER bun
-EXPOSE 3000/tcp
+EXPOSE 3335/tcp
 CMD ["bun", "run", "start"]

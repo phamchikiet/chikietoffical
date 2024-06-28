@@ -8,6 +8,7 @@ npx bun add -D drizzle-kit
 bunx drizzle-kit generate
 npm install --save @knaadh/nestjs-drizzle-mysql2 mysql2 drizzle-orm
 
+bun install
 bun run build
 git add .
 git commit -m "update"

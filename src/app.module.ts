@@ -9,7 +9,8 @@ import { UsersEntity } from './users/entities/user.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url:"postgres://default:QKsghOH17GBE@ep-crimson-haze-a10m0yu9.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require",
+      url:"postgresql://admin:vyAg5HdyTgkZCvchZeCzcorm5Qq7vJ2R@dpg-cpvbmp3v2p9s7399peig-a.singapore-postgres.render.com/csvc?sslmode=require",
+      // url:"postgres://default:QKsghOH17GBE@ep-crimson-haze-a10m0yu9.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require",
       autoLoadEntities: true,
       entities: [UsersEntity],
       synchronize: true,

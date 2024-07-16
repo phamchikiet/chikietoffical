@@ -45,8 +45,9 @@ export class HoadonchitietComponent implements OnInit {
   pageSizeOptions: any[] = []
   Sitemap: any = { loc: '', priority: '' }
   SearchParams: any = {
-    pageSize:9,
+    pageSize:9999,
     pageNumber:0,
+    thlap:'1',
     isDelete:false
   };
   sidebarVisible: boolean = false;
@@ -105,8 +106,6 @@ Chitiets:any=[]
     this.Lists = await this._HoadonService.SearchHoadon(this.SearchParams)
     this.FilterLists = this.Lists.items
     this.pageSizeOptions = [10, 20, this.Lists.totalCount].filter(v => v < this.Lists.totalCount);
-
-    console.log(this.FilterLists);
     this.Chitiets = this.FilterLists.flatMap((v: any) => {
       const dulieu = v.hdhhdvu as any[];
       return dulieu.map((v1: any) => ({Type:v.Type,shdon:v.shdon,tdlap:v.tdlap,...v1}));
@@ -133,7 +132,20 @@ Chitiets:any=[]
   {
     console.log(item);
 
-    this._HoadonService.getChitiet(item.nbmst,item.khhdon,item.shdon,item.khmshdon,item.Type,this.Token)
+    this._HoadonService.getChitiet(item.nbmst,item.thlap,item.khhdon,item.shdon,item.khmshdon,item.Type,this.Token)
+  }
+  async Changethlap()
+  {
+    this.Lists = await this._HoadonService.SearchHoadon(this.SearchParams)
+    this.FilterLists = this.Lists.items
+    this.pageSizeOptions = [10, 20, this.Lists.totalCount].filter(v => v < this.Lists.totalCount);
+    this.Chitiets = this.FilterLists.flatMap((v: any) => {
+      const dulieu = v.hdhhdvu as any[];
+      return dulieu.map((v1: any) => ({Type:v.Type,shdon:v.shdon,tdlap:v.tdlap,...v1}));
+    });
+    this.dataSource = new MatTableDataSource(this.Chitiets);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
   async GetAll()
   {
@@ -183,9 +195,9 @@ Chitiets:any=[]
       const sheetName = workbook.SheetNames[0];
       const sheetName1 = workbook.SheetNames[1];
       const worksheet = workbook.Sheets[sheetName];
-      const worksheet1 = workbook.Sheets[sheetName1];
       const DonhangAdmin = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      const Giagoc:any = XLSX.utils.sheet_to_json(worksheet1, { raw: true });
+      console.log(this.Chitiets);
+
       DonhangAdmin.forEach((v:any,k:any) => {
         // setTimeout(() => {
         //   const item:any={}
@@ -201,23 +213,26 @@ Chitiets:any=[]
     fileReader.readAsArrayBuffer(file);
   }
   writeExcelFile() {
-    let Giagoc:any=[]
-    let item:any={}
-    this.FilterLists.forEach((v:any) => {
-        item.idSP =v.id
-        item.TenSP =v.Title
-        v.Giagoc.forEach((gg:any) => {
-          item = {...item,...gg}
-          Giagoc.push(item)
-        });
-    });
-    const workbook = XLSX.utils.book_new();
-    const worksheet1: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.FilterLists);
-    const worksheet2: XLSX.WorkSheet = XLSX.utils.json_to_sheet(Giagoc);
-    XLSX.utils.book_append_sheet(workbook, worksheet1, 'DonhangAdmin');
-    XLSX.utils.book_append_sheet(workbook, worksheet2, 'Giagoc');
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.saveAsExcelFile(excelBuffer, 'DonhangAdmin_'+ moment().format("DD_MM_YYYY"));
+    const items = this.Chitiets.map((v:any) => ({
+      Type:v.Type,
+      shdon:v.shdon,
+      tdlap:v.tdlap,
+      ntao:v.ntao,
+      ten:v.ten,
+      sluong:v.sluong,
+      dgia:v.dgia,
+      dvtinh:v.dvtinh,
+      thtcthue:v.thtcthue,
+      tthue:v.tthue,
+      thtien:v.thtien,
+      tlckhau:v.tlckhau,
+    }));
+    console.log(items);
+    // const workbook = XLSX.utils.book_new();
+    // const worksheet1: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.FilterLists);
+    // XLSX.utils.book_append_sheet(workbook, worksheet1, 'DonhangAdmin');
+    // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    // this.saveAsExcelFile(excelBuffer, 'DonhangAdmin_'+ moment().format("DD_MM_YYYY"));
   }
   saveAsExcelFile(buffer: any, fileName: string) {
     const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });

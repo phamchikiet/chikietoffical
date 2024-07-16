@@ -6,7 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import moment from 'moment';
@@ -15,6 +15,11 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UsersService } from '../users/users.service';
 import { TodosService } from './todos.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { TodocategoryService } from '../todocategory/todocategory.service';
+import { MatSelectModule } from '@angular/material/select';
+import { convertToSlug } from '../shared/shared.utils';
+import { DetailComponent } from './detail/detail.component';
 @Component({
   selector: 'app-todos',
   standalone: true,
@@ -32,14 +37,22 @@ import { TodosService } from './todos.service';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatSelectModule,
+    RouterLinkActive,
+    DetailComponent
   ],
   templateUrl: './todos.component.html',
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent implements OnInit {
-  Detail: any = {};
+  Detail: any = {location:'main'};
   Lists: any = {}
+  isOpen:boolean=true
+  isOpen1:boolean=true
   FilterLists: any[] = []
+  Category: any = {location:'main'};
+  Categories: any[] = []
+  FilterCategories: any[] = []
   pageSizeOptions: any[] = []
   Sitemap: any = { loc: '', priority: '' }
   SearchParams: any = {
@@ -48,9 +61,13 @@ export class TodosComponent implements OnInit {
     isDelete: false
   };
   sidebarVisible: boolean = false;
+  leftsidebar: boolean = false;
+  isHaveTodo: boolean = false;
+  drawerMode: any = 'over';
   ListTrangThaiTodos: any = []
   _TodosService: TodosService = inject(TodosService)
   _UsersService: UsersService = inject(UsersService)
+  _TodocategoryService: TodocategoryService = inject(TodocategoryService)
   Profile: any = {}
   SelectItem: any = {}
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
@@ -61,6 +78,7 @@ export class TodosComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
+    private _breakpointObserver:BreakpointObserver,
   ) {
     this._UsersService.getProfile()
     this._UsersService.profile$.subscribe((data) => {
@@ -70,10 +88,31 @@ export class TodosComponent implements OnInit {
     })
   }
   async ngOnInit(): Promise<void> {
+    this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      this.drawerMode = result.matches ? 'over' : 'side';
+      this.isOpen = result.matches ? false : true;
+      this.leftsidebar = result.matches ? false : true;
+    });
+    this._TodosService.isHaveTodo$.subscribe((data:any)=>{
+      this.isHaveTodo = data
+    })
+    this.Categories = this.FilterCategories = await this._TodocategoryService.getAllTodocategory()
+    console.log(this.Categories);
+
+    // this.Categories = this.FilterCategories =[
+    //   {id:1,Title:"Hôm Nay",location:"top"},
+    //   {id:1,Title:"Ngày Mai",location:"top"},
+    //   {id:1,Title:"Tuần Này",location:"top"},
+    //   {id:1,Title:"Tháng Này",location:"top"},
+    //   {id:2,Title:"Tháng Này",location:"main"},
+    //   {id:2,Title:"Tháng Này",location:"main"},
+    //   {id:2,Title:"Tháng Này",location:"main"},
+    //   {id:3,Title:"Title 3",location:"main"},
+    //   {id:4,Title:"Title 4",location:"bottom"},
+    // ]
     await this._TodosService.SearchTodos(this.SearchParams)
     this._TodosService.todoss$.subscribe((data:any)=>
-    {      
-      console.log(data);
+    {
       this.FilterLists = data
     //  this.pageSizeOptions = [10, 20, this.Lists.totalCount].filter(v => v < this.Lists.totalCount);
       this.dataSource = new MatTableDataSource(this.FilterLists);
@@ -90,6 +129,20 @@ export class TodosComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
+ }
+ filteredCategories(location:any) {
+  return this.Categories.filter((v) => v.location == location);
+ }
+ EmitDetail(item:any){
+  console.log(item);
+
+    if(item)
+    {
+      this.isOpen1 = false
+      console.log("true");
+
+    }
+
  }
   applyFilter(event: Event) {
     const value = (event.target as HTMLInputElement).value;
@@ -112,12 +165,17 @@ export class TodosComponent implements OnInit {
   }
   openDialog(teamplate: TemplateRef<any>): void {
     const dialogRef = this.dialog.open(teamplate, {
+      disableClose:true
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this._TodosService.CreateTodos(this.Detail)
+      if (result=="true") {
+        this._TodocategoryService.CreateTodocategory(this.Category)
       }
     });
+  }
+  ToSlug()
+  {
+    this.Category.Slug = convertToSlug(this.Category.Title)
   }
   readExcelFile(event: any) {
     const file = event.target.files[0];

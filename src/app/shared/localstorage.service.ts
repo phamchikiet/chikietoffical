@@ -15,7 +15,7 @@ export class LocalStorageService {
         return JSON.parse(item);
       }
       return null;
-   }
+      }
       else
       {
         const item = localStorage.getItem(key);
@@ -24,7 +24,7 @@ export class LocalStorageService {
         }
         return null;
       }
-    
+
   }
   setItem(key: string, value: any): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -34,7 +34,7 @@ export class LocalStorageService {
       {
       localStorage.setItem(key, JSON.stringify(value));
       }
-    
+
   }
   removeItem(key: string): void {
     if (isPlatformBrowser(this.platformId)) {

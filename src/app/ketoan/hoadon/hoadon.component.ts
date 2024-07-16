@@ -59,6 +59,7 @@ export class HoadonComponent implements OnInit {
     Sitemap: any = { loc: '', priority: '' }
     SearchParams: any = {
       pageSize:9999,
+      thlap:'1',
       pageNumber:0,
       isDelete:false
     };
@@ -106,15 +107,15 @@ export class HoadonComponent implements OnInit {
       });
 
       console.log(this.Chitiets);
-      this.dataSource.sortingDataAccessor = (item, property) => {
-        switch(property) {
-          case 'Diachi': return item.Giohangs.Khachhang.Diachi;
-          case 'Hoten': return item.Giohangs.Khachhang.Hoten;
-          case 'SDT': return item.Giohangs.Khachhang.SDT;
-          case 'Hinhthuc': return item.Thanhtoan.Hinhthuc;
-          default: return item[property];
-        }
-      };
+      // this.dataSource.sortingDataAccessor = (item, property) => {
+      //   switch(property) {
+      //     case 'Diachi': return item.Giohangs.Khachhang.Diachi;
+      //     case 'Hoten': return item.Giohangs.Khachhang.Hoten;
+      //     case 'SDT': return item.Giohangs.Khachhang.SDT;
+      //     case 'Hinhthuc': return item.Thanhtoan.Hinhthuc;
+      //     default: return item[property];
+      //   }
+      // };
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
@@ -122,11 +123,20 @@ export class HoadonComponent implements OnInit {
     {
       this._KetoanComponent.drawer.toggle();
     }
+    async Changethlap()
+    {
+      this.Lists = await this._HoadonService.SearchHoadon(this.SearchParams)
+      this.FilterLists = this.Lists.items
+      this.pageSizeOptions = [10, 20, this.Lists.totalCount].filter(v => v < this.Lists.totalCount);
+      this.dataSource = new MatTableDataSource(this.FilterLists);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
     GetChitiet(item:any)
     {
       console.log(item);
 
-      this._HoadonService.getChitiet(item.nbmst,item.khhdon,item.shdon,item.khmshdon,item.Type,this.Token)
+      this._HoadonService.getChitiet(item.nbmst,item.thlap,item.khhdon,item.shdon,item.khmshdon,item.Type,this.Token)
     }
     async GetAll()
     {

@@ -18,6 +18,12 @@
           <input type="text" (change)="UpdateToken()" [(ngModel)]="Token" [ngModelOptions]="{standalone: true}" matInput
             class="w-full border border-gray-200 rounded" [placeholder]="'Token'" />
         </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" appearance="outline" class="lg:w-1/2 w-full">
+          <input type="text" (change)="Changethlap()" [(ngModel)]="SearchParams.thlap" [ngModelOptions]="{standalone: true}" matInput
+            class="w-full border border-gray-200 rounded" [placeholder]="'Tháng năm'" />
+        </mat-form-field>
+
         <div class="w-full hidden lg:flex flex-row space-x-3">
           <div class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
             <span class="material-symbols-outlined text-xl" matTooltip="Bộ Lọc">filter_alt</span>

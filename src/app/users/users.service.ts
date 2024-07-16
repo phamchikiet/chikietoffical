@@ -114,12 +114,12 @@ export class UsersService {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        // this._users.next(data) 
+        // this._users.next(data)
         const updateusers = users.map((v:any) =>
           v.id === data.id ? data : v
         );
-        this._users.next(updateusers);               
-        return data;  
+        this._users.next(updateusers);
+        return data;
     } catch (error) {
         return console.error(error);
     }
@@ -139,12 +139,12 @@ export class UsersService {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        this._user.next(data) 
+        this._user.next(data)
         const updateusers = users.map((v:any) =>
           v.id === data.id ? data : v
         );
-        this._users.next(updateusers);               
-        return data;  
+        this._users.next(updateusers);
+        return data;
     } catch (error) {
         return console.error(error);
     }
@@ -162,7 +162,7 @@ export class UsersService {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      // const data = await response.json();  
+      // const data = await response.json();
       console.log(data);
       return data
     } catch (error) {
@@ -182,7 +182,7 @@ export class UsersService {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      // const data = await response.json();  
+      // const data = await response.json();
       console.log(data);
       return data
     } catch (error) {
@@ -195,9 +195,10 @@ export class UsersService {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+this._LocalStorageService.getItem('token')
         },
       };
-      const response = await fetch(`${environment.APIURL}/auth/profile`, options);
+      const response = await fetch(`${environment.APIURL}/users/profile`, options);
       const data = await response.json();
       this._user.next(data)
       return data;
@@ -225,11 +226,38 @@ export class UsersService {
         },
         body: JSON.stringify(user),
       };
-      const response = await fetch(`${environment.APIURL}/auth/login`, options);
+      const response = await fetch(`${environment.APIURL}/users/login`, options);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();  
+      const data = await response.json();
+      this._authenticated = true;
+      this.accessToken = data[1].access_token;
+      console.log(data);
+      return true
+    } catch (error) {
+      return console.error(error);
+    }
+  }
+
+  async LoginByGoogle(user: any) {
+    if (this._authenticated) {
+      return of([false, 'User Đã Đăng Nhập']);
+    }
+
+    try {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      };
+      const response = await fetch(`${environment.APIURL}/users/loginbygoogle`, options);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
       this._authenticated = true;
       this.accessToken = data[1].access_token;
       console.log(data);

@@ -44,7 +44,7 @@ export class HoadonService {
           return console.error(error);
       }
   }
-  async getChitiet(nbmst: any,khhdon: any,shdon: any,khmshdon: any,Type: any,token:any) {
+  async getChitiet(nbmst: any,thlap:any,khhdon: any,shdon: any,khmshdon: any,Type: any,token:any) {
     console.log(nbmst,khhdon,shdon,khmshdon,token);
     try {
       const options = {
@@ -59,6 +59,7 @@ export class HoadonService {
           //this._hoadons.next(data)
           console.log(data);
           data.Type = Type
+          data.thlap = thlap
           this.CreateHoadon(data)
       } catch (error) {
           return console.error(error);

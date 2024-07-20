@@ -1,7 +1,11 @@
 import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { RouterOutlet } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { environment } from '../environments/environment.development';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -9,6 +13,11 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
     RouterOutlet,
     CommonModule,
     NgxSpinnerModule,
+    AngularFireStorageModule
+  ],
+  providers: [
+    AngularFireAuth,
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

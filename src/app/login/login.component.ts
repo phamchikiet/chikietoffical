@@ -15,10 +15,6 @@ import { UsersService } from '../users/users.service';
     MatCheckboxModule,
     MatButtonModule,
   ],
-  providers: [
-    AngularFireAuth,
-    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }
-  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

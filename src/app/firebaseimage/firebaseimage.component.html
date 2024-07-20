@@ -1,0 +1,10 @@
+<div>
+  <input type="file" (change)="onFileSelected($event)">
+  <br>
+
+  <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview">
+  <br>
+
+  <button *ngIf="!uploadedImagePath" (click)="uploadImage()">Upload Image</button>
+  <button *ngIf="uploadedImagePath" (click)="deleteImage()">Delete Image</button>
+</div>

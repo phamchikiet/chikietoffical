@@ -20,6 +20,7 @@ import { TodocategoryService } from '../todocategory/todocategory.service';
 import { MatSelectModule } from '@angular/material/select';
 import { convertToSlug } from '../shared/shared.utils';
 import { DetailComponent } from './detail/detail.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-todos',
   standalone: true,
@@ -79,6 +80,7 @@ export class TodosComponent implements OnInit {
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private _breakpointObserver:BreakpointObserver,
+    private spinner: NgxSpinnerService
   ) {
     this._UsersService.getProfile()
     this._UsersService.profile$.subscribe((data) => {
@@ -86,6 +88,7 @@ export class TodosComponent implements OnInit {
         this.Profile = data
       }
     })
+    this.spinner.show();
   }
   async ngOnInit(): Promise<void> {
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
@@ -97,20 +100,11 @@ export class TodosComponent implements OnInit {
       this.isHaveTodo = data
     })
     this.Categories = this.FilterCategories = await this._TodocategoryService.getAllTodocategory()
-    //console.log(this.Categories);
-
-    // this.Categories = this.FilterCategories =[
-    //   {id:1,Title:"Hôm Nay",location:"top"},
-    //   {id:1,Title:"Ngày Mai",location:"top"},
-    //   {id:1,Title:"Tuần Này",location:"top"},
-    //   {id:1,Title:"Tháng Này",location:"top"},
-    //   {id:2,Title:"Tháng Này",location:"main"},
-    //   {id:2,Title:"Tháng Này",location:"main"},
-    //   {id:2,Title:"Tháng Này",location:"main"},
-    //   {id:3,Title:"Title 3",location:"main"},
-    //   {id:4,Title:"Title 4",location:"bottom"},
-    // ]
-    await this._TodosService.SearchTodos(this.SearchParams)
+    await this._TodosService.SearchTodos(this.SearchParams).then((data)=>
+    {
+      this.spinner.hide();
+      console.log("searchdata",data);
+    })
     this._TodosService.todoss$.subscribe((data:any)=>
     {
       this.FilterLists = data

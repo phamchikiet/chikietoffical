@@ -6,7 +6,7 @@
   import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
   import { MatDialog, MatDialogModule} from '@angular/material/dialog';
   import { MatButtonModule} from '@angular/material/button';
-  import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+  import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   import { MatSnackBar } from '@angular/material/snack-bar';
   import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -26,10 +26,10 @@ import { convertToSlug } from '../../shared/shared.utils';
       FormsModule,
       MatDialogModule,
       MatButtonModule,
-      MatPaginatorModule,
       MatTableModule,
       MatSortModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      RouterLinkActive
     ],
   templateUrl: './listview.component.html',
   styleUrls: ['./listview.component.scss']
@@ -45,6 +45,7 @@ export class ListviewComponent implements OnInit {
       pageNumber:0,
       isDelete:false
     };
+    isSelect:any='';
     sidebarVisible: boolean = false;
     Profile: any = {}
     SelectItem: any = {}
@@ -61,9 +62,6 @@ export class ListviewComponent implements OnInit {
     route: ActivatedRoute = inject(ActivatedRoute);
     _TodosService: TodosService = inject(TodosService);
     async ngOnInit(): Promise<void> {
-      this.route.paramMap.subscribe((params) => {
-        console.log("Primary outlet params",params.get('slug'));
-      });
       this.Lists = await this._TodosService.SearchTodos(this.SearchParams)
       this.FilterLists = this.Lists.items
       // this.FilterLists.forEach((v)=>{
@@ -94,10 +92,8 @@ export class ListviewComponent implements OnInit {
     }
     async OpenDetail(item:any)
     {
-      console.log(item);
-
+      this.isSelect=item.id
       const Todo = await this._TodosService.getTodosByid(item.id)
-      console.log(Todo);
     }
     applyFilter(event: Event) {
       const value = (event.target as HTMLInputElement).value;
@@ -113,7 +109,7 @@ export class ListviewComponent implements OnInit {
     }
     async onPageChange(event:any)
     {
-      console.log(event);
+      //console.log(event);
       this.SearchParams.pageSize=event.pageSize
        this.SearchParams.pageNumber=event.pageIndex
        this.Lists = []

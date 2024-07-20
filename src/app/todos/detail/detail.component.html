@@ -1,22 +1,35 @@
-<div class="!flex flex-col flex-auto min-w-0 relative bg-white !h-screen p-4">
-    <div class="relative flex flex-col">
-        <div class="flex flex-row justify-between items-start">
-            <div>Title</div>
-            <span>
-            <button mat-button>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="#5f6368">
-                        <path
-                            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-                    </svg>
-                </button>
-            </span>
+<div class="!flex flex-col flex-auto min-w-0 relative bg-white !h-screen">
+  <div class="p-2 relative flex flex-col">
+    <div class="flex flex-row justify-between items-center">
+      <div class="font-bold text-xl">{{Detail.Title}}</div>
+      <span>
+        <button mat-icon-button (click)="CloseDetail()">
+          <span class="material-symbols-outlined">
+            close
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div class="p-2 border-y relative flex flex-col h-full w-full overflow-auto">
+    <div class="flex flex-col space-y-2">
+      <div class="flex flex-row space-x-2 p-2">
+        <ckeditor class="w-full" (ready)="onReady($event)" [editor]="editor" [config]="config" [(ngModel)]="Detail.Mota" [ngModelOptions]="{standalone: true}"></ckeditor>
+        <!-- <div>
+          <span (click)="AddContent('text')" class="material-symbols-outlined p-2 rounded-lg hover:bg-slate-50">text_fields</span>
         </div>
+        <div>
+          <span class="material-symbols-outlined p-2 rounded-lg hover:bg-slate-50">image</span>
+        </div>
+        <div>
+          <span class="material-symbols-outlined p-2 rounded-lg hover:bg-slate-50">smart_display</span>
+        </div> -->
+      </div>
     </div>
-    <div class="relative flex flex-col h-full w-full overflow-auto">
-        Section2
+  </div>
+  <div class="p-2 relative flex flex-0 items-center">
+    <div class="flex flex-row space-x-2">
+
     </div>
-    <div class="relative flex flex-0 items-center">
-        Section3
-    </div>
+  </div>
 </div>

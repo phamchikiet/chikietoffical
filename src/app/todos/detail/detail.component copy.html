@@ -1,0 +1,70 @@
+<div class="!flex flex-col flex-auto min-w-0 relative bg-white !h-screen">
+  <div class="p-2 relative flex flex-col">
+    <div class="flex flex-row justify-between items-center">
+      <div class="font-bold text-xl">{{Detail.Title}}</div>
+      <span>
+        <button mat-icon-button (click)="CloseDetail()">
+          <span class="material-symbols-outlined">
+            close
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+  <div class="p-2 border-y relative flex flex-col h-full w-full overflow-auto">
+    <div class="flex flex-col space-y-2">
+      <div class="flex flex-row space-x-2 p-2">
+        <ckedit [ckeditor]="ckeditor" [(ngModel)]="Detail.Mota" [ngModelOptions]="{standalone: true}"></ckedit>
+
+
+        <!-- <div>
+          <span (click)="AddContent('text')" class="material-symbols-outlined p-2 rounded-lg hover:bg-slate-50">text_fields</span>
+        </div>
+        <div>
+          <span class="material-symbols-outlined p-2 rounded-lg hover:bg-slate-50">image</span>
+        </div>
+        <div>
+          <span class="material-symbols-outlined p-2 rounded-lg hover:bg-slate-50">smart_display</span>
+        </div> -->
+      </div>
+      <div class="k-content flex flex-col space-y-2 p-2">
+        @if(Detail.Content.length > 0)
+        {
+          @for(item of Detail.Content; track item.id;let i =$index){
+            <div class="group flex flex-row space-x-2 items-center">
+              @if(Detail.Content[i].content.length>0)
+              {
+                <div class="group-hover:visible invisible">
+                  <span class="text-xl p-1 material-symbols-outlined rounded-lg hover:bg-slate-100">drag_indicator</span>
+                </div>
+              }
+              @else {
+                <div class="group-hover:visible invisible">
+                  <span class="text-xl p-1 material-symbols-outlined rounded-lg hover:bg-slate-100">add</span></div>
+              }
+              <div #myElement [innerHTML]="Detail.Content[i].content" class="edit-content w-full hover:bg-slate-50 p-2 rounded-lg" contenteditable="true" (keyup.backspace)="onContentChange($event,i)" (keyup.enter)="onContentChange($event,i)"></div>
+              <!-- <ckeditor class="w-full p-2" [editor]="editor" [(ngModel)]="Detail.Content[i].content" [ngModelOptions]="{standalone: true}" (input)="onContentChange($event)" (keyup.backspace)="PushnewContent()" (keyup.enter)="PushnewContent()"></ckeditor> -->
+            </div>
+          }
+        }
+        @else{
+          <div class="group flex flex-row items-center">
+            <div class="group-hover:visible invisible">
+              <span class="text-xl p-1 material-symbols-outlined rounded-lg hover:bg-slate-100">add</span></div>
+            <div class="group-hover:visible invisible">
+              <span class="text-xl p-1 material-symbols-outlined rounded-lg hover:bg-slate-100">drag_indicator</span>
+            </div>
+            <div #myElement [innerHTML]="Detail.Content[0].content" class="w-full hover:bg-slate-50 p-2 rounded-lg" contenteditable="true" (keyup.backspace)="onContentChange($event,0)" (keyup.enter)="onContentChange($event,0)"></div>
+              <!-- <ckeditor class="w-full" [editor]="editor" [(ngModel)]="Detail.Content[0].content" [ngModelOptions]="{standalone: true}" (input)="onContentChange($event)" (keyup.backspace)="PushnewContent()" (keyup.enter)="PushnewContent()"></ckeditor> -->
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+  <div class="p-2 relative flex flex-0 items-center">
+    <div class="flex flex-row space-x-2">
+
+    </div>
+  </div>
+</div>

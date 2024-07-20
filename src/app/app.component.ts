@@ -1,13 +1,35 @@
-import { Component } from '@angular/core';
+import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    NgxSpinnerModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'fechikiet';
+  isBrowser: boolean;
+  isServer: boolean;
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private spinner: NgxSpinnerService
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(platformId);
+    this.spinner.show();
+  }
+  ngOnInit(): void {
+    if(!this.isServer)
+    {
+      this.spinner.hide();
+    }
+
+  }
 }

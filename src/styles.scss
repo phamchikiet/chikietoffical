@@ -118,3 +118,11 @@ router-outlet+* {
   width: 100%;
   flex-direction: column;
 }
+
+
+div[contenteditable] {
+  outline: none;
+}
+.no-outline{
+  outline: none!important;
+}

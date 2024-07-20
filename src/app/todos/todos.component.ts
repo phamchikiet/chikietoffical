@@ -62,7 +62,7 @@ export class TodosComponent implements OnInit {
   };
   sidebarVisible: boolean = false;
   leftsidebar: boolean = false;
-  isHaveTodo: boolean = false;
+  isHaveTodo: boolean = true;
   drawerMode: any = 'over';
   ListTrangThaiTodos: any = []
   _TodosService: TodosService = inject(TodosService)
@@ -97,7 +97,7 @@ export class TodosComponent implements OnInit {
       this.isHaveTodo = data
     })
     this.Categories = this.FilterCategories = await this._TodocategoryService.getAllTodocategory()
-    console.log(this.Categories);
+    //console.log(this.Categories);
 
     // this.Categories = this.FilterCategories =[
     //   {id:1,Title:"Hôm Nay",location:"top"},
@@ -116,7 +116,7 @@ export class TodosComponent implements OnInit {
       this.FilterLists = data
     //  this.pageSizeOptions = [10, 20, this.Lists.totalCount].filter(v => v < this.Lists.totalCount);
       this.dataSource = new MatTableDataSource(this.FilterLists);
-      console.log(this.FilterLists);
+     // console.log(this.FilterLists);
       this.dataSource.sortingDataAccessor = (item, property) => {
         switch (property) {
           case 'Diachi': return item.Todoss.Khachhang.Diachi;
@@ -133,17 +133,6 @@ export class TodosComponent implements OnInit {
  filteredCategories(location:any) {
   return this.Categories.filter((v) => v.location == location);
  }
- EmitDetail(item:any){
-  console.log(item);
-
-    if(item)
-    {
-      this.isOpen1 = false
-      console.log("true");
-
-    }
-
- }
   applyFilter(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     if (value.length > 1) {
@@ -157,7 +146,7 @@ export class TodosComponent implements OnInit {
     else { this.FilterLists = this.Lists.items }
   }
   async onPageChange(event: any) {
-    console.log(event);
+   // console.log(event);
     this.SearchParams.pageSize = event.pageSize
     this.SearchParams.pageNumber = event.pageIndex
     this.Lists = await this._TodosService.SearchTodos(this.SearchParams)

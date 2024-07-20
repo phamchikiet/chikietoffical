@@ -12,6 +12,9 @@ export class TodosService {
   get isHaveTodo$(): Observable<any[] | null> {
     return this._isHaveTodo.asObservable();
   }
+  updateisHaveTodo(value: boolean) {
+    this._isHaveTodo.next(value);
+  }
   get todoss$(): Observable<any[] | null> {
     return this._todoss.asObservable();
   }

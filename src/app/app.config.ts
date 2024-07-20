@@ -8,7 +8,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { CatcherrorService } from './catcherror.service';
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: ErrorHandler, useClass: CatcherrorService },
+    // { provide: ErrorHandler, useClass: CatcherrorService },
     provideZoneChangeDetection({ eventCoalescing: true }),
     // provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideRouter(routes),

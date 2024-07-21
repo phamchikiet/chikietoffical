@@ -46,6 +46,21 @@ configTiny: EditorComponent['init'] = {
   default_link_target: '_blank',
   block_unsupported_drop: true,
   entity_encoding: 'raw',
+  setup: (editor) => {
+    editor.on('init', (e) => {
+      console.log(e);
+      console.log('The Editor has initialized.');
+    });
+    editor.on('change', function(e){
+      console.log('The Editor has initialized.');
+      console.log(e);
+      editor.targetElm.dispatchEvent(new Event('change'));
+    })
+    editor.on('nodechange', function(e){
+      console.log('nodechange');
+      console.log(e);
+    })
+  },
   images_upload_handler: (blobInfo: any) => {
     const file = blobInfo.blob();
     console.log(file);
@@ -54,7 +69,6 @@ configTiny: EditorComponent['init'] = {
       this._FirebaseimageService.uploadImage(file,`chikietv1/${file.name}`).then((res) => {
         if (res) {
           console.log(res);
-
           resolve(res.default);
         }
       });
@@ -84,10 +98,7 @@ configTiny: EditorComponent['init'] = {
     pageNumber:0,
     isDelete:false
   };
-  Detail:any={Content:[{
-    id: 1,
-    content: "a"
-  }]}
+  Detail:any={Mota:''}
   _TodosService: TodosService = inject(TodosService);
   _FirebaseimageService: FirebaseimageService = inject(FirebaseimageService);
   route: ActivatedRoute = inject(ActivatedRoute);
@@ -108,6 +119,10 @@ configTiny: EditorComponent['init'] = {
   CloseDetail()
   {
     this._TodosService.updateisHaveTodo(false)
+  }
+  UpdateDetail()
+  {
+   this._TodosService.UpdateTodos(this.Detail)
   }
   PushnewContent()
   {

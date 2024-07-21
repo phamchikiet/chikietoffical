@@ -3,41 +3,82 @@ import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { TodosService } from '../todos.service';
 import { FormsModule } from '@angular/forms';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import ClassEditor from '@ckeditor/ckeditor5-build-classic';
 import { MatInputModule } from '@angular/material/input';
-import { UploadAdapter } from './SimpleUploadAdapter';
+import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
+import { environment } from '../../../environments/environment.development';
+import { FirebaseimageService } from '../../firebaseimage/firebaseimage.service';
 @Component({
   selector: 'app-detail',
   standalone: true,
   imports: [
     MatButtonModule,
     FormsModule,
-    CKEditorModule,
     MatInputModule,
+    EditorModule,
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
 
 export class DetailComponent {
-  editor = ClassEditor;
-  public config = {
-    simpleUpload: {
-      uploadUrl: 'http://example.com',
-  },
-    toolbar: ['bold', 'italic', 'link', 'uploadImage']
-  };
-  onReady(eventData:any) {
-    console.log('eventData',eventData);
-    eventData.plugins.get('FileRepository').createUploadAdapter = function (loader:any) {
-      console.log('loader',loader);
-      const abc =new UploadAdapter(loader);
-      console.log('abc',abc);
 
-      return new UploadAdapter(loader);
-    };
-  }
+APITINYMCE= environment.APITINYMCE;
+configTiny: EditorComponent['init'] = {
+  // selector: '.dfree-header',
+  content_style: '.mce-content-body { border: 1px dashed blue; padding: 10px;  } '+'.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
+  menubar: false,
+  inline: true,
+  toolbar: 'image link bold italic underline alignleft aligncenter alignright alignjustify',
+  plugins: [
+     'autoresize','quickbars','advlist','autolink','lists','link','image','charmap','preview','anchor',
+    'searchreplace','visualblocks','code','fullscreen',
+    'insertdatetime','media','table','code','help'
+     ],
+  quickbars_insert_toolbar: false,
+ // quickbars_selection_toolbar: 'undo redo |fontfamily fontsize blocks | bold italic underline | alignleft aligncenter alignright alignjustify | fullscreen preview code | link image media',
+  branding: false,
+  image_advtab: false,
+  autoresize_bottom_margin: 5,
+  autoresize_min_height: 50,
+  max_height: 300,
+  statusbar:false,
+  deprecation_warnings: false,
+  default_link_target: '_blank',
+  block_unsupported_drop: true,
+  entity_encoding: 'raw',
+  images_upload_handler: (blobInfo: any) => {
+    const file = blobInfo.blob();
+    console.log(file);
+
+    const promise = new Promise<string>((resolve, reject) => {
+      this._FirebaseimageService.uploadImage(file,`chikietv1/${file.name}`).then((res) => {
+        if (res) {
+          console.log(res);
+
+          resolve(res.default);
+        }
+      });
+    });
+    return promise;
+  },
+  // file_picker_callback: (callback, value, meta:any) => {
+  //   // Provide file and text for the link dialog
+  //   if (meta.filetype == 'file') {
+  //     callback('mypage.html', { text: 'My text' });
+  //   }
+
+  //   // Provide image and alt text for the image dialog
+  //   if (meta.filetype == 'image') {
+  //     callback('myimage.jpg', { alt: 'My alt text' });
+  //   }
+
+  //   // Provide alternative source and posted for the media dialog
+  //   if (meta.filetype == 'media') {
+  //     callback('movie.mp4', { source2: 'alt.ogg', poster: 'image.jpg' });
+  //   }
+  // }
+};
+
   SearchParams: any = {
     pageSize:9999,
     pageNumber:0,
@@ -48,9 +89,12 @@ export class DetailComponent {
     content: "a"
   }]}
   _TodosService: TodosService = inject(TodosService);
+  _FirebaseimageService: FirebaseimageService = inject(FirebaseimageService);
   route: ActivatedRoute = inject(ActivatedRoute);
   @ViewChildren('myElement') elements!: QueryList<ElementRef>;
-  constructor(private renderer: Renderer2) {}
+  constructor(
+    private renderer: Renderer2,
+  ) {}
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe((params) => {
       this._TodosService.getTodosByid(params.get('id'))

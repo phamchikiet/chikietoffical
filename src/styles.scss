@@ -126,3 +126,14 @@ div[contenteditable] {
 .no-outline{
   outline: none!important;
 }
+
+
+.tox-tinymce {
+  border: 1px solid #eee !important;
+  border-radius: 0px !important;
+}
+.tox:not(.tox-tinymce-inline) .tox-editor-header {
+  border-bottom: 1px solid #eee !important;
+  padding: 0 !important;
+  box-shadow:none !important;
+}

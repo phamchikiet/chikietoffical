@@ -6,11 +6,22 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideServiceWorker } from '@angular/service-worker';
 import { CatcherrorService } from './catcherror.service';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { environment } from '../environments/environment.development';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 export const appConfig: ApplicationConfig = {
   providers: [
-    // { provide: ErrorHandler, useClass: CatcherrorService },
+    AngularFireAuth,
+  { provide: ErrorHandler, useClass: CatcherrorService },
     provideZoneChangeDetection({ eventCoalescing: true }),
     // provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
+
+    // { provide: AngularFirestore, useFactory: AngularFirestoreFactory, deps: [AngularFirestoreModule] },
+    // { provide: AngularFirestore, useFactory: () => getFirestore(), deps: [FirebaseApp] },
+    // { provide: AngularFirestore, useFactory: () => getFirestore(), deps: [AngularFireModule] },
+    // { provide: AngularFirestore, useFactory: () => getFirestore(), deps: [FirebaseApp, AngularFireModule] },
+    // { provide: AngularFirestore, useFactory: () => getFirestore(), deps: [AngularFireModule, AngularFirestoreModule] },
     provideRouter(routes),
     provideClientHydration(),
     provideAnimationsAsync(),

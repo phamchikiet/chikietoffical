@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseimageService } from './firebaseimage.service';
+import { CommonModule } from '@angular/common';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-firebaseimage',
   standalone:true,
+  imports: [
+    CommonModule,
+    AngularFireStorageModule,
+  ],
   templateUrl: './firebaseimage.component.html',
-  styleUrls: ['./firebaseimage.component.css']
+  styleUrls: ['./firebaseimage.component.scss']
 })
 export class FirebaseimageComponent implements OnInit {
   selectedImage: File | null = null;
@@ -18,7 +24,6 @@ export class FirebaseimageComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.selectedImage = event.target.files[0];
-
     if (this.selectedImage) {
       this.previewUrl = URL.createObjectURL(this.selectedImage);
     } else {
@@ -31,7 +36,7 @@ export class FirebaseimageComponent implements OnInit {
       return;
     }
 
-    const path = `images/${this.selectedImage.name}`; // Adjust path as needed
+    const path = `chikietv1/${this.selectedImage.name}`; // Adjust path as needed
     this.imageService.uploadImage(this.selectedImage, path).then(() => {
       this.uploadedImagePath = path;
       this.selectedImage = null;

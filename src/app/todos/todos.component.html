@@ -33,7 +33,7 @@
           <div class="p-4 w-full relative flex flex-0 space-y-3">
             @for (item of filteredCategories("bottom"); track item.id) {
             <a routerLinkActive="w-full bg-blue-100 rounded-lg" [routerLink]="'list/'+item.Slug"
-              class="p-3 hover:bg-blue-100 lg:rounded-lg">{{item.Title}}</a>
+              class="w-full p-3 hover:bg-blue-100 lg:rounded-lg">{{item.Title}}</a>
             }
             @empty {
             <div>Chư có Dữ Liệu</div>

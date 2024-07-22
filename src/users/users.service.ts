@@ -33,7 +33,35 @@ export class UsersService {
     // {
     //   return [false,'Tài Khoản Đã Bị Khóa']
     // }
-  }  async randompass(data): Promise<any>{
+  }  
+  async loginsocial(data: any) {
+    console.log("data",data);
+    
+    const checkgid = await this.findQuery({gid:data.uid});
+    console.log("checkgid",checkgid);
+    if(checkgid.totalCount>0)
+      {
+        const User = checkgid.items[0]
+        const doLogin = {access_token: this.jwtService.sign({SDT: User.SDT,email: User.email,gid: User.gid}),User}
+        return [true,doLogin]
+     }
+      else
+      {
+        const password = GenId(8,false)
+        data.SDT = data.gid
+        data.password = await Bun.password.hash(password);
+        const validationCode = Math.floor(100000 + Math.random() * 900000);
+        data.Code = validationCode;
+        console.log(data);
+        console.log(password);
+        this.usersRepository.create(data);
+        const newUser = await this.usersRepository.save(data);
+        const doLogin = {access_token: this.jwtService.sign({SDT: newUser.SDT,email: newUser.email,gid:newUser}),newUser}
+        return [true, doLogin];
+      }
+  }
+
+  async randompass(data): Promise<any>{
     const user = await this.findbySDT(data);
       const random = Math.random().toString(36).slice(-8);
       user.password = await Bun.password.hash(random);
@@ -70,44 +98,6 @@ export class UsersService {
     this.usersRepository.create(data);
     const newUser = await this.usersRepository.save(data);
     return [true, newUser];
-  }
-  async loginsocial(data: any) {
-    console.log("data",data);
-    
-    const checkgid = await this.findQuery({gid:data.gid});
-    console.log("checkgid",checkgid);
-    if(checkgid.totalCount>0)
-      {
-        const doLogin = {access_token: this.jwtService.sign({SDT: data.SDT,email: data.email}),data}
-        return [true,doLogin]
-     }
-      else
-      {
-        const password = GenId(8,false)
-        data.SDT = data.gid
-        data.password = await Bun.password.hash(password);
-        const validationCode = Math.floor(100000 + Math.random() * 900000);
-        data.Code = validationCode;
-        console.log(data);
-        console.log(password);
-        this.usersRepository.create(data);
-        const newUser = await this.usersRepository.save(data);
-        const doLogin = {access_token: this.jwtService.sign({SDT: newUser.SDT,email: newUser.email}),newUser}
-        return [true, newUser];
-      }
-    // if (checkSDT) {
-    //   return [false, 'Số Điện Thoại Đã Tồn Tại'];
-    // }
-    // if (checkEmail) {
-    //   return [false, 'Email Đã Tồn Tại'];
-    // }
-    // const salt = await bcrypt.genSalt();
-    // data.password = await bcrypt.hash(data.password, salt);
-    // const validationCode = Math.floor(100000 + Math.random() * 900000);
-    // data.Code = validationCode;
-    // this.usersRepository.create(data);
-    // const newUser = await this.usersRepository.save(data);
-    // return [true, newUser];
   }
   // async createSocial(data: any) {
   //   const checkSDT = await this.findbySDT(data);

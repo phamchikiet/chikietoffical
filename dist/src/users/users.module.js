@@ -27,7 +27,7 @@ exports.UsersModule = UsersModule = __decorate([
             passport_1.PassportModule,
             usergroup_module_1.UsergroupModule,
             jwt_1.JwtModule.register({
-                secret: 'tazaskin',
+                secret: 'websitetoken',
                 signOptions: { expiresIn: '30days' },
             }),
         ],

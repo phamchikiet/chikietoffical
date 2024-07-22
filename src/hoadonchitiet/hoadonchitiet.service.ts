@@ -63,6 +63,9 @@ export class HoadonchitietService {
     if (params.Title) {
       queryBuilder.andWhere('hoadonchitiet.Title LIKE :Title', { SDT: `%${params.Title}%` });
     }
+    if (params.thlap) {
+      queryBuilder.andWhere('hoadonchitiet.thlap LIKE :thlap', { thlap: `${params.thlap}` });
+    }
     const [items, totalCount] = await queryBuilder
       .limit(params.pageSize || 10) // Set a default page size if not provided
       .offset(params.pageNumber * params.pageSize || 0)

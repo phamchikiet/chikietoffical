@@ -7,10 +7,16 @@ export declare class UsersService {
     private jwtService;
     constructor(usersRepository: Repository<UsersEntity>, jwtService: JwtService);
     login(user: any): Promise<any>;
+    loginsocial(data: any): Promise<(boolean | {
+        access_token: string;
+        User: UsersEntity;
+    })[] | (boolean | {
+        access_token: string;
+        newUser: any;
+    })[]>;
     randompass(data: any): Promise<any>;
     validateUser(user: any): Promise<any>;
     create(data: any): Promise<any[]>;
-    loginsocial(data: any): Promise<any[]>;
     findAll(): Promise<UsersEntity[]>;
     read(id: string): Promise<UsersEntity>;
     findid(id: string): Promise<UsersEntity>;

@@ -6,7 +6,14 @@ export declare class UsersController {
     private readonly usersService;
     private _UsergroupService;
     constructor(usersService: UsersService, _UsergroupService: UsergroupService);
-    login(user: any): any;
+    login(user: any): Promise<any>;
+    loginbygoogle(user: any): Promise<(boolean | {
+        access_token: string;
+        User: import("./entities/user.entity").UsersEntity;
+    })[] | (boolean | {
+        access_token: string;
+        newUser: any;
+    })[]>;
     randompass(dulieu: any): any;
     getProfile(req: any): Promise<false | import("./entities/user.entity").UsersEntity>;
     create(createUserDto: CreateUserDto): Promise<any[]>;

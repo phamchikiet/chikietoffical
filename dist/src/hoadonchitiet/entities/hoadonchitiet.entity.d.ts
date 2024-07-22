@@ -12,8 +12,8 @@ export declare class HoadonchitietEntity {
     tgtcthue: Number;
     tgtthue: Number;
     tgtttbso: Number;
-    thlap: Number;
     hdhhdvu: string;
+    thlap: string;
     Type: string;
     Status: number;
     CreateAt: Date;

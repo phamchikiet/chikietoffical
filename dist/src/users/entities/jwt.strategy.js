@@ -14,12 +14,12 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const users_service_1 = require("../users.service");
-let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'tazaskin') {
+let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'websitetoken') {
     constructor(_UsersService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: "tazaskin"
+            secretOrKey: "websitetoken"
         });
         this._UsersService = _UsersService;
     }
@@ -32,12 +32,12 @@ exports.JwtStrategy = JwtStrategy = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], JwtStrategy);
-let JwtCustomStrategy = class JwtCustomStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'tazaskin') {
+let JwtCustomStrategy = class JwtCustomStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'websitetoken') {
     constructor(_UsersService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: "tazaskin"
+            secretOrKey: "websitetoken"
         });
         this._UsersService = _UsersService;
     }

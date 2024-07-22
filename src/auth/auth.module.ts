@@ -14,7 +14,7 @@
 //   imports: [
 //     TypeOrmModule.forFeature([UsersEntity]),UsersModule,PassportModule,UsergroupModule,
 //     JwtModule.register({
-//       secret: 'tazaskin',
+//       secret: 'websitetoken',
 //       signOptions: { expiresIn: '30days' },
 //     }),
 //     ],

@@ -26,12 +26,17 @@ let UsersController = class UsersController {
         this._UsergroupService = _UsergroupService;
     }
     async login(user) {
-        return await this.login(user);
+        return await this.usersService.login(user);
+    }
+    async loginbygoogle(user) {
+        return await this.usersService.loginsocial(user);
     }
     async randompass(dulieu) {
         return await this.randompass(dulieu);
     }
     async getProfile(req) {
+        console.log(req);
+        console.log(req.user);
         const userPromise = this.usersService.findbySDT(req.user);
         const groupsPromise = this._UsergroupService.findAll();
         const [user, Groups] = await Promise.all([userPromise, groupsPromise]);
@@ -101,6 +106,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "login", null);
 __decorate([
+    (0, common_1.Post)('loginbygoogle'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "loginbygoogle", null);
+__decorate([
     (0, common_1.Post)('randompass'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -109,7 +121,7 @@ __decorate([
 ], UsersController.prototype, "randompass", null);
 __decorate([
     (0, common_1.Get)('profile'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('tazaskin')),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('websitetoken')),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -158,7 +170,7 @@ __decorate([
 ], UsersController.prototype, "findSDT", null);
 __decorate([
     (0, common_1.Get)('/get/admin'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('tazaskin')),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('websitetoken')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)

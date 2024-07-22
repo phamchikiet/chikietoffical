@@ -25,7 +25,7 @@
 //     return await this.authService.randompass(dulieu);
 //   }
 //   @Get('profile')
-//   @UseGuards(AuthGuard('tazaskin'))
+//   @UseGuards(AuthGuard('websitetoken'))
 //   async getProfile(@Request() req) {
 //     const userPromise = this.usersService.findbySDT(req.user);
 //     const groupsPromise = this._UsergroupService.findAll();

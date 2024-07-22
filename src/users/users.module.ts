@@ -14,7 +14,7 @@ import { LocalStrategy } from './entities/local.strategy';
   PassportModule,
   UsergroupModule,
   JwtModule.register({
-    secret: 'tazaskin',
+    secret: 'websitetoken',
     signOptions: { expiresIn: '30days' },
   }),
   ],

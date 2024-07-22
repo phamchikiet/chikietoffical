@@ -40,6 +40,29 @@ let UsersService = class UsersService {
             }
         }
     }
+    async loginsocial(data) {
+        console.log("data", data);
+        const checkgid = await this.findQuery({ gid: data.uid });
+        console.log("checkgid", checkgid);
+        if (checkgid.totalCount > 0) {
+            const User = checkgid.items[0];
+            const doLogin = { access_token: this.jwtService.sign({ SDT: User.SDT, email: User.email, gid: User.gid }), User };
+            return [true, doLogin];
+        }
+        else {
+            const password = (0, util_1.GenId)(8, false);
+            data.SDT = data.gid;
+            data.password = await Bun.password.hash(password);
+            const validationCode = Math.floor(100000 + Math.random() * 900000);
+            data.Code = validationCode;
+            console.log(data);
+            console.log(password);
+            this.usersRepository.create(data);
+            const newUser = await this.usersRepository.save(data);
+            const doLogin = { access_token: this.jwtService.sign({ SDT: newUser.SDT, email: newUser.email, gid: newUser }), newUser };
+            return [true, doLogin];
+        }
+    }
     async randompass(data) {
         const user = await this.findbySDT(data);
         const random = Math.random().toString(36).slice(-8);
@@ -71,28 +94,6 @@ let UsersService = class UsersService {
         this.usersRepository.create(data);
         const newUser = await this.usersRepository.save(data);
         return [true, newUser];
-    }
-    async loginsocial(data) {
-        console.log("data", data);
-        const checkgid = await this.findQuery({ gid: data.gid });
-        console.log("checkgid", checkgid);
-        if (checkgid.totalCount > 0) {
-            const doLogin = { access_token: this.jwtService.sign({ SDT: data.SDT, email: data.email }), data };
-            return [true, doLogin];
-        }
-        else {
-            const password = (0, util_1.GenId)(8, false);
-            data.SDT = data.gid;
-            data.password = await Bun.password.hash(password);
-            const validationCode = Math.floor(100000 + Math.random() * 900000);
-            data.Code = validationCode;
-            console.log(data);
-            console.log(password);
-            this.usersRepository.create(data);
-            const newUser = await this.usersRepository.save(data);
-            const doLogin = { access_token: this.jwtService.sign({ SDT: newUser.SDT, email: newUser.email }), newUser };
-            return [true, newUser];
-        }
     }
     async findAll() {
         const users = await this.usersRepository.find();

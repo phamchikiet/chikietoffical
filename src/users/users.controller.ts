@@ -14,15 +14,22 @@ export class UsersController {
   ) { }
   @Post('login')
   async login(@Body() user: any) {
-    return await this.login(user);
+    return await this.usersService.login(user);
+  }
+  @Post('loginbygoogle')
+  async loginbygoogle(@Body() user: any) {    
+    return await this.usersService.loginsocial(user);
   }
   @Post('randompass')
   async randompass(@Body() dulieu: any) {
     return await this.randompass(dulieu);
   }
   @Get('profile')
-  @UseGuards(AuthGuard('tazaskin'))
+  @UseGuards(AuthGuard('websitetoken'))
   async getProfile(@Request() req) {
+    console.log(req);
+    console.log(req.user);
+    
     const userPromise = this.usersService.findbySDT(req.user);
     const groupsPromise = this._UsergroupService.findAll();
     const [user, Groups] = await Promise.all([userPromise, groupsPromise]); 
@@ -83,7 +90,7 @@ export class UsersController {
     return user
   }
   @Get('/get/admin')
-  @UseGuards(AuthGuard('tazaskin'))
+  @UseGuards(AuthGuard('websitetoken'))
   findAdmin() {
     return this.usersService.findAdmin();
   }

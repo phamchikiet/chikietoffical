@@ -28,10 +28,10 @@ export class HoadonchitietEntity {
   tgtthue: Number;
   @Column({ type: 'bigint'})
   tgtttbso: Number;
-  @Column({ type: 'bigint'})
-  thlap: Number;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
   hdhhdvu: string;
+  @Column({ default: '' })
+  thlap: string;
   @Column({ default: '' })
   Type: string;
   @Column({ default: 0 })

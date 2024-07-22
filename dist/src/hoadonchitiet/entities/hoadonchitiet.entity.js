@@ -67,13 +67,13 @@ __decorate([
     __metadata("design:type", Number)
 ], HoadonchitietEntity.prototype, "tgtttbso", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'bigint' }),
-    __metadata("design:type", Number)
-], HoadonchitietEntity.prototype, "thlap", void 0);
-__decorate([
     (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
     __metadata("design:type", String)
 ], HoadonchitietEntity.prototype, "hdhhdvu", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: '' }),
+    __metadata("design:type", String)
+], HoadonchitietEntity.prototype, "thlap", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: '' }),
     __metadata("design:type", String)

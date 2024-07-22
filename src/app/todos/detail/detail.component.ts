@@ -4,9 +4,13 @@ import { ActivatedRoute } from '@angular/router';
 import { TodosService } from '../todos.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatBadgeModule } from '@angular/material/badge';
 import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
 import { environment } from '../../../environments/environment.development';
 import { FirebaseimageService } from '../../firebaseimage/firebaseimage.service';
+import { NotifierService } from 'angular-notifier';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-detail',
   standalone: true,
@@ -15,6 +19,9 @@ import { FirebaseimageService } from '../../firebaseimage/firebaseimage.service'
     FormsModule,
     MatInputModule,
     EditorModule,
+    MatBadgeModule,
+    MatMenuModule,
+    MatTooltipModule
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
@@ -48,17 +55,10 @@ configTiny: EditorComponent['init'] = {
   entity_encoding: 'raw',
   setup: (editor) => {
     editor.on('init', (e) => {
-      console.log(e);
-      console.log('The Editor has initialized.');
     });
     editor.on('change', function(e){
-      console.log('The Editor has initialized.');
-      console.log(e);
-      editor.targetElm.dispatchEvent(new Event('change'));
     })
     editor.on('nodechange', function(e){
-      console.log('nodechange');
-      console.log(e);
     })
   },
   images_upload_handler: (blobInfo: any) => {
@@ -68,8 +68,7 @@ configTiny: EditorComponent['init'] = {
     const promise = new Promise<string>((resolve, reject) => {
       this._FirebaseimageService.uploadImage(file,`chikietv1/${file.name}`).then((res) => {
         if (res) {
-          console.log(res);
-          resolve(res.default);
+          resolve(res.url);
         }
       });
     });
@@ -102,11 +101,12 @@ configTiny: EditorComponent['init'] = {
   _TodosService: TodosService = inject(TodosService);
   _FirebaseimageService: FirebaseimageService = inject(FirebaseimageService);
   route: ActivatedRoute = inject(ActivatedRoute);
+  notifier: NotifierService = inject(NotifierService);
   @ViewChildren('myElement') elements!: QueryList<ElementRef>;
   constructor(
     private renderer: Renderer2,
   ) {}
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(){
     this.route.paramMap.subscribe((params) => {
       this._TodosService.getTodosByid(params.get('id'))
       this._TodosService.todos$.subscribe((data)=>
@@ -165,4 +165,21 @@ configTiny: EditorComponent['init'] = {
         break;
     }
   }
+
+  async attachment(event: any) {
+    const file = event.target.files[0];
+    const path = `chikietv1/attachment/${file.name}`
+    console.log(file);
+    this._FirebaseimageService.uploadImage(file,path).then((data) => {
+      if(data)
+      {
+        this.Detail.attachments.push({name:file.name,type:file.type,url:data.url})
+        this._TodosService.UpdateTodos(this.Detail).then(() =>{
+          this.notifier.notify('success','Thêm Thành Công')
+        })
+      }
+    })
+  }
+
 }
+

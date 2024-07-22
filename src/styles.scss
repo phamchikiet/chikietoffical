@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'angular-notifier/styles.scss';
 html,
 body {
   height: 100%;
@@ -77,9 +78,9 @@ body {
 .mdc-dialog .mdc-dialog__content {
   padding: 15px;
 }
-.mdc-data-table__cell, .mdc-data-table__header-cell{
-  padding: 16px !important;
-}
+// .mdc-data-table__cell, .mdc-data-table__header-cell{
+//   padding: 4px !important;
+// }
 // .mat-mdc-form-field-bottom-align
 // {
 //   height: 0;

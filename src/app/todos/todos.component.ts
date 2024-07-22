@@ -103,7 +103,7 @@ export class TodosComponent implements OnInit {
     await this._TodosService.SearchTodos(this.SearchParams).then((data)=>
     {
       this.spinner.hide();
-      console.log("searchdata",data);
+      // console.log("searchdata",data);
     })
     this._TodosService.todoss$.subscribe((data:any)=>
     {

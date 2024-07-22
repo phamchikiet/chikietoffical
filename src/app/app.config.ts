@@ -12,11 +12,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export const appConfig: ApplicationConfig = {
   providers: [
     AngularFireAuth,
-  { provide: ErrorHandler, useClass: CatcherrorService },
+    { provide: ErrorHandler, useClass: CatcherrorService },
     provideZoneChangeDetection({ eventCoalescing: true }),
     // provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
-
     // { provide: AngularFirestore, useFactory: AngularFirestoreFactory, deps: [AngularFirestoreModule] },
     // { provide: AngularFirestore, useFactory: () => getFirestore(), deps: [FirebaseApp] },
     // { provide: AngularFirestore, useFactory: () => getFirestore(), deps: [AngularFireModule] },

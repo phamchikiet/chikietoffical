@@ -14,8 +14,13 @@ export class FirebaseimageService {
     return new Promise((resolve, reject) => {
       uploadTask.snapshotChanges().pipe(
         finalize(() => {
+          storageRef.getMetadata().subscribe((result:any) => {
+           console.log(result);
+          }, (error:any) => {
+            reject(error);
+          });
           storageRef.getDownloadURL().subscribe((downloadURL:any) => {
-            resolve({ default: downloadURL });
+            resolve({ url: downloadURL });
           }, (error:any) => {
             reject(error);
           });

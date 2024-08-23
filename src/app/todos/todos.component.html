@@ -1,6 +1,6 @@
 <div class="flex flex-row h-screen w-screen">
   <div class="{{leftsidebar?'':'hidden'}} bg-slate-50 w-14 h-screen overflow-auto p-1">
-    <img src="logo.jpg" class="hover:bg-slate-50 hover:border-blue-500 rounded-lg p-1">
+    <a href="/"><img src="logo.jpg" class="hover:bg-slate-50 hover:border-blue-500 rounded-lg p-1"></a>
   </div>
   <mat-drawer-container class="w-full h-full" autosize>
     <mat-drawer #drawer [opened]="isOpen" [mode]="drawerMode" position="start"

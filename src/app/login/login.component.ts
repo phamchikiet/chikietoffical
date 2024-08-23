@@ -7,6 +7,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import  * as Auth  from 'firebase/auth';
 import { environment } from '../../environments/environment.development';
 import { UsersService } from '../users/users.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,19 +23,23 @@ export class LoginComponent {
   token: any = localStorage.getItem('token') || null
   _UsersService:UsersService = inject(UsersService)
   constructor(private auth: AngularFireAuth) {}
+  _spinner: NgxSpinnerService = inject(NgxSpinnerService)
   ngOnInit(): void {
     this._UsersService.getProfile().then((data)=>{console.log(data);
     })
   }
   async loginWithGoogle() {
+
     const GoogleAuthProvider = new Auth.GoogleAuthProvider();
     try {
+      this._spinner.show();
      const result = await this.auth.signInWithPopup(GoogleAuthProvider);
      console.log('Logged in:', result.user);
      console.log('Logged in:', result.user?.providerData[0]);
      this._UsersService.LoginByGoogle(result.user?.providerData[0]).then((data)=>
     {
       if(data){
+        this._spinner.hide();
         window.location.reload()
       }
     })

@@ -1,7 +1,31 @@
-<ngx-spinner type="battery_charging_full" bdColor="rgba(0, 0, 0, 1)">
+<!-- <ngx-spinner type="battery_charging_full" bdColor="rgba(0, 0, 0, 1)">
   <div class="flex flex-col items-center">
     <img src='/loading1.gif' class='w-[20vw] h-[20vw]'/>
     <span class="text-white">Loading...</span>
+  </div>
+</ngx-spinner> -->
+<ngx-spinner type="battery_charging_full" bdColor="rgba(0, 0, 0, 1)">
+
+  <div class="relative w-screen h-screen overflow-hidden flex flex-col">
+    <img src="/bg-room.webp" class="lg:block hidden absolute top-0 right-0 opacity-50">
+    <img src="/bg-mobile.webp" class="lg:hidden block absolute top-0 right-0 opacity-50">
+    <div class="absolute -translate-x-1/2 -translate-y-1/2 top-2/3 left-1/2 p-4">
+      <div class="cup-wrap relative w-[300px]">
+        <div class="cup">
+          <img src="cupwhite.png" alt="cup"/>
+        </div>
+        <div class="smoke-wrap">
+          <img class="smoke" src="smoke.png" alt="cup" />
+        </div>
+        <div class="smoke-wrap">
+          <img class="smoke2" src="smoke.png" alt="cup" />
+        </div>
+        <div class="smoke-wrap">
+          <img class="smoke3" src="smoke.png" alt="cup" />
+        </div>
+      </div>
+      <div class="text-white text-center">Đợi tí nha ...</div>
+    </div>
   </div>
 </ngx-spinner>
 <app-firebaseimage></app-firebaseimage>

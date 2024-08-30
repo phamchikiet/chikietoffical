@@ -1,0 +1,45 @@
+<h2 class="text-2xl font-bold mb-6">Thông tin tài khoản</h2>
+<form class="space-y-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Họ và Tên</mat-label>
+        <input matInput id="fullName" name="fullName" [(ngModel)]="account.fullName">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Địa chỉ Email</mat-label>
+        <input matInput type="email" id="email" name="email" [(ngModel)]="account.email">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Số Điện Thoại</mat-label>
+        <input matInput type="tel" id="phoneNumber" name="phoneNumber" [(ngModel)]="account.phoneNumber">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Ngày Sinh</mat-label>
+        <input matInput [matDatepicker]="picker" id="dateOfBirth" name="dateOfBirth" [(ngModel)]="account.dateOfBirth">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Bio</mat-label>
+      <textarea matInput id="bio" name="bio" rows="3" [(ngModel)]="account.bio"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="flex justify-end">
+    <button mat-raised-button color="primary" type="submit" class="w-full sm:w-auto">Lưu Thay Đổi</button>
+  </div>
+</form>

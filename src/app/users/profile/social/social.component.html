@@ -1,0 +1,35 @@
+<h2 class="text-2xl font-bold mb-6">Kết nối mạng xã hội</h2>
+<p class="mb-4">Liên kết tài khoản mạng xã hội của bạn để chia sẻ và kết nối dễ dàng hơn.</p>
+<div class="space-y-6">
+  <div *ngFor="let socialLink of socialLinks; let i = index" class="flex items-center space-x-4">
+    <img [src]="'assets/images/' + socialLink.platform.toLowerCase() + '-logo.png'" [alt]="socialLink.platform + ' logo'" class="w-8 h-8">
+    <mat-form-field appearance="outline" class="flex-grow">
+      <mat-label>{{ socialLink.platform }}</mat-label>
+      <input matInput [(ngModel)]="socialLink.url" [placeholder]="'Nhập URL ' + socialLink.platform">
+    </mat-form-field>
+    <button mat-icon-button color="warn" (click)="removeSocialLink(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <div class="flex  items-center space-x-4">
+    <mat-form-field appearance="outline" class="flex-grow">
+      <mat-label>Thêm mạng xã hội mới</mat-label>
+      <mat-select [(ngModel)]="newSocialPlatform">
+        <mat-option *ngFor="let platform of availablePlatforms" [value]="platform">
+          <img [src]="'assets/images/' + platform.toLowerCase() + '-logo.png'" [alt]="platform + ' logo'" class="w-6 h-6 mr-2 inline-block">
+          {{ platform }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addSocialLink()">
+      Thêm
+    </button>
+  </div>
+
+  <div class="flex justify-end">
+    <button mat-raised-button color="primary" (click)="saveSocialLinks()">
+      Lưu thay đổi
+    </button>
+  </div>
+</div>

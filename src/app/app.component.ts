@@ -5,6 +5,7 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { FirebaseimageComponent } from './firebaseimage/firebaseimage.component';
 import { NotifierService } from 'angular-notifier';
 import { NotifyModule } from './notify.module';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -14,6 +15,7 @@ import { NotifyModule } from './notify.module';
     NgxSpinnerModule,
     FirebaseimageComponent,
     NotifyModule,
+    MatProgressSpinnerModule
   ],
   providers: [NotifierService],
   templateUrl: './app.component.html',
@@ -36,7 +38,7 @@ export class AppComponent {
     if(!this.isServer)
     {
    //  this.notifier.notify('success', 'You are awesome! I mean it!');
-      this.spinner.hide();
+     this.spinner.hide();
     }
    // this.notifier.notify('success', 'You are awesome! I mean it!');
   }

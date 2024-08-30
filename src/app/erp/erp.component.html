@@ -1,11 +1,7 @@
 <div class="relative w-screen h-screen overflow-hidden flex flex-col">
   <img src="/bg-room.webp" class="lg:block hidden absolute top-0 right-0 w-screen h-screen">
   <img src="/bg-mobile.webp" class="lg:hidden block absolute top-0 right-0 w-screen h-screen">
-  <div class="bg-white flex flex-col rounded-lg lg:w-1/3 w-[90%] h-[90%] overflow-auto absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-    <div class="relative col-span-2 p-4 w-full flex flex-row space-x-2 justify-center">
-      <a href="/profile" class="bg-slate-50" mat-icon-button><span class="material-symbols-outlined">account_circle</span></a>
-      <button (click)="logout()" class="bg-slate-50" mat-icon-button><span class="material-symbols-outlined">logout</span></button>
-    </div>
+  <div class="bg-white flex rounded-lg lg:w-1/3 w-[90%] h-[90%] overflow-auto absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
     <div class="relative grid lg:grid-cols-2 grid-cols-1 gap-8 p-4">
      <div class="absolute top-0 right-0 w-full h-full bg-white opacity-90 rounded-lg shadow-lg"></div>
      @for (item of items; track item.id; let idx = $index, e = $even) {
@@ -19,5 +15,4 @@
     </div>
   </div>
 </div>
-
 

@@ -1,13 +1,13 @@
 import { Component, ElementRef, EventEmitter, inject, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
-import { TodosService } from '../todos.service';
+import { QuanlyduanService } from '../quanlyduan.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
-import { environment } from '../../../environments/environment.development';
-import { FirebaseimageService } from '../../firebaseimage/firebaseimage.service';
+import { environment } from '../../../../environments/environment.development';
+import { FirebaseimageService } from '../../../firebaseimage/firebaseimage.service';
 import { NotifierService } from 'angular-notifier';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -99,7 +99,7 @@ configTiny: EditorComponent['init'] = {
     isDelete:false
   };
   Detail:any={Mota:''}
-  _TodosService: TodosService = inject(TodosService);
+  _QuanlyduansService: QuanlyduanService = inject(QuanlyduanService);
   _FirebaseimageService: FirebaseimageService = inject(FirebaseimageService);
   route: ActivatedRoute = inject(ActivatedRoute);
   notifier: NotifierService = inject(NotifierService);
@@ -112,8 +112,8 @@ configTiny: EditorComponent['init'] = {
   async ngOnInit(){
     this.spinner.show();
     this.route.paramMap.subscribe((params) => {
-      this._TodosService.getTodosByid(params.get('id'))
-      this._TodosService.todos$.subscribe((data)=>
+      this._QuanlyduansService.getQuanlyduansByid(params.get('id'))
+      this._QuanlyduansService.quanlyduans$.subscribe((data)=>
         {
           if(data){
             this.Detail = data
@@ -124,11 +124,11 @@ configTiny: EditorComponent['init'] = {
   }
   CloseDetail()
   {
-    this._TodosService.updateisHaveTodo(false)
+    this._QuanlyduansService.updateisHaveQuanlyduan(false)
   }
   UpdateDetail()
   {
-   this._TodosService.UpdateTodos(this.Detail)
+   this._QuanlyduansService.UpdateQuanlyduans(this.Detail)
   }
   PushnewContent()
   {
@@ -179,7 +179,7 @@ configTiny: EditorComponent['init'] = {
       if(data)
       {
         this.Detail.attachments.push({name:file.name,type:file.type,url:data.url})
-        this._TodosService.UpdateTodos(this.Detail).then(() =>{
+        this._QuanlyduansService.UpdateQuanlyduans(this.Detail).then(() =>{
           this.notifier.notify('success','Thêm Thành Công')
         })
       }

@@ -5,6 +5,7 @@ import { FacecomparisonComponent } from './facecomparison/facecomparison.compone
 import { AuthGuard } from './users/guards/auth.guard';
 import { GuestGuard } from './users/guards/guest.guard';
 import { HomepageComponent } from './main/homepage/homepage.component';
+import { ProfileComponent } from './users/profile/profile.component';
 
 export const routes: Routes = [
   //{ path: '', redirectTo: '/todos', pathMatch: 'full' },
@@ -21,6 +22,39 @@ export const routes: Routes = [
     path: 'login', component: LoginComponent,
     canActivate: [GuestGuard],
     canActivateChild: [GuestGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'account',
+        pathMatch: 'full'
+      },
+      {
+        path: 'account',
+        loadComponent: () => import('./users/profile/account/account.component').then(m => m.AccountComponent)
+      },
+      {
+        path: 'password',
+        loadComponent: () => import('./users/profile/password/password.component').then(m => m.PasswordComponent)
+      },
+      {
+        path: 'social',
+        loadComponent: () => import('./users/profile/social/social.component').then(m => m.SocialComponent)
+      },
+      {
+        path: 'privacy',
+        loadComponent: () => import('./users/profile/privacy/privacy.component').then(m => m.PrivacyComponent)
+      },
+      {
+        path: 'terms',
+        loadComponent: () => import('./users/profile/terms/terms.component').then(m => m.TermsComponent)
+      },
+    ]
   },
   {
     path: 'ketoan',
@@ -51,6 +85,42 @@ export const routes: Routes = [
           {
             path: 'detail/:id',
             loadComponent: () => import('./todos/detail/detail.component').then(m => m.DetailComponent)
+          }
+        ]
+      },
+    ]
+  },
+  {
+    path: 'erp',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    loadComponent: () => import('./erp/erp.component').then(m => m.ErpComponent),
+    // children: [
+    //   {
+    //     path: 'list/:slug',
+    //     loadComponent: () => import('./todos/listview/listview.component').then(m => m.ListviewComponent),
+    //     children: [
+    //       {
+    //         path: 'detail/:id',
+    //         loadComponent: () => import('./todos/detail/detail.component').then(m => m.DetailComponent)
+    //       }
+    //     ]
+    //   },
+    // ]
+  },
+  {
+    path: 'quanlyduan',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    loadComponent: () => import('./erp/quanlyduan/quanlyduan.component').then(m => m.QuanlyduanComponent),
+    children: [
+      {
+        path: 'list/:slug',
+        loadComponent: () => import('./erp/quanlyduan/listview/listview.component').then(m => m.ListviewComponent),
+        children: [
+          {
+            path: 'detail/:id',
+            loadComponent: () => import('./erp/quanlyduan/detail/detail.component').then(m => m.DetailComponent)
           }
         ]
       },

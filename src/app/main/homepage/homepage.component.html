@@ -7,17 +7,24 @@
       <button (click)="logout()" class="bg-slate-50" mat-icon-button><span class="material-symbols-outlined">logout</span></button>
     </div>
     <div class="relative grid lg:grid-cols-2 grid-cols-1 gap-8 p-4">
-     <div class="absolute top-0 right-0 w-full h-full bg-white opacity-90 rounded-lg shadow-lg"></div>
-     @for (item of items; track item.id; let idx = $index, e = $even) {
-      <a [href]="item.link" class="cursor-pointer hover:bg-white hover:shadow-lg rounded-lg relative m-auto space-y-2 text-center items-center justify-center p-3">
-        <span class="text-xl font-bold uppercase">{{item.Title}}</span>
-        <img [src]="item.src" [alt]="item.alt" class="object-contain rounded-lg">
-      </a>
-     }@empty {
-         <div>There are no items.</div>
-      }
+     <div class="absolute top-0 right-0 w-full h-full bg-white opacity-90"></div>
+     @if (isLoading) {
+       @for (item of generateSkeletonArray(); track $index) {
+         <div class="animate-pulse flex flex-col items-center space-y-2 p-3">
+           <div class="w-24 h-6 bg-gray-300 rounded"></div>
+           <div class="w-full h-32 bg-gray-300 rounded-lg"></div>
+         </div>
+       }
+     } @else {
+       @for (item of items; track item.id; let idx = $index, e = $even) {
+        <a [href]="item.link" class="cursor-pointer hover:bg-white hover:shadow-lg rounded-lg relative m-auto space-y-2 text-center items-center justify-center p-3 animate-wave">
+          <span class="text-xl font-bold uppercase">{{item.Title}}</span>
+          <img [src]="item.src" [alt]="item.alt" class="object-contain rounded-lg" loading="lazy">
+        </a>
+       }@empty {
+           <div>There are no items.</div>
+        }
+     }
     </div>
   </div>
 </div>
-
-

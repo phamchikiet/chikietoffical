@@ -25,4 +25,4 @@ jobs:
           username: tazaspac@tazagroup.vn
           password: '@Taza#Group*2020'
           local-dir: ./dist/ # <-- Specify the local "build" folder
-          server-dir: public_html/addonwebsite/chikiet/apichikiet  # Destination on server
+          server-dir: public_html/addonwebsite/chikiet/apichikiet/  # Destination on server

@@ -19,6 +19,7 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const util_1 = require("../shared/util");
 const jwt_1 = require("@nestjs/jwt");
+const bcrypt = require("bcrypt");
 let UsersService = class UsersService {
     constructor(usersRepository, jwtService) {
         this.usersRepository = usersRepository;
@@ -30,7 +31,7 @@ let UsersService = class UsersService {
             return [false, 'Số Điện Thoại Chưa Đăng Ký'];
         }
         else {
-            const compare = await Bun.password.verify(user.password, data.password);
+            const compare = await bcrypt.compare(user.password, data.password);
             if (!compare) {
                 return [false, 'Sai Mật Khẩu'];
             }
@@ -52,27 +53,27 @@ let UsersService = class UsersService {
         else {
             const password = (0, util_1.GenId)(8, false);
             data.SDT = data.gid;
-            data.password = await Bun.password.hash(password);
+            data.password = await bcrypt.hash(password, 10);
             const validationCode = Math.floor(100000 + Math.random() * 900000);
             data.Code = validationCode;
             console.log(data);
             console.log(password);
             this.usersRepository.create(data);
             const newUser = await this.usersRepository.save(data);
-            const doLogin = { access_token: this.jwtService.sign({ SDT: newUser.SDT, email: newUser.email, gid: newUser }), newUser };
+            const doLogin = { access_token: this.jwtService.sign({ SDT: newUser.SDT, email: newUser.email, gid: newUser.gid }), newUser };
             return [true, doLogin];
         }
     }
     async randompass(data) {
         const user = await this.findbySDT(data);
         const random = Math.random().toString(36).slice(-8);
-        user.password = await Bun.password.hash(random);
+        user.password = await bcrypt.hash(random, 10);
         const result = await this.update(user.id, user);
         return [true, random];
     }
     async validateUser(user) {
         const data = await this.findbySDT(user);
-        const compare = await Bun.password.verify(user.password, data.password);
+        const compare = await bcrypt.compare(user.password, data.password);
         if (data && compare) {
             console.log(data);
         }
@@ -88,7 +89,7 @@ let UsersService = class UsersService {
         if (checkEmail) {
             return [false, 'Email Đã Tồn Tại'];
         }
-        data.password = await Bun.password.hash(data.password);
+        data.password = await bcrypt.hash(data.password, 10);
         const validationCode = Math.floor(100000 + Math.random() * 900000);
         data.Code = validationCode;
         this.usersRepository.create(data);
@@ -162,11 +163,11 @@ let UsersService = class UsersService {
         if (!user) {
             throw new common_1.ConflictException('Tài Khoản Không Đúng');
         }
-        const checkPass = await Bun.password.verify(data.oldpass, user.password);
+        const checkPass = await bcrypt.compare(data.oldpass, user.password);
         if (!checkPass) {
             throw new common_1.ConflictException('Mật Khẩu Không Trùng Khớp');
         }
-        user.password = await Bun.password.hash(data.newpass);
+        user.password = await bcrypt.hash(data.newpass, 10);
         await this.usersRepository.update(user.id, user);
         return await this.usersRepository.save(user);
     }

@@ -5,6 +5,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersEntity } from './entities/user.entity';
 import { GenId } from 'src/shared/util';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -12,70 +14,61 @@ export class UsersService {
     private usersRepository: Repository<UsersEntity>,
     private jwtService: JwtService
   ) { }
-  async login(user:any): Promise<any> {
+
+  async login(user: any): Promise<any> {
     const data = await this.findbySDT(user); 
     if(!data) {
-      return [false,'Số Điện Thoại Chưa Đăng Ký']
+      return [false, 'Số Điện Thoại Chưa Đăng Ký']
     }
-    else
-    {
-      const compare = await Bun.password.verify(user.password, data.password);
+    else {
+      const compare = await bcrypt.compare(user.password, data.password);
       if (!compare) {
-        return [false,'Sai Mật Khẩu']
+        return [false, 'Sai Mật Khẩu']
       }
-      else
-      {
-      const doLogin = {access_token: this.jwtService.sign({SDT: data.SDT,email: data.email}),data}
-      return [true,doLogin]
+      else {
+        const doLogin = {access_token: this.jwtService.sign({SDT: data.SDT, email: data.email}), data}
+        return [true, doLogin]
       }
     }
-    // else if(data.Status==0)
-    // {
-    //   return [false,'Tài Khoản Đã Bị Khóa']
-    // }
   }  
+
   async loginsocial(data: any) {
-    console.log("data",data);
+    console.log("data", data);
     
-    const checkgid = await this.findQuery({gid:data.uid});
-    console.log("checkgid",checkgid);
-    if(checkgid.totalCount>0)
-      {
-        const User = checkgid.items[0]
-        const doLogin = {access_token: this.jwtService.sign({SDT: User.SDT,email: User.email,gid: User.gid}),User}
-        return [true,doLogin]
-     }
-      else
-      {
-        const password = GenId(8,false)
-        data.SDT = data.gid
-        data.password = await Bun.password.hash(password);
-        const validationCode = Math.floor(100000 + Math.random() * 900000);
-        data.Code = validationCode;
-        console.log(data);
-        console.log(password);
-        this.usersRepository.create(data);
-        const newUser = await this.usersRepository.save(data);
-        const doLogin = {access_token: this.jwtService.sign({SDT: newUser.SDT,email: newUser.email,gid:newUser}),newUser}
-        return [true, doLogin];
-      }
+    const checkgid = await this.findQuery({gid: data.uid});
+    console.log("checkgid", checkgid);
+    if(checkgid.totalCount > 0) {
+      const User = checkgid.items[0]
+      const doLogin = {access_token: this.jwtService.sign({SDT: User.SDT, email: User.email, gid: User.gid}), User}
+      return [true, doLogin]
+    } else {
+      const password = GenId(8, false)
+      data.SDT = data.gid
+      data.password = await bcrypt.hash(password, 10);
+      const validationCode = Math.floor(100000 + Math.random() * 900000);
+      data.Code = validationCode;
+      console.log(data);
+      console.log(password);
+      this.usersRepository.create(data);
+      const newUser = await this.usersRepository.save(data);
+      const doLogin = {access_token: this.jwtService.sign({SDT: newUser.SDT, email: newUser.email, gid: newUser.gid}), newUser}
+      return [true, doLogin];
+    }
   }
 
-  async randompass(data): Promise<any>{
+  async randompass(data): Promise<any> {
     const user = await this.findbySDT(data);
-      const random = Math.random().toString(36).slice(-8);
-      user.password = await Bun.password.hash(random);
-      const result = await this.update(user.id,user)
-      return [true,random]
+    const random = Math.random().toString(36).slice(-8);
+    user.password = await bcrypt.hash(random, 10);
+    const result = await this.update(user.id, user)
+    return [true, random]
   }
-  async validateUser(user:any): Promise<any> {
-    const data = await this.findbySDT(user);
-    const compare = await Bun.password.verify(user.password, data.password);
-    if (data && compare) {
-     // const { password, ...result } = user;
-     console.log(data);
 
-     // return data;
+  async validateUser(user: any): Promise<any> {
+    const data = await this.findbySDT(user);
+    const compare = await bcrypt.compare(user.password, data.password);
+    if (data && compare) {
+      console.log(data);
     }
     return null;
   }
@@ -92,61 +85,51 @@ export class UsersService {
       return [false, 'Email Đã Tồn Tại'];
     }
     
-    data.password = await Bun.password.hash(data.password);
+    data.password = await bcrypt.hash(data.password, 10);
     const validationCode = Math.floor(100000 + Math.random() * 900000);
     data.Code = validationCode;
     this.usersRepository.create(data);
     const newUser = await this.usersRepository.save(data);
     return [true, newUser];
   }
-  // async createSocial(data: any) {
-  //   const checkSDT = await this.findbySDT(data);
-  //   const checkEmail = await this.findbyEmail(data);
-  //   if (checkSDT) {
-  //     return [false, 'Số Điện Thoại Đã Tồn Tại'];
-  //   }
-  //   if (checkEmail) {
-  //     return [false, 'Email Đã Tồn Tại'];
-  //   }
-  //   const salt = await bcrypt.genSalt();
-  //   data.password = await bcrypt.hash(data.password, salt);
-  //   const validationCode = Math.floor(100000 + Math.random() * 900000);
-  //   data.Code = validationCode;
-  //   this.usersRepository.create(data);
-  //   const newUser = await this.usersRepository.save(data);
-  //   return [true, newUser]; 
-  // }
+
   async findAll() {
     const users = await this.usersRepository.find();
     return users;
   }
+
   async read(id: string) {
     return await this.usersRepository.findOne({ where: { id: id } });
   }
+
   async findid(id: string) {
     return await this.usersRepository.findOne({ where: { id: id } });
   }
+
   async findbyEmail(user: any) {
     return await this.usersRepository.findOne({ where: { email: user.email } });
   }
+
   async findSDT(sdt: any) {
     return await this.usersRepository.findOne({
       where: { SDT: sdt },
     });
   }
+
   async findbySDT(data: any) {
     if (data.SDT) {
       return await this.usersRepository.findOne({ where: { SDT: data.SDT } });
     }
     else return null
-
   }
+
   async findAdmin() {
     const admin = await this.usersRepository.find(
       { where: { Role: 'admin' } }
     );
     return admin
   }
+
   async findQuery(params: any) {
     console.error(params);
     const queryBuilder = this.usersRepository.createQueryBuilder('users');
@@ -166,17 +149,19 @@ export class UsersService {
       queryBuilder.andWhere('users.fid LIKE :fid', { fid: `${params.fid}` });
     }
     const [items, totalCount] = await queryBuilder
-      .limit(params.pageSize || 10) // Set a default page size if not provided
+      .limit(params.pageSize || 10)
       .offset(params.pageNumber * params.pageSize || 0)
       .getManyAndCount();
     console.log(items, totalCount);
 
     return { items, totalCount };
   }
+
   async update(id: string, data: Partial<UpdateUserDto>) {
     await this.usersRepository.save(data);
     return await this.read(id);
   }
+
   async remove(id: string) {
     await this.usersRepository.delete({ id });
     return { deleted: true };
@@ -187,11 +172,11 @@ export class UsersService {
     if (!user) {
       throw new ConflictException('Tài Khoản Không Đúng');
     }
-    const checkPass = await Bun.password.verify(data.oldpass, user.password);
+    const checkPass = await bcrypt.compare(data.oldpass, user.password);
     if (!checkPass) {
       throw new ConflictException('Mật Khẩu Không Trùng Khớp');
     }
-    user.password = await Bun.password.hash(data.newpass);
+    user.password = await bcrypt.hash(data.newpass, 10);
     await this.usersRepository.update(user.id, user);
     return await this.usersRepository.save(user);
   }

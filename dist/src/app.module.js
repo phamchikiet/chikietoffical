@@ -15,6 +15,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const hoadonchitiet_module_1 = require("./hoadonchitiet/hoadonchitiet.module");
 const todo_module_1 = require("./todo/todo.module");
 const todocategory_module_1 = require("./todocategory/todocategory.module");
+const category_module_1 = require("./category/category.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,7 +36,8 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             hoadonchitiet_module_1.HoadonchitietModule,
             todo_module_1.TodoModule,
-            todocategory_module_1.TodocategoryModule
+            todocategory_module_1.TodocategoryModule,
+            category_module_1.CategoryModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

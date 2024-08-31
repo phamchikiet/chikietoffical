@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HoadonchitietModule } from './hoadonchitiet/hoadonchitiet.module';
 import { TodoModule } from './todo/todo.module';
 import { TodocategoryModule } from './todocategory/todocategory.module';
+import { CategoryModule } from './category/category.module';
 @Module({
   imports: [
     // TypeOrmModule.forRoot({
@@ -30,7 +31,8 @@ import { TodocategoryModule } from './todocategory/todocategory.module';
     UsersModule,
     HoadonchitietModule,
     TodoModule,
-    TodocategoryModule
+    TodocategoryModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],

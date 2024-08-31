@@ -40,6 +40,7 @@ let UsersController = class UsersController {
         const userPromise = this.usersService.findbySDT(req.user);
         const groupsPromise = this._UsergroupService.findAll();
         const [user, Groups] = await Promise.all([userPromise, groupsPromise]);
+        console.log(user, Groups);
         if (user) {
             delete user.password;
             user['Groups'] = Groups.find((v) => v.id == user.idGroup)?.ListMenu;

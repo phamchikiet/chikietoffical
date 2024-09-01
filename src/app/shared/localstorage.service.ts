@@ -1,49 +1,37 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: object
-  ){}
+  private storage: Storage | null = null;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.storage = window.localStorage;
+    }
+  }
 
   getItem(key: string): any {
-    if (isPlatformBrowser(this.platformId)) {
-      const item = localStorage.getItem(key);
+    if (this.storage) {
+      const item = this.storage.getItem(key);
       if (item) {
         return JSON.parse(item);
       }
-      return null;
-      }
-      else
-      {
-        const item = localStorage.getItem(key);
-        if (item) {
-          return JSON.parse(item);
-        }
-        return null;
-      }
-
+    }
+    return null;
   }
+
   setItem(key: string, value: any): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(key, JSON.stringify(value));
-      }
-      else
-      {
-      localStorage.setItem(key, JSON.stringify(value));
-      }
-
+    if (this.storage) {
+      this.storage.setItem(key, JSON.stringify(value));
+    }
   }
+
   removeItem(key: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(key);
-      }
-      else
-      {
-       localStorage.removeItem(key);
-      }
+    if (this.storage) {
+      this.storage.removeItem(key);
+    }
   }
 }
-

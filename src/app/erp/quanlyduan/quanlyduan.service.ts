@@ -77,6 +77,8 @@ export class QuanlyduanService {
       }
   }
   async getQuanlyduansByid(id:any) {
+    console.log(id);
+
     try {
       const options = {
         method:'GET',
@@ -89,6 +91,8 @@ export class QuanlyduanService {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
+          console.log(data);
+
           this._quanlyduan.next(data)
           this._isHaveQuanlyduan.next(true)
           return data;

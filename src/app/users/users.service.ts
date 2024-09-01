@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, tap, take, switchMap, map, of } from 'rxjs
 import { environment } from '../../environments/environment.development';
 import { LocalStorageService } from '../shared/localstorage.service';
 import { AuthUtils } from '../shared/auth.utils';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,15 @@ export class UsersService {
   private readonly _secret: any;
   private _authenticated: boolean = false;
   private APIURL: string = environment.APIURL;
+  private isBrowser: boolean;
+
   constructor(
     private _LocalStorageService: LocalStorageService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
+
   get users$(): Observable<any[]> {
     return this._users.asObservable();
   }
@@ -208,10 +212,12 @@ export class UsersService {
   }
 
   set accessToken(token: string) {
-    this._LocalStorageService.setItem('token', token);
+    if (this.isBrowser) {
+      this._LocalStorageService.setItem('token', token);
+    }
   }
   get accessToken(): string {
-    return this._LocalStorageService.getItem('token') ?? '';
+    return this.isBrowser ? (this._LocalStorageService.getItem('token') ?? '') : '';
   }
   async Dangnhap(user: any) {
     if (this._authenticated) {
@@ -271,7 +277,9 @@ export class UsersService {
       return of(true);
     }
     if (!this.accessToken || this.accessToken === 'undefined') {
-      this._LocalStorageService.removeItem('token')
+      if (this.isBrowser) {
+        this._LocalStorageService.removeItem('token');
+      }
       return of(false);
     }
     if (AuthUtils.isTokenExpired(this.accessToken)) {
@@ -281,7 +289,9 @@ export class UsersService {
     // return this.signInUsingToken();
   }
   Dangxuat(): Observable<any> {
-    this._LocalStorageService.removeItem('token')
+    if (this.isBrowser) {
+      this._LocalStorageService.removeItem('token');
+    }
     this._authenticated = false;
     return of(true);
   }

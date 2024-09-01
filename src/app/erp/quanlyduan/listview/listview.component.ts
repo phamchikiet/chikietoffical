@@ -12,6 +12,7 @@
   import { MatSort, MatSortModule } from '@angular/material/sort';
   import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { QuanlyduanService } from '../quanlyduan.service';
+import { NgxSpinnerService } from 'ngx-spinner';
   @Component({
   selector: 'app-listview',
   standalone:true,
@@ -57,10 +58,14 @@ export class ListviewComponent implements OnInit {
     constructor(
       private dialog: MatDialog,
       private _snackBar: MatSnackBar,
+      private spinner: NgxSpinnerService
     ) { }
     route: ActivatedRoute = inject(ActivatedRoute);
     _QuanlyduansService: QuanlyduanService = inject(QuanlyduanService);
-    async ngOnInit(): Promise<void> {
+    async ngOnInit() {
+      this.route.paramMap.subscribe((params) => {
+        console.log(params);
+      });
       this.Lists = await this._QuanlyduansService.SearchQuanlyduans(this.SearchParams)
       this.FilterLists = this.Lists.items
       // this.FilterLists.forEach((v)=>{
@@ -92,7 +97,7 @@ export class ListviewComponent implements OnInit {
     async OpenDetail(item:any)
     {
       this.isSelect=item.id
-      const Quanlyduan = await this._QuanlyduansService.getQuanlyduansByid(item.id)
+      await this._QuanlyduansService.getQuanlyduansByid(item.id)
     }
     applyFilter(event: Event) {
       const value = (event.target as HTMLInputElement).value;

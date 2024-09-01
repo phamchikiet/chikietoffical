@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { QuanlyduanService } from '../quanlyduan.service';
@@ -12,6 +12,7 @@ import { NotifierService } from 'angular-notifier';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { UsersService } from '../../../users/users.service';
 @Component({
   selector: 'app-detail',
   standalone: true,
@@ -28,14 +29,15 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrl: './detail.component.scss'
 })
 
-export class DetailComponent {
+export class DetailComponent implements OnInit {
 
 APITINYMCE= environment.APITINYMCE;
 configTiny: EditorComponent['init'] = {
   // selector: '.dfree-header',
-  content_style: '.mce-content-body { border: 1px dashed blue; padding: 10px;  } '+'.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
+  // content_style: '.mce-content-body { border: 1px dashed blue; padding: 10px;  } '+'.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
+  content_style: '.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
   menubar: false,
-  inline: true,
+  // inline: true,
   toolbar: 'image link bold italic underline alignleft aligncenter alignright alignjustify',
   plugins: [
      'autoresize','quickbars','advlist','autolink','lists','link','image','charmap','preview','anchor',
@@ -99,11 +101,12 @@ configTiny: EditorComponent['init'] = {
     isDelete:false
   };
   Detail:any={Mota:''}
+  profile:any;
   _QuanlyduansService: QuanlyduanService = inject(QuanlyduanService);
   _FirebaseimageService: FirebaseimageService = inject(FirebaseimageService);
   route: ActivatedRoute = inject(ActivatedRoute);
   notifier: NotifierService = inject(NotifierService);
-
+  usersService: UsersService = inject(UsersService);
   @ViewChildren('myElement') elements!: QueryList<ElementRef>;
   constructor(
     private renderer: Renderer2,
@@ -111,16 +114,19 @@ configTiny: EditorComponent['init'] = {
   ) { }
   async ngOnInit(){
     this.spinner.show();
-    this.route.paramMap.subscribe((params) => {
-      this._QuanlyduansService.getQuanlyduansByid(params.get('id'))
-      this._QuanlyduansService.quanlyduans$.subscribe((data)=>
-        {
-          if(data){
-            this.Detail = data
-            this.spinner.hide();
-          }
-        })
-    });
+    // this.route.paramMap.subscribe((params) => {
+    //   console.log(params);
+    //   //this._QuanlyduansService.getQuanlyduansByid(params.get('id'))
+    // });
+    this.profile = await this.usersService.getProfile();
+    console.log(this.profile);
+    this._QuanlyduansService.quanlyduan$.subscribe((data)=>
+      {
+        if(data){
+          this.Detail = data
+          this.spinner.hide();
+        }
+      })
   }
   CloseDetail()
   {

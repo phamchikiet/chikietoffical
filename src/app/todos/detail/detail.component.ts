@@ -112,6 +112,8 @@ configTiny: EditorComponent['init'] = {
   async ngOnInit(){
     this.spinner.show();
     this.route.paramMap.subscribe((params) => {
+      console.log(params.get('id'));
+
       this._TodosService.getTodosByid(params.get('id'))
       this._TodosService.todos$.subscribe((data)=>
         {

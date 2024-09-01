@@ -20,7 +20,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { convertToSlug } from '../../shared/shared.utils';
 import { UsersService } from '../../users/users.service';
 import { QuanlyduanService } from '../quanlyduan/quanlyduan.service';
-import { QuanlyduancategoryService } from './quanlyduancategory.service';
+import { CategoryService } from '../../category/category.service';
 @Component({
   selector: 'app-quanlyduan',
   standalone: true,
@@ -68,7 +68,7 @@ export class QuanlyduanComponent implements OnInit {
   ListTrangThaiQuanlyduans: any = []
   _QuanlyduansService: QuanlyduanService = inject(QuanlyduanService)
   _UsersService: UsersService = inject(UsersService)
-  _QuanlyduancategoryService: QuanlyduancategoryService = inject(QuanlyduancategoryService)
+  _CategoryService: CategoryService = inject(CategoryService)
   Profile: any = {}
   SelectItem: any = {}
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
@@ -99,7 +99,7 @@ export class QuanlyduanComponent implements OnInit {
     this._QuanlyduansService.isHaveQuanlyduan$.subscribe((data:any)=>{
       this.isHaveQuanlyduan = data
     })
-    this.Categories = this.FilterCategories = await this._QuanlyduancategoryService.getAllQuanlyduancategory()
+    this.Categories = this.FilterCategories = await this._CategoryService.getAllCategory()
     await this._QuanlyduansService.SearchQuanlyduans(this.SearchParams).then((data)=>
     {
       this.spinner.hide();
@@ -139,6 +139,7 @@ export class QuanlyduanComponent implements OnInit {
     }
     else { this.FilterLists = this.Lists.items }
   }
+
   async onPageChange(event: any) {
    // console.log(event);
     this.SearchParams.pageSize = event.pageSize
@@ -152,7 +153,7 @@ export class QuanlyduanComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result=="true") {
-        this._QuanlyduancategoryService.CreateQuanlyduancategory(this.Category)
+          this._CategoryService.CreateCategory(this.Category)
       }
     });
   }

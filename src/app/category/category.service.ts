@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, of, switchMap, take } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class QuanlyduancategoryService {
-  private _quanlyduancategorys: BehaviorSubject<any[] | null> = new BehaviorSubject<any[] | null>(null);
-  private _quanlyduancategory: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
+export class CategoryService {
+  private _categorys: BehaviorSubject<any[] | null> = new BehaviorSubject<any[] | null>(null);
+  private _category: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
   private _totalCount: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
-  get quanlyduancategorys$(): Observable<any[] | null> {
-    return this._quanlyduancategorys.asObservable();
+  get categorys$(): Observable<any[] | null> {
+    return this._categorys.asObservable();
   }
-  get quanlyduancategory$(): Observable<any | null> {
-    return this._quanlyduancategory.asObservable();
+  get category$(): Observable<any | null> {
+    return this._category.asObservable();
   }
   get totalCount$(): Observable<any | null> {
     return this._totalCount.asObservable();
@@ -37,7 +37,7 @@ export class QuanlyduancategoryService {
           return console.error(error);
       }
   }
-  async getAllQuanlyduancategory() {
+  async getAllCategory() {
     try {
       const options = {
         method:'GET',
@@ -45,15 +45,15 @@ export class QuanlyduancategoryService {
           'Content-Type': 'application/json',
         },
       };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory`,options);
+          const response = await fetch(`${environment.APIURL}/category`,options);
           const data = await response.json();
-          this._quanlyduancategorys.next(data)
+          this._categorys.next(data)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async getQuanlyduancategoryBySlug(Slug:any) {
+  async getCategoryBySlug(Slug:any) {
     try {
       const options = {
         method:'GET',
@@ -61,15 +61,15 @@ export class QuanlyduancategoryService {
           'Content-Type': 'application/json',
         },
       };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory/findslug/${Slug}`,options);
+          const response = await fetch(`${environment.APIURL}/category/findslug/${Slug}`,options);
           const data = await response.json();
-          this._quanlyduancategory.next(data)
+          this._category.next(data)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async getQuanlyduancategoryByid(id:any) {
+  async getCategoryByid(id:any) {
     try {
       const options = {
         method:'GET',
@@ -77,18 +77,18 @@ export class QuanlyduancategoryService {
           'Content-Type': 'application/json',
         },
       };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory/findid/${id}`,options);
+          const response = await fetch(`${environment.APIURL}/category/findid/${id}`,options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._quanlyduancategory.next(data)
+          this._category.next(data)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async SearchQuanlyduancategory(SearchParams:any) {
+  async SearchCategory(SearchParams:any) {
     try {
       const options = {
         method:'POST',
@@ -97,19 +97,19 @@ export class QuanlyduancategoryService {
         },
         body: JSON.stringify(SearchParams),
       };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory/search`,options);
+          const response = await fetch(`${environment.APIURL}/category/search`,options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._quanlyduancategorys.next(data.items)
+          this._categorys.next(data.items)
           this._totalCount.next(data.totalCount)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async CreateQuanlyduancategory(item:any) {
+  async CreateCategory(item:any) {
     try {
         const options = {
             method:'POST',
@@ -118,7 +118,7 @@ export class QuanlyduancategoryService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory`, options);
+          const response = await fetch(`${environment.APIURL}/category`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -130,7 +130,7 @@ export class QuanlyduancategoryService {
           return console.error(error);
       }
   }
-  async SyncQuanlyduancategory(item:any) {
+  async SyncCategory(item:any) {
     try {
         const options = {
             method:'POST',
@@ -139,7 +139,7 @@ export class QuanlyduancategoryService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory/sync`, options);
+          const response = await fetch(`${environment.APIURL}/category/sync`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -151,8 +151,8 @@ export class QuanlyduancategoryService {
           return console.error(error);
       }
   }
-  async UpdateQuanlyduancategory(item:any) {
-    const quanlyduancategorys:any = await this.quanlyduancategorys$.pipe(take(1)).toPromise();
+  async UpdateCategory(item:any) {
+    const categorys:any = await this.categorys$.pipe(take(1)).toPromise();
     try {
         const options = {
             method:'PATCH',
@@ -161,23 +161,23 @@ export class QuanlyduancategoryService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory/${item.id}`, options);
+          const response = await fetch(`${environment.APIURL}/category/${item.id}`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._quanlyduancategory.next(data)
-          const updateQuanlyduancategorys = quanlyduancategorys.map((v:any) =>
+          this._category.next(data)
+          const updateCategorys = categorys.map((v:any) =>
             v.id === data.id ? data : v
           );
-          this._quanlyduancategorys.next(updateQuanlyduancategorys);
+          this._categorys.next(updateCategorys);
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
 
-  async DeleteQuanlyduancategory(item:any) {
+  async DeleteCategory(item:any) {
     try {
         const options = {
             method:'DELETE',
@@ -185,7 +185,7 @@ export class QuanlyduancategoryService {
               'Content-Type': 'application/json',
             },
           };
-          const response = await fetch(`${environment.APIURL}/quanlyduancategory/${item.id}`, options);
+          const response = await fetch(`${environment.APIURL}/category/${item.id}`, options);
           return await response.json();
       } catch (error) {
           return console.error(error);

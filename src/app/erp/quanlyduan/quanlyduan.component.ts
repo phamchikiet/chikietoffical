@@ -103,7 +103,7 @@ export class QuanlyduanComponent implements OnInit {
     await this._QuanlyduansService.SearchQuanlyduans(this.SearchParams).then((data)=>
     {
       this.spinner.hide();
-      // console.log("searchdata",data);
+      console.log("searchdata",data);
     })
     this._QuanlyduansService.quanlyduans$.subscribe((data:any)=>
     {

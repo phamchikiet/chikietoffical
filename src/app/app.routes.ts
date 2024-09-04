@@ -124,6 +124,10 @@ export const routes: Routes = [
           }
         ]
       },
+      // {
+      //   path: 'list/:slug/detail/:id',
+      //   loadComponent: () => import('./erp/quanlyduan/detail/detail.component').then(m => m.DetailComponent),
+      // }
     ]
   },
 ];

@@ -16,7 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   @Component({
   selector: 'app-listview',
   standalone:true,
-    imports:[
+  imports:[
       MatSidenavModule,
       MatInputModule,
       RouterOutlet,

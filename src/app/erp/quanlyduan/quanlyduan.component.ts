@@ -21,6 +21,7 @@ import { convertToSlug } from '../../shared/shared.utils';
 import { UsersService } from '../../users/users.service';
 import { QuanlyduanService } from '../quanlyduan/quanlyduan.service';
 import { CategoryService } from '../../category/category.service';
+import { ListviewComponent } from './listview/listview.component';
 @Component({
   selector: 'app-quanlyduan',
   standalone: true,
@@ -40,7 +41,8 @@ import { CategoryService } from '../../category/category.service';
     MatPaginatorModule,
     MatSelectModule,
     RouterLinkActive,
-    DetailComponent
+    DetailComponent,
+    ListviewComponent
   ],
   templateUrl: './quanlyduan.component.html',
   styleUrls: ['./quanlyduan.component.scss']
@@ -69,6 +71,7 @@ export class QuanlyduanComponent implements OnInit {
   _QuanlyduansService: QuanlyduanService = inject(QuanlyduanService)
   _UsersService: UsersService = inject(UsersService)
   _CategoryService: CategoryService = inject(CategoryService)
+  // _ListviewComponent: ListviewComponent = inject(ListviewComponent)
   Profile: any = {}
   SelectItem: any = {}
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;

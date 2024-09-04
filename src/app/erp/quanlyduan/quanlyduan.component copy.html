@@ -2,67 +2,7 @@
   <div class="{{leftsidebar?'':'hidden'}} bg-slate-50 w-14 h-screen overflow-auto p-1">
     <a href="/"><img src="logo.jpg" class="hover:bg-slate-50 hover:border-blue-500 rounded-lg p-1"></a>
   </div>
-  <mat-drawer-container class="lg:w-1/3 w-full h-full border" autosize>
-    <mat-drawer #drawer [opened]="isOpen" [mode]="'over'" position="start"
-      class="bg-white !flex flex-col !w-full flex-auto min-w-0 relative h-screen">
-      <div class="relative flex flex-col h-full overflow-auto">
-        <div class="!flex flex-col flex-auto min-w-0 relative">
-          <div class="p-4 relative flex flex-col space-y-3">
-            @for (item of filteredCategories("top"); track item.id) {
-            <a (click)="drawer.toggle()" class="p-3 hover:bg-blue-100 lg:rounded-lg">{{item.Title}}</a>
-            <!-- <a (click)="drawer.toggle()" routerLinkActive="bg-blue-100 rounded-lg" [routerLink]="'list/'+item.Slug"
-              class="p-3 hover:bg-blue-100 lg:rounded-lg">{{item.Title}}</a> -->
-            }
-            @empty {
-            <div>Chư có Dữ Liệu</div>
-            }
-          </div>
-          <div class="p-4 border-y relative flex flex-col space-y-3 h-full w-full overflow-auto">
-            <div class="flex flex-row justify-between space-x-2 p-3 hover:bg-blue-100 lg:rounded-lg">
-              <div>Danh Sách</div>
-              <span class="material-symbols-outlined cursor-pointer"
-                (click)="openDialog(dialogTemplate)">add_circle</span>
-            </div>
-            @for (item of filteredCategories("main"); track item.id) {
-            <a (click)="drawer.toggle()"  routerLinkActive="bg-blue-100 rounded-lg" [routerLink]="'list/'+item.Slug"
-              class="p-3 hover:bg-blue-100 lg:rounded-lg">{{item.Title}}</a>
-            }
-            @empty {
-            <div>Chư có Dữ Liệu</div>
-            }
-          </div>
-          <div class="p-4 w-full relative flex flex-0 space-y-3">
-            @for (item of filteredCategories("bottom"); track item.id) {
-            <a routerLinkActive="w-full bg-blue-100 rounded-lg" [routerLink]="'list/'+item.Slug"
-              class="w-full p-3 hover:bg-blue-100 lg:rounded-lg">{{item.Title}}</a>
-            }
-            @empty {
-            <div>Chư có Dữ Liệu</div>
-            }
-          </div>
-        </div>
-      </div>
-    </mat-drawer>
-
-    <mat-drawer-content class="!flex flex-col flex-auto min-w-0 relative !h-screen bg-white">
-      <div class="relative flex flex-col h-full overflow-auto">
-        <div class="w-full flex flex-row justify-between p-4">
-          <button mat-icon-button (click)="drawer.toggle()">
-            <span class="material-symbols-outlined">arrow_back</span>
-          </button> <span class="text-2xl">{{Category.Title}}</span>
-          <span (click)="isOpen1=!isOpen1">Menu</span>
-        </div>
-       <app-listview></app-listview>
-      </div>
-    </mat-drawer-content>
-  </mat-drawer-container>
-
-
-  <div class="w-full h-full">
-    <router-outlet></router-outlet>
-  </div>
-
-  <!-- <mat-drawer-container class="w-full h-full" autosize>
+  <mat-drawer-container class="w-full h-full" autosize>
     <mat-drawer #drawer [opened]="isOpen" [mode]="drawerMode" position="start"
       class="bg-white !flex flex-col !w-[300px] flex-auto min-w-0 relative h-screen">
       <div class="relative flex flex-col h-full overflow-auto">
@@ -105,10 +45,10 @@
       </div>
     </mat-drawer>
 
-    <mat-drawer #drawer1 [opened]="isHaveQuanlyduan" [mode]="'side'" position="end"
+    <!-- <mat-drawer #drawer1 [opened]="isHaveQuanlyduan" [mode]="'side'" position="end"
       class="bg-white !flex flex-col lg:!w-1/3 !w-full flex-auto min-w-0 relative h-screen">
       <app-detail></app-detail>
-    </mat-drawer>
+    </mat-drawer> -->
 
     <mat-drawer-content class="!flex flex-col flex-auto min-w-0 relative !h-screen bg-white">
       <div class="w-full flex flex-row justify-between p-4">
@@ -119,7 +59,8 @@
       </div>
       <router-outlet></router-outlet>
     </mat-drawer-content>
-  </mat-drawer-container> -->
+  </mat-drawer-container>
+
 </div>
 
 

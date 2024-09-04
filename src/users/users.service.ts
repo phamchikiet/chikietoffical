@@ -33,22 +33,19 @@ export class UsersService {
   }  
 
   async loginsocial(data: any) {
-    console.log("data", data);
-    
-    const checkgid = await this.findQuery({gid: data.uid});
-    console.log("checkgid", checkgid);
-    if(checkgid.totalCount > 0) {
-      const User = checkgid.items[0]
+    const checkgid = await this.usersRepository.findOne({ where: { gid: data.uid } });
+    if(checkgid) {
+      const User = checkgid
       const doLogin = {access_token: this.jwtService.sign({SDT: User.SDT, email: User.email, gid: User.gid}), User}
       return [true, doLogin]
-    } else {
+    } 
+    else {
       const password = GenId(8, false)
-      data.SDT = data.gid
+      data.SDT = data.uid
+      data.gid = data.uid
       data.password = await bcrypt.hash(password, 10);
       const validationCode = Math.floor(100000 + Math.random() * 900000);
       data.Code = validationCode;
-      console.log(data);
-      console.log(password);
       this.usersRepository.create(data);
       const newUser = await this.usersRepository.save(data);
       const doLogin = {access_token: this.jwtService.sign({SDT: newUser.SDT, email: newUser.email, gid: newUser.gid}), newUser}
@@ -130,8 +127,7 @@ export class UsersService {
     return admin
   }
 
-  async findQuery(params: any) {
-    console.error(params);
+  async findQuery(params: any) {    
     const queryBuilder = this.usersRepository.createQueryBuilder('users');
     if (params.hasOwnProperty('Batdau') && params.hasOwnProperty('Ketthuc')) {
       queryBuilder.andWhere('users.CreateAt BETWEEN :startDate AND :endDate', {
@@ -143,6 +139,8 @@ export class UsersService {
       queryBuilder.andWhere('users.Title LIKE :Title', { SDT: `%${params.Title}%` });
     }
     if (params.hasOwnProperty('gid')) {
+      console.log(params.gid);
+      
       queryBuilder.andWhere('users.gid LIKE :gid', { gid: `${params.gid}` });
     }
     if (params.hasOwnProperty('fid')) {

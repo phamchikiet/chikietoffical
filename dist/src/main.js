@@ -5,7 +5,11 @@ const app_module_1 = require("./app.module");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
-    await app.listen(3000);
+    await app.listen(3334);
+    if (module.hot) {
+        module.hot.accept();
+        module.hot.dispose(() => app.close());
+    }
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

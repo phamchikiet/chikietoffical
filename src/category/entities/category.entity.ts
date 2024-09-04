@@ -12,6 +12,8 @@ export class CategoryEntity {
   id: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   idDM: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  idTodo: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Title: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })

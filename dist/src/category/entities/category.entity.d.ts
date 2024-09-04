@@ -1,6 +1,7 @@
 export declare class CategoryEntity {
     id: string;
     idDM: string;
+    idTodo: string;
     Title: string;
     Mota: string;
     Slug: string;

@@ -12,6 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodoEntity = void 0;
 const typeorm_1 = require("typeorm");
 let TodoEntity = class TodoEntity {
+    checkTitle() {
+        if (!this.Title || this.Title.trim() === '') {
+            this.Title = 'Noname';
+        }
+    }
 };
 exports.TodoEntity = TodoEntity;
 __decorate([
@@ -22,6 +27,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
     __metadata("design:type", String)
 ], TodoEntity.prototype, "idDM", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], TodoEntity.prototype, "idUser", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
     __metadata("design:type", String)
@@ -74,6 +83,13 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], TodoEntity.prototype, "idCreate", void 0);
+__decorate([
+    (0, typeorm_1.BeforeInsert)(),
+    (0, typeorm_1.BeforeUpdate)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], TodoEntity.prototype, "checkTitle", null);
 exports.TodoEntity = TodoEntity = __decorate([
     (0, typeorm_1.Entity)('todos', { orderBy: { CreateAt: 'DESC' } })
 ], TodoEntity);

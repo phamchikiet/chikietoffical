@@ -1,6 +1,7 @@
 export declare class TodoEntity {
     id: string;
     idDM: string;
+    idUser: string;
     Title: string;
     Mota: string;
     Slug: string;
@@ -14,4 +15,5 @@ export declare class TodoEntity {
     UpdateAt: Date;
     DeleteAt: Date;
     idCreate: string;
+    checkTitle(): void;
 }

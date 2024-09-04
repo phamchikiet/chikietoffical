@@ -5,7 +5,10 @@ export declare class TodoService {
     constructor(TodoRepository: Repository<TodoEntity>);
     create(data: any): Promise<any>;
     findAll(): Promise<TodoEntity[]>;
-    findid(id: string): Promise<TodoEntity>;
+    findid(id: string): Promise<TodoEntity | {
+        error: number;
+        data: string;
+    }>;
     findSHD(data: any): Promise<TodoEntity>;
     findslug(Title: any): Promise<TodoEntity>;
     findPagination(page: number, perPage: number): Promise<{

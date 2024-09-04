@@ -4,7 +4,10 @@ export declare class TodoController {
     constructor(todoService: TodoService);
     create(data: any): Promise<any>;
     findAll(): Promise<import("./entities/todo.entity").TodoEntity[]>;
-    findOne(id: string): Promise<import("./entities/todo.entity").TodoEntity>;
+    findOne(id: string): Promise<import("./entities/todo.entity").TodoEntity | {
+        error: number;
+        data: string;
+    }>;
     findslug(slug: string): Promise<import("./entities/todo.entity").TodoEntity>;
     findQuery(SearchParams: any): Promise<{
         items: import("./entities/todo.entity").TodoEntity[];

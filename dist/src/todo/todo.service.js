@@ -35,7 +35,13 @@ let TodoService = class TodoService {
         return await this.TodoRepository.find();
     }
     async findid(id) {
-        return await this.TodoRepository.findOne({ where: { id: id } });
+        const result = await this.TodoRepository.findOne({ where: { id: id } });
+        if (result) {
+            return result;
+        }
+        else {
+            return { error: 1001, data: "Không Tồn Tại" };
+        }
     }
     async findSHD(data) {
         return await this.TodoRepository.findOne({
@@ -74,11 +80,14 @@ let TodoService = class TodoService {
         if (params.hasOwnProperty('Title')) {
             queryBuilder.andWhere('todo.Title LIKE :Title', { SDT: `%${params.Title}%` });
         }
+        if (params.hasOwnProperty('idUser')) {
+            queryBuilder.andWhere('user.idUser = :idUser', { idUser: params.idUser })
+                .orWhere('user.idUser::text ILIKE :idUser', { idUser: `%${params.idUser}%` });
+        }
         const [items, totalCount] = await queryBuilder
             .limit(params.pageSize || 10)
             .offset(params.pageNumber * params.pageSize || 0)
             .getManyAndCount();
-        console.log(items, totalCount);
         return { items, totalCount };
     }
     async update(id, UpdateTodoDto) {

@@ -5,6 +5,8 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
+    BeforeInsert,
+    BeforeUpdate
   } from 'typeorm';
 @Entity('todos', {orderBy: { CreateAt: 'DESC' } })
 export class TodoEntity {
@@ -12,6 +14,8 @@ export class TodoEntity {
   id: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   idDM: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  idUser: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Title: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
@@ -38,4 +42,12 @@ export class TodoEntity {
   DeleteAt: Date;
   @Column({ nullable: true })
   idCreate: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  checkTitle() {
+    if (!this.Title || this.Title.trim() === '') {
+      this.Title = 'Noname';
+    }
+  }
 }

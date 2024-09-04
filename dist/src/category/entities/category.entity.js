@@ -23,6 +23,10 @@ __decorate([
     __metadata("design:type", String)
 ], CategoryEntity.prototype, "idDM", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], CategoryEntity.prototype, "idTodo", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
     __metadata("design:type", String)
 ], CategoryEntity.prototype, "Title", void 0);

@@ -9,6 +9,8 @@ import { CatcherrorService } from './catcherror.service';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from '../environments/environment.development';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingInterceptor } from './loading.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     AngularFireAuth,

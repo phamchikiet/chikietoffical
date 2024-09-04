@@ -22,6 +22,9 @@ import { UsersService } from '../../users/users.service';
 import { QuanlyduanService } from '../quanlyduan/quanlyduan.service';
 import { CategoryService } from '../../category/category.service';
 import { ListviewComponent } from './listview/listview.component';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
+import { MatListModule } from '@angular/material/list';
 @Component({
   selector: 'app-quanlyduan',
   standalone: true,
@@ -42,12 +45,16 @@ import { ListviewComponent } from './listview/listview.component';
     MatSelectModule,
     RouterLinkActive,
     DetailComponent,
-    ListviewComponent
+    ListviewComponent,
+    MatTreeModule,
+    MatListModule
   ],
   templateUrl: './quanlyduan.component.html',
   styleUrls: ['./quanlyduan.component.scss']
 })
+
 export class QuanlyduanComponent implements OnInit {
+
   Detail: any = {location:'main'};
   Lists: any = {}
   isOpen:boolean=true
@@ -75,10 +82,20 @@ export class QuanlyduanComponent implements OnInit {
   Profile: any = {}
   SelectItem: any = {}
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  displayedColumns: string[] = ['Title','CreateAt','Status','Action'];
-  dataSource!: MatTableDataSource<any>;
+  // displayedColumns: string[] = ['Title','CreateAt','Status','Action'];
+  // dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  treeControl!: FlatTreeControl<any>;
+  dataSource!: MatTreeFlatDataSource<any, any>;
+  _transformer = (node: any, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      node:node,
+      level: level,
+    };
+  }
+  hasChild = (_: number, node: any) => node.expandable;
   constructor(
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
@@ -91,42 +108,47 @@ export class QuanlyduanComponent implements OnInit {
         this.Profile = data
       }
     })
-    this.spinner.show();
+   // this.spinner.show();
   }
   async ngOnInit(): Promise<void> {
+
+    this.treeControl = new FlatTreeControl<any>(
+      node => node.level,
+      node => node.expandable,
+    );
+
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, new MatTreeFlattener(
+      this._transformer,
+      node => node.level,
+      node => node.expandable,
+      node => node.children,
+    ));
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       this.drawerMode = result.matches ? 'over' : 'side';
       this.isOpen = result.matches ? false : true;
       this.leftsidebar = result.matches ? false : true;
     });
-    this._QuanlyduansService.isHaveQuanlyduan$.subscribe((data:any)=>{
-      this.isHaveQuanlyduan = data
-    })
-    this.Categories = this.FilterCategories = await this._CategoryService.getAllCategory()
-    await this._QuanlyduansService.SearchQuanlyduans(this.SearchParams).then((data)=>
-    {
-      this.spinner.hide();
-      console.log("searchdata",data);
-    })
-    this._QuanlyduansService.quanlyduans$.subscribe((data:any)=>
-    {
-      this.FilterLists = data
-    //  this.pageSizeOptions = [10, 20, this.Lists.totalCount].filter(v => v < this.Lists.totalCount);
-      this.dataSource = new MatTableDataSource(this.FilterLists);
-     // console.log(this.FilterLists);
-      this.dataSource.sortingDataAccessor = (item, property) => {
-        switch (property) {
-          case 'Diachi': return item.Quanlyduanss.Khachhang.Diachi;
-          case 'Hoten': return item.Quanlyduanss.Khachhang.Hoten;
-          case 'SDT': return item.Quanlyduanss.Khachhang.SDT;
-          case 'Hinhthuc': return item.Thanhtoan.Hinhthuc;
-          default: return item[property];
-        }
-      };
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    })
+
+    this._QuanlyduansService.isHaveQuanlyduan$.subscribe((data:any) => this.isHaveQuanlyduan = data);
+    this.Categories = this.FilterCategories = await this._CategoryService.getAllCategory();
+
+    await this._QuanlyduansService.SearchQuanlyduans(this.SearchParams);
+    this.spinner.hide();
+    this._QuanlyduansService.quanlyduans$.subscribe((data:any) => {
+      this.FilterLists = this.dataSource.data = this.Categories.map((v) =>({...v,children:data}))
+      // console.log(this.FilterLists);
+    });
  }
+ logout() {
+  this.spinner.show();
+  this._UsersService.Dangxuat().subscribe((res: any) => {
+    if (res) {
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }
+  });
+}
  filteredCategories(location:any) {
   return this.Categories.filter((v) => v.location == location);
  }

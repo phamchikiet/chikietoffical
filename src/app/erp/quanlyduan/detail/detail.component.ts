@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, inject, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { QuanlyduanService } from '../quanlyduan.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UsersService } from '../../../users/users.service';
+import { filter, take } from 'rxjs';
 @Component({
   selector: 'app-detail',
   standalone: true,
@@ -23,7 +24,8 @@ import { UsersService } from '../../../users/users.service';
     EditorModule,
     MatBadgeModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
+    RouterModule
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
@@ -37,6 +39,7 @@ configTiny: EditorComponent['init'] = {
   // content_style: '.mce-content-body { border: 1px dashed blue; padding: 10px;  } '+'.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
   content_style: '.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
   menubar: false,
+  language: 'vi',
   // inline: true,
   toolbar: 'image link bold italic underline alignleft aligncenter alignright alignjustify',
   plugins: [
@@ -112,21 +115,18 @@ configTiny: EditorComponent['init'] = {
     private renderer: Renderer2,
     private spinner: NgxSpinnerService
   ) { }
-  async ngOnInit(){
-    this.spinner.show();
-    // this.route.paramMap.subscribe((params) => {
-    //   console.log(params);
-    //   //this._QuanlyduansService.getQuanlyduansByid(params.get('id'))
-    // });
+  async ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      await this._QuanlyduansService.getQuanlyduansByid(id);
+    }
     this.profile = await this.usersService.getProfile();
-    console.log(this.profile);
-    this._QuanlyduansService.quanlyduan$.subscribe((data)=>
-      {
-        if(data){
-          this.Detail = data
-          this.spinner.hide();
-        }
-      })
+    this._QuanlyduansService.quanlyduan$.pipe(
+      filter((data:any) => !!data),
+      take(1)
+    ).subscribe(data => {
+      this.Detail = data;
+    });
   }
   CloseDetail()
   {
@@ -191,6 +191,10 @@ configTiny: EditorComponent['init'] = {
       }
     })
   }
+  OnChange(event:any)
+  {
+    console.log(event);
 
+  }
 }
 

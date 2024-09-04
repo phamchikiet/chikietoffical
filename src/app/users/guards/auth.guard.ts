@@ -8,23 +8,28 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, of, switchMap, finalize } from 'rxjs';
 import { UsersService } from '../users.service';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private _UsersService: UsersService, private _router: Router) {}
+  constructor(
+    private _UsersService: UsersService,
+    private _router: Router,
+    private _spinner: NgxSpinnerService
+  ) {}
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-
     const redirectUrl = state.url === '/logout' ? '/' : state.url;
     return this._check(redirectUrl);
   }
+
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -36,13 +41,16 @@ export class AuthGuard implements CanActivate {
     const redirectUrl = state.url === '/logout' ? '/' : state.url;
     return this._check(redirectUrl);
   }
+
   canLoad(
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this._check('/');
   }
+
   private _check(redirectURL: string): Observable<boolean> {
+    this._spinner.show();
     return this._UsersService.checkDangnhap().pipe(
       switchMap((authenticated) => {
         if (!authenticated) {
@@ -50,6 +58,9 @@ export class AuthGuard implements CanActivate {
           return of(false);
         }
         return of(true);
+      }),
+      finalize(() => {
+        this._spinner.hide();
       })
     );
   }

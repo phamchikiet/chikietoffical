@@ -7,7 +7,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import * as Auth from 'firebase/auth';
 import { environment } from '../../environments/environment.development';
 import { UsersService } from '../users/users.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -17,6 +17,7 @@ import { isPlatformBrowser } from '@angular/common';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    NgxSpinnerModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

@@ -31,14 +31,14 @@ export class AppComponent {
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.isServer = isPlatformServer(platformId);
-   // this.spinner.show();
+    this.spinner.show();
   }
   notifier: NotifierService = inject(NotifierService);
   ngOnInit(): void {
     if(!this.isServer)
     {
    //  this.notifier.notify('success', 'You are awesome! I mean it!');
-    // this.spinner.hide();
+     this.spinner.hide();
     }
    // this.notifier.notify('success', 'You are awesome! I mean it!');
   }

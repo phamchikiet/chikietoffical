@@ -16,7 +16,7 @@ jobs:
       - name:  Build Project
         run: |
           npm install --force
-          npm build
+          npm run build
 
       - name:  Sync build folder only
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4

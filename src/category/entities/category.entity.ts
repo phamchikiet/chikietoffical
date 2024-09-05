@@ -5,11 +5,15 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
+    BeforeInsert,
+    BeforeUpdate,
   } from 'typeorm';
 @Entity('category', {orderBy: { CreateAt: 'DESC' } })
 export class CategoryEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  pid: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   idDM: string;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
@@ -38,4 +42,11 @@ export class CategoryEntity {
   DeleteAt: Date;
   @Column({ nullable: true })
   idCreate: string;
+  @BeforeInsert()
+  @BeforeUpdate()
+  checkTitle() {
+    if (!this.Title || this.Title.trim() === '') {
+      this.Title = 'Noname';
+    }
+  }
 }

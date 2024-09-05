@@ -13,6 +13,8 @@ export class TodoEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
+  pid: string;
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
   idDM: string;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
   idUser: string;

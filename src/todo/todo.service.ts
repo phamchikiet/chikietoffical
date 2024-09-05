@@ -58,7 +58,7 @@ export class TodoService {
     };
   }
   async findQuery(params: any) {
-    console.error(params);
+   // console.error(params);
     const queryBuilder = this.TodoRepository.createQueryBuilder('todo');
     if (params.hasOwnProperty('Batdau') && params.hasOwnProperty('Ketthuc')) {
       queryBuilder.andWhere('todo.CreateAt BETWEEN :startDate AND :endDate', {
@@ -69,6 +69,9 @@ export class TodoService {
     if (params.hasOwnProperty('Title')) {
       queryBuilder.andWhere('todo.Title LIKE :Title', { SDT: `%${params.Title}%` });
     }
+    if (params.hasOwnProperty('idDM')) {
+      queryBuilder.andWhere('todo.idDM LIKE :idDM', { idDM: params.idDM });
+    }
     if (params.hasOwnProperty('idUser')) {
       queryBuilder.andWhere('user.idUser = :idUser', { idUser: params.idUser })
       .orWhere('user.idUser::text ILIKE :idUser', { idUser: `%${params.idUser}%` });
@@ -76,7 +79,7 @@ export class TodoService {
     const [items, totalCount] = await queryBuilder
       .limit(params.pageSize || 10) // Set a default page size if not provided
       .offset(params.pageNumber * params.pageSize || 0)
-      .getManyAndCount();
+      .getManyAndCount();      
     return { items, totalCount };
   }
   async update(id: string, UpdateTodoDto: any) {

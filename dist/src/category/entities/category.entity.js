@@ -12,12 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryEntity = void 0;
 const typeorm_1 = require("typeorm");
 let CategoryEntity = class CategoryEntity {
+    checkTitle() {
+        if (!this.Title || this.Title.trim() === '') {
+            this.Title = 'Noname';
+        }
+    }
 };
 exports.CategoryEntity = CategoryEntity;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], CategoryEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    __metadata("design:type", String)
+], CategoryEntity.prototype, "pid", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
     __metadata("design:type", String)
@@ -74,6 +83,13 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], CategoryEntity.prototype, "idCreate", void 0);
+__decorate([
+    (0, typeorm_1.BeforeInsert)(),
+    (0, typeorm_1.BeforeUpdate)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], CategoryEntity.prototype, "checkTitle", null);
 exports.CategoryEntity = CategoryEntity = __decorate([
     (0, typeorm_1.Entity)('category', { orderBy: { CreateAt: 'DESC' } })
 ], CategoryEntity);

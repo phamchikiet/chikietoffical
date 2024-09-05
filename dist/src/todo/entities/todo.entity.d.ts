@@ -1,5 +1,6 @@
 export declare class TodoEntity {
     id: string;
+    pid: string;
     idDM: string;
     idUser: string;
     Title: string;

@@ -69,7 +69,6 @@ let TodoService = class TodoService {
         };
     }
     async findQuery(params) {
-        console.error(params);
         const queryBuilder = this.TodoRepository.createQueryBuilder('todo');
         if (params.hasOwnProperty('Batdau') && params.hasOwnProperty('Ketthuc')) {
             queryBuilder.andWhere('todo.CreateAt BETWEEN :startDate AND :endDate', {
@@ -79,6 +78,9 @@ let TodoService = class TodoService {
         }
         if (params.hasOwnProperty('Title')) {
             queryBuilder.andWhere('todo.Title LIKE :Title', { SDT: `%${params.Title}%` });
+        }
+        if (params.hasOwnProperty('idDM')) {
+            queryBuilder.andWhere('todo.idDM LIKE :idDM', { idDM: params.idDM });
         }
         if (params.hasOwnProperty('idUser')) {
             queryBuilder.andWhere('user.idUser = :idUser', { idUser: params.idUser })

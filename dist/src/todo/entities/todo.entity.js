@@ -26,6 +26,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
     __metadata("design:type", String)
+], TodoEntity.prototype, "pid", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    __metadata("design:type", String)
 ], TodoEntity.prototype, "idDM", void 0);
 __decorate([
     (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),

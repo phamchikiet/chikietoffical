@@ -1,5 +1,6 @@
 export declare class CategoryEntity {
     id: string;
+    pid: string;
     idDM: string;
     idTodo: string;
     Title: string;
@@ -14,4 +15,5 @@ export declare class CategoryEntity {
     UpdateAt: Date;
     DeleteAt: Date;
     idCreate: string;
+    checkTitle(): void;
 }

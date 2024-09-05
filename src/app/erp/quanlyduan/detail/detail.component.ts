@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
-import { environment } from '../../../../environments/environment.development';
 import { FirebaseimageService } from '../../../firebaseimage/firebaseimage.service';
 import { NotifierService } from 'angular-notifier';
 import { MatMenuModule } from '@angular/material/menu';
@@ -14,6 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UsersService } from '../../../users/users.service';
 import { filter, take } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { QuanlyduanComponent } from '../quanlyduan.component';
 @Component({
   selector: 'app-detail',
   standalone: true,
@@ -25,7 +26,8 @@ import { filter, take } from 'rxjs';
     MatBadgeModule,
     MatMenuModule,
     MatTooltipModule,
-    RouterModule
+    RouterModule,
+    QuanlyduanComponent
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
@@ -41,7 +43,7 @@ configTiny: EditorComponent['init'] = {
   menubar: false,
   language: 'vi',
   // inline: true,
-  toolbar: 'image link bold italic underline alignleft aligncenter alignright alignjustify',
+  toolbar: 'image link bold italic underline alignleft aligncenter alignright alignjustify code',
   plugins: [
      'autoresize','quickbars','advlist','autolink','lists','link','image','charmap','preview','anchor',
     'searchreplace','visualblocks','code','fullscreen',
@@ -80,22 +82,6 @@ configTiny: EditorComponent['init'] = {
     });
     return promise;
   },
-  // file_picker_callback: (callback, value, meta:any) => {
-  //   // Provide file and text for the link dialog
-  //   if (meta.filetype == 'file') {
-  //     callback('mypage.html', { text: 'My text' });
-  //   }
-
-  //   // Provide image and alt text for the image dialog
-  //   if (meta.filetype == 'image') {
-  //     callback('myimage.jpg', { alt: 'My alt text' });
-  //   }
-
-  //   // Provide alternative source and posted for the media dialog
-  //   if (meta.filetype == 'media') {
-  //     callback('movie.mp4', { source2: 'alt.ogg', poster: 'image.jpg' });
-  //   }
-  // }
 };
 
   SearchParams: any = {
@@ -110,6 +96,7 @@ configTiny: EditorComponent['init'] = {
   route: ActivatedRoute = inject(ActivatedRoute);
   notifier: NotifierService = inject(NotifierService);
   usersService: UsersService = inject(UsersService);
+  _quanlyduanComponent: QuanlyduanComponent = inject(QuanlyduanComponent);
   @ViewChildren('myElement') elements!: QueryList<ElementRef>;
   constructor(
     private renderer: Renderer2,
@@ -117,16 +104,18 @@ configTiny: EditorComponent['init'] = {
   ) { }
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
+
     if (id) {
-      await this._QuanlyduansService.getQuanlyduansByid(id);
+      await this._QuanlyduansService.getQuanlyduansByid(id).then(() => {
+        this._QuanlyduansService.quanlyduan$.subscribe((data) => {
+          this.Detail = data
+          console.log(this.Detail);
+          this._quanlyduanComponent.treeControl.expandAll();
+        })
+      })
     }
     this.profile = await this.usersService.getProfile();
-    this._QuanlyduansService.quanlyduan$.pipe(
-      filter((data:any) => !!data),
-      take(1)
-    ).subscribe(data => {
-      this.Detail = data;
-    });
   }
   CloseDetail()
   {
@@ -140,41 +129,6 @@ configTiny: EditorComponent['init'] = {
   {
     this.Detail.Content.push({id:this.Detail.Content.length+1, content: "a"});
     console.log(this.Detail.Content);
-  }
-  onContentChange(event:any,index:any)
-  {
-    const target = event.target as HTMLDivElement;
-    const newContent = target.innerText;
-    const hasLineBreak = newContent.includes('\n');
-    const regex = /<div><br><\/div>/;
-    const value = (event.target as HTMLInputElement).innerHTML;
-    this.Detail.Content[index].content = value.replace(regex, "");
-    if (hasLineBreak) {
-      this.Detail.Content.push({id:this.Detail.Content.length+1, content: "a"});
-
-      if (this.elements) {
-        console.log(this.elements.last);
-        this.elements.last.nativeElement.focus();
-        this.elements.forEach(element => {
-          console.log(element);
-          console.log(element.nativeElement.textContent);  // Access element content
-          element.nativeElement.style.color = 'red';  // Modify element styles
-        });
-      }
-    }
-    console.log(this.Detail.Content);
-
-  }
-
-
-  AddContent(type:any)
-  {
-    switch (type) {
-      case 'text':  this.Detail.Content.push({id:this.Detail.Content.length+1, type:type,Noidung:''})
-        break;
-      default:
-        break;
-    }
   }
 
   async attachment(event: any) {

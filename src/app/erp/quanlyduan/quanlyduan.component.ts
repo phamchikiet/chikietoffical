@@ -56,6 +56,7 @@ import { MatListModule } from '@angular/material/list';
 export class QuanlyduanComponent implements OnInit {
 
   Detail: any = {location:'main'};
+  Task: any = {}
   Lists: any = {}
   isOpen:boolean=true
   isOpen1:boolean=true
@@ -68,7 +69,7 @@ export class QuanlyduanComponent implements OnInit {
   SearchParams: any = {
     pageSize: 9999,
     pageNumber: 0,
-    isDelete: false
+    isDelete: false,
   };
   sidebarVisible: boolean = false;
   leftsidebar: boolean = false;
@@ -108,7 +109,7 @@ export class QuanlyduanComponent implements OnInit {
         this.Profile = data
       }
     })
-   // this.spinner.show();
+   this.spinner.show();
   }
   async ngOnInit(): Promise<void> {
 
@@ -131,13 +132,27 @@ export class QuanlyduanComponent implements OnInit {
 
     this._QuanlyduansService.isHaveQuanlyduan$.subscribe((data:any) => this.isHaveQuanlyduan = data);
     this.Categories = this.FilterCategories = await this._CategoryService.getAllCategory();
-
-    await this._QuanlyduansService.SearchQuanlyduans(this.SearchParams);
-    this.spinner.hide();
-    this._QuanlyduansService.quanlyduans$.subscribe((data:any) => {
-      this.FilterLists = this.dataSource.data = this.Categories.map((v) =>({...v,children:data}))
-      // console.log(this.FilterLists);
+    Promise.all(this.Categories.map(async (v) => {
+      const children = await this._QuanlyduansService.SearchQuanlyduans({...this.SearchParams, idDM: v.id});
+      v.TypeMenu ='Category'
+      if (children.totalCount > 0) {
+        children.items.forEach((v:any) => {
+          v.TypeMenu ='Task'
+        })
+        v.children = children.items;
+      }
+      return v;
+    })).then((updatedCategories) => {
+      this.dataSource.data = updatedCategories;
     });
+     this.spinner.hide();
+
+    // await this._QuanlyduansService.SearchQuanlyduans(this.SearchParams)
+
+    // this._QuanlyduansService.quanlyduans$.subscribe((data:any) => {
+    //   this.FilterLists = this.dataSource.data = this.Categories.map((v) =>({...v,children:data}))
+    //   console.log(this.dataSource.data);
+    // });
  }
  logout() {
   this.spinner.show();
@@ -149,20 +164,27 @@ export class QuanlyduanComponent implements OnInit {
     }
   });
 }
- filteredCategories(location:any) {
-  return this.Categories.filter((v) => v.location == location);
- }
-  applyFilter(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    if (value.length > 1) {
-      // this.FilterLists = this.Lists.items.filter((v: any) => {
-      //   return v.MaQuanlyduans.toLowerCase().includes(value.toLowerCase())
-      //     || v.Khachhang?.SDT?.toLowerCase().includes(value.toLowerCase())
-      //     || v.Khachhang?.Hoten?.toLowerCase().includes(value.toLowerCase())
-      //     || v.Khachhang?.Diachi?.toLowerCase().includes(value.toLowerCase())
-      // })
+applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+
+    const filterTree = (node: any): boolean => {
+      if (node.Title.toLowerCase().includes(filterValue)) {
+        return true;
+      }
+      if (node.children) {
+        node.children = node.children.filter(filterTree);
+        return node.children.length > 0;
+      }
+      return false;
+    };
+
+    if (filterValue) {
+      this.dataSource.data = this.FilterCategories.filter(filterTree);
+    } else {
+      this.dataSource.data = this.Categories;
     }
-    else { this.FilterLists = this.Lists.items }
+
+    this.treeControl.expandAll();
   }
 
   async onPageChange(event: any) {
@@ -178,13 +200,67 @@ export class QuanlyduanComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result=="true") {
-          this._CategoryService.CreateCategory(this.Category)
+          this._CategoryService.CreateCategory(this.Category).then(() => this.ngOnInit())
+      }
+    });
+  }
+  addTask(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+      disableClose:true
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result=="true") {
+          this._QuanlyduansService.CreateQuanlyduans(this.Task).then(() => this.ngOnInit())
+      }
+    });
+  }
+  updateTask(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+      disableClose:true
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result=="true") {
+          this._QuanlyduansService.UpdateQuanlyduans(this.Task).then(() => this.ngOnInit())
+      }
+    });
+  }
+  deleteTask(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        this.Task.isDelete = true
+        this._QuanlyduansService.UpdateQuanlyduans(this.Task).then(() => this.ngOnInit())
+      }
+    });
+  }
+  updateCategory(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+      disableClose:true
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result=="true") {
+          this._CategoryService.UpdateCategory(this.Category).then(() => this.ngOnInit())
+      }
+    });
+  }
+  deleteCategory(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        this.Category.isDelete = true
+        this._CategoryService.UpdateCategory(this.Category).then(() => this.ngOnInit())
       }
     });
   }
   ToSlug()
   {
     this.Category.Slug = convertToSlug(this.Category.Title)
+  }
+  ToSlugTask()
+  {
+    this.Task.Slug = convertToSlug(this.Task.Title)
   }
   readExcelFile(event: any) {
     const file = event.target.files[0];
@@ -269,5 +345,14 @@ export class QuanlyduanComponent implements OnInit {
         this._QuanlyduansService.DeleteQuanlyduans(this.SelectItem).then(() => this.ngOnInit())
       }
     });
+  }
+  addItem(node: any) {
+    console.log(node);
+  }
+  editItem(node: any) {
+    console.log(node);
+  }
+  removeItem(node: any) {
+    console.log(node);
   }
 }

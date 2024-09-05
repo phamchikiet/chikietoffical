@@ -125,7 +125,7 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'detail/:id',
+        path: 'task/:id',
         loadComponent: () => import('./erp/quanlyduan/detail/detail.component').then(m => m.DetailComponent)
       }
     ]

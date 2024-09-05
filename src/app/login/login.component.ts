@@ -5,7 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import * as Auth from 'firebase/auth';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { UsersService } from '../users/users.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { isPlatformBrowser } from '@angular/common';

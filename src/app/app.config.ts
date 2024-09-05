@@ -7,7 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideServiceWorker } from '@angular/service-worker';
 import { CatcherrorService } from './catcherror.service';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { environment } from '../environments/environment.development';
+import { environment } from '../environments/environment';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './loading.interceptor';

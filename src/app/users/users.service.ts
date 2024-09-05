@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable, tap, take, switchMap, map, of } from 'rxjs';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { LocalStorageService } from '../shared/localstorage.service';
 import { AuthUtils } from '../shared/auth.utils';
 import { isPlatformBrowser } from '@angular/common';

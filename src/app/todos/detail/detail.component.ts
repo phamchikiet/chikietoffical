@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { FirebaseimageService } from '../../firebaseimage/firebaseimage.service';
 import { NotifierService } from 'angular-notifier';
 import { MatMenuModule } from '@angular/material/menu';

@@ -6,7 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import moment from 'moment';
@@ -25,6 +25,7 @@ import { ListviewComponent } from './listview/listview.component';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { MatListModule } from '@angular/material/list';
+import { filter } from 'rxjs';
 @Component({
   selector: 'app-quanlyduan',
   standalone: true,
@@ -33,7 +34,6 @@ import { MatListModule } from '@angular/material/list';
     MatInputModule,
     RouterOutlet,
     MatMenuModule,
-    RouterLink,
     CommonModule,
     FormsModule,
     MatDialogModule,
@@ -43,6 +43,7 @@ import { MatListModule } from '@angular/material/list';
     MatSortModule,
     MatPaginatorModule,
     MatSelectModule,
+    RouterModule,
     RouterLinkActive,
     DetailComponent,
     ListviewComponent,
@@ -59,7 +60,6 @@ export class QuanlyduanComponent implements OnInit {
   Task: any = {}
   Lists: any = {}
   isOpen:boolean=true
-  isOpen1:boolean=true
   FilterLists: any[] = []
   Category: any = {location:'main'};
   Categories: any[] = []
@@ -74,17 +74,14 @@ export class QuanlyduanComponent implements OnInit {
   sidebarVisible: boolean = false;
   leftsidebar: boolean = false;
   isHaveQuanlyduan: boolean = true;
-  drawerMode: any = 'over';
+  drawerMode: any = 'side';
   ListTrangThaiQuanlyduans: any = []
   _QuanlyduansService: QuanlyduanService = inject(QuanlyduanService)
   _UsersService: UsersService = inject(UsersService)
   _CategoryService: CategoryService = inject(CategoryService)
-  // _ListviewComponent: ListviewComponent = inject(ListviewComponent)
   Profile: any = {}
   SelectItem: any = {}
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  // displayedColumns: string[] = ['Title','CreateAt','Status','Action'];
-  // dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   treeControl!: FlatTreeControl<any>;
@@ -101,7 +98,8 @@ export class QuanlyduanComponent implements OnInit {
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private _breakpointObserver:BreakpointObserver,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {
     this._UsersService.getProfile()
     this._UsersService.profile$.subscribe((data) => {
@@ -112,7 +110,11 @@ export class QuanlyduanComponent implements OnInit {
    this.spinner.show();
   }
   async ngOnInit(): Promise<void> {
-
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.expandActiveNodes();
+    });
     this.treeControl = new FlatTreeControl<any>(
       node => node.level,
       node => node.expandable,
@@ -125,9 +127,16 @@ export class QuanlyduanComponent implements OnInit {
       node => node.children,
     ));
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      this.drawerMode = result.matches ? 'over' : 'side';
-      this.isOpen = result.matches ? false : true;
+      // this.drawerMode = result.matches ? 'over' : 'side';
+      // this.isOpen = result.matches ? false : true;
       this.leftsidebar = result.matches ? false : true;
+      if (result.matches) {
+        this.drawer.mode = 'over';
+        this.drawer.close();
+      } else {
+        this.drawer.mode = 'side';
+        this.drawer.open();
+      }
     });
 
     this._QuanlyduansService.isHaveQuanlyduan$.subscribe((data:any) => this.isHaveQuanlyduan = data);
@@ -154,6 +163,7 @@ export class QuanlyduanComponent implements OnInit {
     //   console.log(this.dataSource.data);
     // });
  }
+
  logout() {
   this.spinner.show();
   this._UsersService.Dangxuat().subscribe((res: any) => {
@@ -163,6 +173,25 @@ export class QuanlyduanComponent implements OnInit {
       }, 500);
     }
   });
+}
+
+expandActiveNodes() {
+  const expandNodes = (node: any) => {
+    if (this.router.isActive('/quanlyduan/task/' + node.id, true)) {
+      this.treeControl.expand(node);
+      return true;
+    }
+    if (node.children) {
+      const childExpanded = node.children.some(expandNodes);
+      if (childExpanded) {
+        this.treeControl.expand(node);
+        return true;
+      }
+    }
+    return false;
+  };
+
+  this.dataSource.data.forEach(expandNodes);
 }
 applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
@@ -178,13 +207,14 @@ applyFilter(event: Event) {
       return false;
     };
 
-    if (filterValue) {
+    if (filterValue.length > 2) {
       this.dataSource.data = this.FilterCategories.filter(filterTree);
+      this.treeControl.expandAll();
     } else {
       this.dataSource.data = this.Categories;
+      this.treeControl.collapseAll();
     }
 
-    this.treeControl.expandAll();
   }
 
   async onPageChange(event: any) {

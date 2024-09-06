@@ -1,6 +1,6 @@
-import { Component, ElementRef, EventEmitter, inject, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, OnInit, Output, QueryList, Renderer2, TemplateRef, ViewChildren } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { QuanlyduanService } from '../quanlyduan.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +15,7 @@ import { UsersService } from '../../../users/users.service';
 import { filter, take } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { QuanlyduanComponent } from '../quanlyduan.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 @Component({
   selector: 'app-detail',
   standalone: true,
@@ -27,7 +28,8 @@ import { QuanlyduanComponent } from '../quanlyduan.component';
     MatMenuModule,
     MatTooltipModule,
     RouterModule,
-    QuanlyduanComponent
+    QuanlyduanComponent,
+    MatDialogModule
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
@@ -97,29 +99,35 @@ configTiny: EditorComponent['init'] = {
   notifier: NotifierService = inject(NotifierService);
   usersService: UsersService = inject(UsersService);
   _quanlyduanComponent: QuanlyduanComponent = inject(QuanlyduanComponent);
+  dialog: MatDialog = inject(MatDialog);
+  SelectImage:any;
+  _router: Router = inject(Router);
   @ViewChildren('myElement') elements!: QueryList<ElementRef>;
   constructor(
     private renderer: Renderer2,
-    private spinner: NgxSpinnerService
   ) { }
   async ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
+    this.route.paramMap.subscribe(async params => {
+      const id = params.get('id');
+      console.log(id);
 
-    if (id) {
-      await this._QuanlyduansService.getQuanlyduansByid(id).then(() => {
+      if (id) {
+        this._quanlyduanComponent.drawer.open();
+        await this._QuanlyduansService.getQuanlyduansByid(id);
         this._QuanlyduansService.quanlyduan$.subscribe((data) => {
-          this.Detail = data
+          this.Detail = data;
           console.log(this.Detail);
-          this._quanlyduanComponent.treeControl.expandAll();
-        })
-      })
-    }
+        });
+      }
+    });
+
     this.profile = await this.usersService.getProfile();
   }
   CloseDetail()
   {
     this._QuanlyduansService.updateisHaveQuanlyduan(false)
+    this._router.navigate(['../../'], { relativeTo: this.route });
+    this._quanlyduanComponent.drawer.close()
   }
   UpdateDetail()
   {
@@ -149,6 +157,33 @@ configTiny: EditorComponent['init'] = {
   {
     console.log(event);
 
+  }
+  ViewImage(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result == 'true') {
+    //     this.SelectItem.isDelete = true
+    //     this._QuanlyduansService.DeleteQuanlyduans(this.SelectItem).then(() => this.ngOnInit())
+    //   }
+    // });
+  }
+  DownloadImage()
+  {
+    if (this.SelectImage && this.SelectImage.url) {
+      const link = document.createElement('a');
+      link.href = this.SelectImage.url;
+      link.download = this.SelectImage.name || 'download';
+      link.rel = 'noopener noreferrer'; // Security best practice for opening links
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 100); // Remove the link after a short delay
+    } else {
+      console.error('No image selected or URL not available');
+      // Optionally, you could show a user-friendly error message here
+    }
   }
 }
 

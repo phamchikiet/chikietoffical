@@ -1,7 +1,7 @@
-<div class="!flex flex-col flex-auto min-w-0 relative bg-white !h-screen">
+<div class="!flex flex-col flex-auto min-w-0 relative bg-white !h-screen w-full">
   <div class="p-2 relative flex flex-col">
     <div class="flex flex-row justify-between items-center">
-      <a [routerLink]="['../../']"  mat-icon-button>
+      <a (click)="CloseDetail()" mat-icon-button>
         <span class="material-symbols-outlined">
           arrow_back
         </span>
@@ -53,7 +53,7 @@
                     <div class="h-16 w-16 rounded-lg border p-2"  [matTooltip]="item.name">.zip</div>
                   }
                   @default {
-                    <img [src]="item.url" class="h-16 w-16 rounded-lg border p-2"  [matTooltip]="item.name">
+                    <img (click)="ViewImage(imageDialog);SelectImage=item" [src]="item.url" class="h-16 w-16 rounded-lg border p-2" [matTooltip]="item.name">
                   }
                 }
           }@empty {
@@ -62,3 +62,22 @@
         </div>
   </div>
 </div>
+
+<ng-template #imageDialog>
+  <div class="relative flex flex-col space-y-2 h-[100vh] w-[100vw]">
+    <div class="cursor-pointer relative flex flex-row justify-between items-center border-b p-2">
+      <span class="truncate">{{SelectImage?.name}}</span>
+      <div class="flex flex-row space-x-2">
+          <span (click)="DownloadImage()" class="p-2 rounded-lg hover:bg-slate-200 items-center justify-center material-symbols-outlined">download</span>
+          <span class="p-2 rounded-lg hover:bg-slate-200 items-center justify-center material-symbols-outlined" mat-dialog-close>close</span>
+      </div>
+    </div>
+    <mat-dialog-content class="relative justify-center items-center overflow-auto">
+      <img [src]="SelectImage?.url" [alt]="SelectImage?.name" class="max-w-full max-h-full mx-auto" loading="lazy">
+    </mat-dialog-content>
+    <div class="relative"></div>
+  </div>
+</ng-template>
+
+
+

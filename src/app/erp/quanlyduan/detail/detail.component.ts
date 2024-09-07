@@ -71,18 +71,23 @@ configTiny: EditorComponent['init'] = {
     editor.on('nodechange', function(e){
     })
   },
-  images_upload_handler: (blobInfo: any) => {
+  images_upload_handler: async (blobInfo: any) => {
     const file = blobInfo.blob();
     console.log(file);
-
-    const promise = new Promise<string>((resolve, reject) => {
-      this._FirebaseimageService.uploadImage(file,`chikietv1/${file.name}`).then((res) => {
-        if (res) {
-          resolve(res.url);
-        }
-      });
-    });
-    return promise;
+    const Filename = new Date().getTime() + "_" + file.name;
+    try {
+      // Convert Blob to File
+      const fileToUpload = new File([file], Filename, { type: file.type });
+      const res = await this._FirebaseimageService.uploadImage(fileToUpload, `chikietv1/${Filename}`);
+      if (res && res.url) {
+        return res.url;
+      } else {
+        throw new Error('Upload failed: No URL returned');
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
   },
 };
 

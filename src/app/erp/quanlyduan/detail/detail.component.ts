@@ -57,7 +57,7 @@ configTiny: EditorComponent['init'] = {
   image_advtab: false,
   autoresize_bottom_margin: 5,
   autoresize_min_height: 50,
-  max_height: 300,
+  max_height: 700,
   statusbar:false,
   deprecation_warnings: false,
   default_link_target: '_blank',
@@ -114,14 +114,11 @@ configTiny: EditorComponent['init'] = {
   async ngOnInit() {
     this.route.paramMap.subscribe(async params => {
       const id = params.get('id');
-      console.log(id);
-
       if (id) {
         this._quanlyduanComponent.drawer.open();
         await this._QuanlyduansService.getQuanlyduansByid(id);
         this._QuanlyduansService.quanlyduan$.subscribe((data) => {
           this.Detail = data;
-          console.log(this.Detail);
         });
       }
     });

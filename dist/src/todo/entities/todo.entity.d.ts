@@ -11,6 +11,7 @@ export declare class TodoEntity {
     Image: string;
     Type: string;
     Ordering: number;
+    idDelete: boolean;
     Status: number;
     CreateAt: Date;
     UpdateAt: Date;

@@ -11,6 +11,7 @@ export declare class CategoryEntity {
     Type: string;
     Ordering: number;
     Status: number;
+    isDelete: boolean;
     CreateAt: Date;
     UpdateAt: Date;
     DeleteAt: Date;

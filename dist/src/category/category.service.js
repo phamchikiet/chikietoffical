@@ -32,7 +32,7 @@ let CategoryService = class CategoryService {
         }
     }
     async findAll() {
-        return await this.CategoryRepository.find();
+        return await this.CategoryRepository.find({ where: { isDelete: false } });
     }
     async findid(id) {
         return await this.CategoryRepository.findOne({ where: { id: id } });
@@ -72,7 +72,10 @@ let CategoryService = class CategoryService {
             });
         }
         if (params.hasOwnProperty('Title')) {
-            queryBuilder.andWhere('category.Title LIKE :Title', { SDT: `%${params.Title}%` });
+            queryBuilder.andWhere('category.Title LIKE :Title', { Title: `%${params.Title}%` });
+        }
+        if (params.hasOwnProperty('idDelete')) {
+            queryBuilder.andWhere('category.idDelete LIKE :idDelete', { idDelete: params.idDelete });
         }
         const [items, totalCount] = await queryBuilder
             .limit(params.pageSize || 10)
@@ -82,11 +85,10 @@ let CategoryService = class CategoryService {
         return { items, totalCount };
     }
     async update(id, UpdateCategoryDto) {
-        this.CategoryRepository.save(UpdateCategoryDto);
+        await this.CategoryRepository.save(UpdateCategoryDto);
         return await this.CategoryRepository.findOne({ where: { id: id } });
     }
     async remove(id) {
-        console.error(id);
         await this.CategoryRepository.delete(id);
         return { deleted: true };
     }

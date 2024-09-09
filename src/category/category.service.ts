@@ -20,7 +20,7 @@ export class CategoryService {
 
   }
   async findAll() {
-    return await this.CategoryRepository.find();
+    return await this.CategoryRepository.find({where: {isDelete: false}});
   }
   async findid(id: string) {
     return await this.CategoryRepository.findOne({ where: { id: id } });
@@ -60,7 +60,10 @@ export class CategoryService {
       });
     }
     if (params.hasOwnProperty('Title')) {
-      queryBuilder.andWhere('category.Title LIKE :Title', { SDT: `%${params.Title}%` });
+      queryBuilder.andWhere('category.Title LIKE :Title', { Title: `%${params.Title}%` });
+    }
+    if (params.hasOwnProperty('idDelete')) {
+      queryBuilder.andWhere('category.idDelete LIKE :idDelete', { idDelete: params.idDelete });
     }
     const [items, totalCount] = await queryBuilder
       .limit(params.pageSize || 10) // Set a default page size if not provided
@@ -71,11 +74,10 @@ export class CategoryService {
     return { items, totalCount };
   }
   async update(id: string, UpdateCategoryDto: any) {
-    this.CategoryRepository.save(UpdateCategoryDto);
+    await this.CategoryRepository.save(UpdateCategoryDto);
     return await this.CategoryRepository.findOne({ where: { id: id } });
   }
   async remove(id: string) {
-    console.error(id)
     await this.CategoryRepository.delete(id);
     return { deleted: true };
   }

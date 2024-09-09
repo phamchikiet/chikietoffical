@@ -15,6 +15,7 @@ export declare class HoadonchitietEntity {
     hdhhdvu: string;
     thlap: string;
     Type: string;
+    idDelete: boolean;
     Status: number;
     CreateAt: Date;
     UpdateAt: Date;

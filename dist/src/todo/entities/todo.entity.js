@@ -68,6 +68,10 @@ __decorate([
     __metadata("design:type", Number)
 ], TodoEntity.prototype, "Ordering", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], TodoEntity.prototype, "idDelete", void 0);
+__decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], TodoEntity.prototype, "Status", void 0);

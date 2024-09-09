@@ -68,6 +68,10 @@ __decorate([
     __metadata("design:type", Number)
 ], CategoryEntity.prototype, "Status", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], CategoryEntity.prototype, "isDelete", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], CategoryEntity.prototype, "CreateAt", void 0);

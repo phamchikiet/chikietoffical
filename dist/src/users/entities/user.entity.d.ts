@@ -21,6 +21,7 @@ export declare class UsersEntity {
     fcmToken: string[];
     Type: string;
     Ordering: number;
+    idDelete: boolean;
     Status: number;
     CreateAt: Date;
     UpdateAt: Date;

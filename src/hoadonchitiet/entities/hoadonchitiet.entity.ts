@@ -34,6 +34,8 @@ export class HoadonchitietEntity {
   thlap: string;
   @Column({ default: '' })
   Type: string;
+  @Column({ default: false })
+  idDelete: boolean;
   @Column({ default: 0 })
   Status: number;
   @CreateDateColumn()

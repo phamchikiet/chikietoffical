@@ -104,6 +104,10 @@ __decorate([
     __metadata("design:type", Number)
 ], UsersEntity.prototype, "Ordering", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], UsersEntity.prototype, "idDelete", void 0);
+__decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], UsersEntity.prototype, "Status", void 0);

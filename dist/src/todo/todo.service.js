@@ -82,6 +82,9 @@ let TodoService = class TodoService {
         if (params.hasOwnProperty('idDM')) {
             queryBuilder.andWhere('todo.idDM LIKE :idDM', { idDM: params.idDM });
         }
+        if (params.hasOwnProperty('idDelete')) {
+            queryBuilder.andWhere('todo.idDelete LIKE :idDelete', { idDelete: params.idDelete });
+        }
         if (params.hasOwnProperty('idUser')) {
             queryBuilder.andWhere('user.idUser = :idUser', { idUser: params.idUser })
                 .orWhere('user.idUser::text ILIKE :idUser', { idUser: `%${params.idUser}%` });

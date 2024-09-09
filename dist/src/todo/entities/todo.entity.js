@@ -70,7 +70,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
-], TodoEntity.prototype, "idDelete", void 0);
+], TodoEntity.prototype, "isDelete", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)

@@ -26,7 +26,6 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { MatListModule } from '@angular/material/list';
 import { filter } from 'rxjs';
-
 @Component({
   selector: 'app-quanlyduan',
   standalone: true,
@@ -262,6 +261,16 @@ applyFilter(event: Event) {
       if (result == 'true') {
         this.Task.isDelete = true
         this._QuanlyduansService.UpdateQuanlyduans(this.Task).then(() => this.ngOnInit())
+      }
+    });
+  }
+ CreateCategory(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+      disableClose:true
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result=="true") {
+          this._CategoryService.CreateCategory(this.Category).then(() => this.ngOnInit())
       }
     });
   }

@@ -177,11 +177,12 @@ export class QuanlyduanService {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._quanlyduan.next(data)
-          const updateQuanlyduans = quanlyduans.map((v:any) =>
+          const Quanlyduans:any = this._quanlyduans.value
+          const Update = Quanlyduans.map((v:any) =>
             v.id === data.id ? data : v
           );
-          this._quanlyduans.next(updateQuanlyduans);
+          this._quanlyduans.next(Update)
+          this._quanlyduan.next(data)
           return data;
       } catch (error) {
           return console.error(error);

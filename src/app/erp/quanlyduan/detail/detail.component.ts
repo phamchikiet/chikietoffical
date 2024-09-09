@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, inject, OnInit, Output, QueryList,
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { QuanlyduanService } from '../quanlyduan.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
@@ -16,6 +16,7 @@ import { filter, take } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { QuanlyduanComponent } from '../quanlyduan.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-detail',
@@ -30,7 +31,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatTooltipModule,
     RouterModule,
     QuanlyduanComponent,
-    MatDialogModule
+    MatDialogModule,
+    CommonModule,
+    ReactiveFormsModule
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
@@ -134,11 +137,14 @@ configTiny: EditorComponent['init'] = {
   }
   UpdateDetail()
   {
-   this._QuanlyduansService.UpdateQuanlyduans(this.Detail)
+   this._QuanlyduansService.UpdateQuanlyduans(this.Detail).then(() => {
+    this.notifier.notify('success', 'Cập nhật thành công');
+    this.ngOnInit()
+   })
   }
-  PushnewContent()
+  AddContent()
   {
-    this.Detail.Content.push({id:this.Detail.Content.length+1, content: "a"});
+    this.Detail.Content.push({id:this.Detail.Content.length+1,type: 'editor', detail: "a"});
     console.log(this.Detail.Content);
   }
 

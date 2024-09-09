@@ -40,11 +40,11 @@
     </mat-drawer-container> -->
 
     <mat-drawer-container class="flex-grow">
-      <mat-drawer #drawer position="end" class="bg-white flex flex-col h-full lg:!w-4/5 !w-full">
+      <mat-drawer #drawer position="end" class="bg-white flex flex-col h-full lg:!w-3/4 !w-full">
         <router-outlet></router-outlet>
       </mat-drawer>
       <mat-drawer-content>
-        <div class="flex flex-col h-full justify-between p-4">
+        <div class="flex flex-col h-full w-full justify-between p-4">
           <div class="relative flex justify-between items-center">
             <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
               <mat-label>Tìm Kiếm</mat-label>
@@ -58,7 +58,7 @@
                 <span class="material-symbols-outlined">more_vert</span>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>
+                <button mat-menu-item (click)="CreateCategory(dialogCreateCategory)">
                   <div class="flex flex-row justify-center items-center">
                     <span class="material-symbols-outlined mr-2">add_circle</span>
                     <span>Thêm Mới</span>
@@ -142,24 +142,52 @@
                     <span class="material-symbols-outlined">more_vert</span>
                   </button>
                   <mat-menu #menu1="matMenu">
-                    <button mat-menu-item (click)="addTask(dialogTask)">
+                    <button mat-menu-item (click)="addTask(dialogTask);Task.idDM=node.node.id">
                       <div class="flex flex-row items-center">
                         <span class="material-symbols-outlined text-green-600 mr-2">add_circle</span>
                         <span>Thêm Mới</span>
                       </div>
                     </button>
-                    <button mat-menu-item (click)="editItem(node)">
-                      <div class="flex flex-row items-center">
+
+                    @if(node.node.TypeMenu == 'Task'){
+                      <button mat-menu-item (click)="updateTask(dialogUpdateTask);Task=node.node">
+                        <div class="flex flex-row items-center">
                         <span class="material-symbols-outlined text-blue-600 mr-2">edit</span>
                         <span>Chỉnh Sửa</span>
                         </div>
-                    </button>
-                    <button mat-menu-item (click)="removeItem(node)">
-                      <div class="flex flex-row items-center">
+                      </button>
+                    }@else{
+                      <button mat-menu-item (click)="updateCategory(dialogUpdateCategory);Category=node.node">
+                        <div class="flex flex-row items-center">
+                        <span class="material-symbols-outlined text-blue-600 mr-2">edit</span>
+                        <span>Chỉnh Sửa</span>
+                        </div>
+                      </button>
+                    }
+
+
+                    @if(node.node.TypeMenu == 'Task'){
+                      <button mat-menu-item (click)="deleteTask(dialogDeleteTask);Task=node.node">
+                        <div class="flex flex-row items-center">
                         <span class="material-symbols-outlined text-red-600 mr-2">delete</span>
                         <span>Xoá</span>
                       </div>
                     </button>
+                    }@else{
+                      <button mat-menu-item (click)="deleteCategory(dialogDeleteCategory);Category=node.node">
+                        <div class="flex flex-row items-center">
+                        <span class="material-symbols-outlined text-red-600 mr-2">delete</span>
+                        <span>Xoá</span>
+                      </div>
+                    </button>
+                    }
+
+                    <!-- <button mat-menu-item (click)="removeItem(node)">
+                      <div class="flex flex-row items-center">
+                        <span class="material-symbols-outlined text-red-600 mr-2">delete</span>
+                        <span>Xoá</span>
+                      </div>
+                    </button> -->
                   </mat-menu>
                 </div>
                 </div>
@@ -175,7 +203,7 @@
   </div>
 </div>
 
-<ng-template #dialogTemplate>
+<!-- <ng-template #dialogTemplate>
   <div class="lg:min-w-[40vw] min-w-[90vw] min-h-[50vh] flex flex-col justify-between space-y-3 p-4">
     <div class="h-full flex flex-col space-y-2">
       <div class="text-center text-xl font-bold">Thêm Mới</div>
@@ -195,6 +223,40 @@
           <mat-select [(ngModel)]="Category.location" [ngModelOptions]="{ standalone: true }">
             <mat-option *ngFor="let item of ['top', 'main', 'bottom']" [value]="item">
               {{ item }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div mat-dialog-actions [align]="'end'" class="justify-center">
+      <button mat-flat-button color="warn" mat-dialog-close="false">Huỷ</button>
+      <button mat-flat-button color="primary" mat-dialog-close="true">
+        Đồng Ý
+      </button>
+    </div>
+  </div>
+</ng-template> -->
+
+<ng-template #dialogCreateCategory>
+  <div class="lg:min-w-[40vw] min-w-[90vw] min-h-[50vh] flex flex-col justify-between space-y-3 p-4">
+    <div class="h-full flex flex-col space-y-2">
+      <div class="text-center text-xl font-bold">Thêm mới</div>
+      <div class="flex flex-col justify-start w-full space-y-4 p-4">
+        <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
+          <mat-label>Tiêu Đề</mat-label>
+          <input (input)="ToSlug()" matInput [(ngModel)]="Category.Title" [ngModelOptions]="{ standalone: true }"
+            placeholder="Tiêu Đề" />
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
+          <mat-label>Slug</mat-label>
+          <input matInput [(ngModel)]="Category.Slug" [ngModelOptions]="{ standalone: true }" placeholder="Slug" />
+        </mat-form-field>
+
+        <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
+          <mat-select [(ngModel)]="Category.pid" [ngModelOptions]="{ standalone: true }">
+            <mat-option *ngFor="let item of Categories" [value]="item.id">
+              {{ item.Title }}
             </mat-option>
           </mat-select>
         </mat-form-field>

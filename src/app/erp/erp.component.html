@@ -2,7 +2,7 @@
   <img src="/bg-room.webp" class="object-cover lg:block hidden absolute top-0 right-0 w-full h-full">
   <img src="/bg-mobile.webp" class="object-cover lg:hidden block absolute top-0 right-0 w-full h-full">
   <div class="bg-white flex rounded-lg lg:w-1/3 w-[90%] h-[90%] overflow-auto absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-    <div class="relative grid lg:grid-cols-2 grid-cols-1 gap-8 p-4">
+    <div class="relative grid lg:grid-cols-2 grid-cols-2 gap-8 p-4">
      <div class="absolute top-0 right-0 w-full h-full bg-white opacity-90 rounded-lg shadow-lg"></div>
      @for (item of items; track item.id; let idx = $index, e = $even) {
       <a [href]="item.link" class="cursor-pointer hover:bg-white hover:shadow-lg rounded-lg relative m-auto space-y-2 text-center items-center justify-center p-3">

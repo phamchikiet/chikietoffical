@@ -16,6 +16,7 @@ import { filter, take } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { QuanlyduanComponent } from '../quanlyduan.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
 @Component({
   selector: 'app-detail',
   standalone: true,

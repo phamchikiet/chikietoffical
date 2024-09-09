@@ -279,6 +279,8 @@ applyFilter(event: Event) {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'true') {
+        console.log(this.Category);
+
         this.Category.isDelete = true
         this._CategoryService.UpdateCategory(this.Category).then(() => this.ngOnInit())
       }

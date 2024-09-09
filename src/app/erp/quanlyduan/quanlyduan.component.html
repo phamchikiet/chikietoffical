@@ -40,7 +40,7 @@
     </mat-drawer-container> -->
 
     <mat-drawer-container class="flex-grow">
-      <mat-drawer #drawer position="end" class="bg-white flex flex-col h-full lg:!w-2/3 !w-full">
+      <mat-drawer #drawer position="end" class="bg-white flex flex-col h-full lg:!w-4/5 !w-full">
         <router-outlet></router-outlet>
       </mat-drawer>
       <mat-drawer-content>
@@ -81,7 +81,7 @@
                     <span class="material-symbols-outlined">more_vert</span>
                   </button>
                   <mat-menu #menu1="matMenu">
-                    <button mat-menu-item (click)="addTask(dialogTask)">
+                    <button mat-menu-item (click)="addTask(dialogTask);Task.idDM=node.node.id">
                       <div class="flex flex-row items-center">
                         <span class="material-symbols-outlined text-green-600 mr-2">add_circle</span>
                         <span>Thêm Mới</span>

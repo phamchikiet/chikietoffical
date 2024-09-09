@@ -46,7 +46,6 @@ export class TodoEntity {
   DeleteAt: Date;
   @Column({ nullable: true })
   idCreate: string;
-
   @BeforeInsert()
   @BeforeUpdate()
   checkTitle() {

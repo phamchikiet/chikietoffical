@@ -110,6 +110,8 @@ export class QuanlyduanService {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
+          console.log(data);
+
           this._quanlyduans.next(data.items)
           this._totalCount.next(data.totalCount)
           return data;

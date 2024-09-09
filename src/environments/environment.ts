@@ -1,6 +1,7 @@
 export const environment = {
     production:true,
-    APITINYMCE: "1cdi3qs7qw7nogvpu6poxqc6z7bf4a4hurwyao0kdbd741dl",
+    //APITINYMCE: "1cdi3qs7qw7nogvpu6poxqc6z7bf4a4hurwyao0kdbd741dl",
+    APITINYMCE: "t9hvocq9xlyr70tvuoonphblkih76rbxyvnvffr6c3z93slx",
     APIURL:'http://localhost:3334',
     //APIURL:'https://api.chikiet.com',
     ImageURL:'https://images.tazaskinclinic.com/',

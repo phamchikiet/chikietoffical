@@ -21,7 +21,15 @@ export class TodoService {
   }
 
   async findAll() {
-    return await this.TodoRepository.find();
+    const result = await this.TodoRepository.find();
+    // console.log(result);
+    // result.forEach((v:any) => {
+    //   v.Content.push({id:v.Content.length+1,type:'text',detail:v.Mota})
+    //   this.update(v.id,v)
+    //   console.log(v);
+      
+    // });
+    return result
   }
   async findid(id: string) {
     const result = await this.TodoRepository.findOne({ where: { id: id } });
@@ -86,7 +94,7 @@ export class TodoService {
     return { items, totalCount };
   }
   async update(id: string, UpdateTodoDto: any) {
-    this.TodoRepository.save(UpdateTodoDto);
+    await this.TodoRepository.save(UpdateTodoDto);
     return await this.TodoRepository.findOne({ where: { id: id } });
   }
   async remove(id: string) {

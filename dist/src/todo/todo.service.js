@@ -32,7 +32,8 @@ let TodoService = class TodoService {
         }
     }
     async findAll() {
-        return await this.TodoRepository.find();
+        const result = await this.TodoRepository.find();
+        return result;
     }
     async findid(id) {
         const result = await this.TodoRepository.findOne({ where: { id: id } });
@@ -96,7 +97,7 @@ let TodoService = class TodoService {
         return { items, totalCount };
     }
     async update(id, UpdateTodoDto) {
-        this.TodoRepository.save(UpdateTodoDto);
+        await this.TodoRepository.save(UpdateTodoDto);
         return await this.TodoRepository.findOne({ where: { id: id } });
     }
     async remove(id) {

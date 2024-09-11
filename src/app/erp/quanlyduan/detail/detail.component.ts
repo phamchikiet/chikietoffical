@@ -40,7 +40,8 @@ import { CommonModule } from '@angular/common';
 })
 
 export class DetailComponent implements OnInit {
-
+isEdit:boolean=false;
+isFullScreen:boolean=false;
 APITINYMCE= environment.APITINYMCE;
 configTiny: EditorComponent['init'] = {
   // selector: '.dfree-header',
@@ -116,6 +117,7 @@ configTiny: EditorComponent['init'] = {
     private renderer: Renderer2,
   ) { }
   async ngOnInit() {
+    this.isEdit=false;
     this.route.paramMap.subscribe(async params => {
       const id = params.get('id');
       if (id) {
@@ -123,6 +125,8 @@ configTiny: EditorComponent['init'] = {
         await this._QuanlyduansService.getQuanlyduansByid(id);
         this._QuanlyduansService.quanlyduan$.subscribe((data) => {
           this.Detail = data;
+          console.log('Detail',this.Detail);
+
         });
       }
     });
@@ -142,9 +146,9 @@ configTiny: EditorComponent['init'] = {
     this.ngOnInit()
    })
   }
-  AddContent()
+  AddContent(type:string)
   {
-    this.Detail.Content.push({id:this.Detail.Content.length+1,type: 'editor', detail: "a"});
+    this.Detail.Content.push({id:this.Detail.Content.length+1,type: type, detail: "Demo"});
     console.log(this.Detail.Content);
   }
 
@@ -193,6 +197,22 @@ configTiny: EditorComponent['init'] = {
       console.error('No image selected or URL not available');
       // Optionally, you could show a user-friendly error message here
     }
+  }
+  DeleteContent(item:any)
+  {
+    this.Detail.Content.splice(this.Detail.Content.indexOf(item), 1);
+    this._QuanlyduansService.UpdateQuanlyduans(this.Detail).then(() => {
+      this.notifier.notify('success', 'Xóa thành công');
+      this.ngOnInit()
+    })
+  }
+  CopyContent(item:any)
+  {
+    this.Detail.Content.push({id:this.Detail.Content.length+1,type: item.type, detail: item.detail})
+    this._QuanlyduansService.UpdateQuanlyduans(this.Detail).then(() => {
+      this.notifier.notify('success', 'Sao chép thành công');
+      this.ngOnInit()
+    })
   }
 }
 

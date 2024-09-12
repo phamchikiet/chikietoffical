@@ -6,18 +6,16 @@ import { TodoEntity } from './entities/todo.entity';
 export class TodoService {
   constructor(
     @InjectRepository(TodoEntity)
-    private TodoRepository: Repository<TodoEntity>
-  ) { }
+    private TodoRepository: Repository<TodoEntity>,
+  ) {}
   async create(data: any) {
-    const check = await this.findSHD(data)
-    if(!check) {
+    const check = await this.findSHD(data);
+    if (!check) {
       this.TodoRepository.create(data);
       return await this.TodoRepository.save(data);
+    } else {
+      return { error: 1001, data: 'Trùng Dữ Liệu' };
     }
-    else {
-      return { error: 1001, data: "Trùng Dữ Liệu" }
-    }
-
   }
 
   async findAll() {
@@ -27,24 +25,23 @@ export class TodoService {
     //   v.Content.push({id:v.Content.length+1,type:'text',detail:v.Mota})
     //   this.update(v.id,v)
     //   console.log(v);
-      
+
     // });
-    return result
+    return result;
   }
   async findid(id: string) {
     const result = await this.TodoRepository.findOne({ where: { id: id } });
-    if(result) {
-      return result
-    }
-    else {
-      return {error: 1001, data: "Không Tồn Tại"}
+    if (result) {
+      return result;
+    } else {
+      return { error: 1001, data: 'Không Tồn Tại' };
     }
   }
   async findSHD(data: any) {
     return await this.TodoRepository.findOne({
       where: {
         Title: data.Title,
-        Type: data.Type
+        Type: data.Type,
       },
     });
   }
@@ -66,7 +63,7 @@ export class TodoService {
     };
   }
   async findQuery(params: any) {
-   // console.error(params);
+    // console.error(params);
     const queryBuilder = this.TodoRepository.createQueryBuilder('todo');
     if (params.hasOwnProperty('Batdau') && params.hasOwnProperty('Ketthuc')) {
       queryBuilder.andWhere('todo.CreateAt BETWEEN :startDate AND :endDate', {
@@ -75,22 +72,30 @@ export class TodoService {
       });
     }
     if (params.hasOwnProperty('Title')) {
-      queryBuilder.andWhere('todo.Title LIKE :Title', { SDT: `%${params.Title}%` });
+      queryBuilder.andWhere('todo.Title LIKE :Title', {
+        SDT: `%${params.Title}%`,
+      });
     }
     if (params.hasOwnProperty('idDM')) {
       queryBuilder.andWhere('todo.idDM LIKE :idDM', { idDM: params.idDM });
     }
     if (params.hasOwnProperty('isDelete')) {
-      queryBuilder.andWhere('todo.isDelete LIKE :isDelete', { isDelete: params.isDelete });
+      queryBuilder.andWhere('todo.isDelete LIKE :isDelete', {
+        isDelete: params.isDelete,
+      });
     }
-    if (params.hasOwnProperty('idUser')) {
-      queryBuilder.andWhere('user.idUser = :idUser', { idUser: params.idUser })
-      .orWhere('user.idUser::text ILIKE :idUser', { idUser: `%${params.idUser}%` });
-    }
-    const [items, totalCount] = await queryBuilder
+    const [result, totalCount] = await queryBuilder
       .limit(params.pageSize || 10) // Set a default page size if not provided
       .offset(params.pageNumber * params.pageSize || 0)
-      .getManyAndCount();      
+      .getManyAndCount();
+    let items: any = [];
+    if (params.hasOwnProperty('idUser')) {
+      items = result.filter((v: any) =>
+        v.idUser.some((v1: any) => v1.idUser == params.idUser),
+      );
+    } else {
+      items = result;
+    }
     return { items, totalCount };
   }
   async update(id: string, UpdateTodoDto: any) {
@@ -98,7 +103,7 @@ export class TodoService {
     return await this.TodoRepository.findOne({ where: { id: id } });
   }
   async remove(id: string) {
-    console.error(id)
+    console.error(id);
     await this.TodoRepository.delete(id);
     return { deleted: true };
   }

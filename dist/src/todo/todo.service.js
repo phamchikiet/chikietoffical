@@ -28,7 +28,7 @@ let TodoService = class TodoService {
             return await this.TodoRepository.save(data);
         }
         else {
-            return { error: 1001, data: "Trùng Dữ Liệu" };
+            return { error: 1001, data: 'Trùng Dữ Liệu' };
         }
     }
     async findAll() {
@@ -41,14 +41,14 @@ let TodoService = class TodoService {
             return result;
         }
         else {
-            return { error: 1001, data: "Không Tồn Tại" };
+            return { error: 1001, data: 'Không Tồn Tại' };
         }
     }
     async findSHD(data) {
         return await this.TodoRepository.findOne({
             where: {
                 Title: data.Title,
-                Type: data.Type
+                Type: data.Type,
             },
         });
     }
@@ -78,22 +78,29 @@ let TodoService = class TodoService {
             });
         }
         if (params.hasOwnProperty('Title')) {
-            queryBuilder.andWhere('todo.Title LIKE :Title', { SDT: `%${params.Title}%` });
+            queryBuilder.andWhere('todo.Title LIKE :Title', {
+                SDT: `%${params.Title}%`,
+            });
         }
         if (params.hasOwnProperty('idDM')) {
             queryBuilder.andWhere('todo.idDM LIKE :idDM', { idDM: params.idDM });
         }
         if (params.hasOwnProperty('isDelete')) {
-            queryBuilder.andWhere('todo.isDelete LIKE :isDelete', { isDelete: params.isDelete });
+            queryBuilder.andWhere('todo.isDelete LIKE :isDelete', {
+                isDelete: params.isDelete,
+            });
         }
-        if (params.hasOwnProperty('idUser')) {
-            queryBuilder.andWhere('user.idUser = :idUser', { idUser: params.idUser })
-                .orWhere('user.idUser::text ILIKE :idUser', { idUser: `%${params.idUser}%` });
-        }
-        const [items, totalCount] = await queryBuilder
+        const [result, totalCount] = await queryBuilder
             .limit(params.pageSize || 10)
             .offset(params.pageNumber * params.pageSize || 0)
             .getManyAndCount();
+        let items = [];
+        if (params.hasOwnProperty('idUser')) {
+            items = result.filter((v) => v.idUser.some((v1) => v1.idUser == params.idUser));
+        }
+        else {
+            items = result;
+        }
         return { items, totalCount };
     }
     async update(id, UpdateTodoDto) {

@@ -10,7 +10,7 @@ export declare class TodoController {
     }>;
     findslug(slug: string): Promise<import("./entities/todo.entity").TodoEntity>;
     findQuery(SearchParams: any): Promise<{
-        items: import("./entities/todo.entity").TodoEntity[];
+        items: any;
         totalCount: number;
     }>;
     update(id: string, data: any): Promise<import("./entities/todo.entity").TodoEntity>;

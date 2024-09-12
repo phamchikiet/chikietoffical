@@ -19,7 +19,7 @@ export declare class TodoService {
         data: TodoEntity[];
     }>;
     findQuery(params: any): Promise<{
-        items: TodoEntity[];
+        items: any;
         totalCount: number;
     }>;
     update(id: string, UpdateTodoDto: any): Promise<TodoEntity>;

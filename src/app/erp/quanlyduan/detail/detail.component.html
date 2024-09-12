@@ -1,147 +1,352 @@
-<div class="!flex flex-col flex-auto min-w-0 relative bg-white !h-screen w-full">
+<div
+  class="!flex flex-col flex-auto min-w-0 relative bg-white !h-screen w-full"
+>
   <div class="p-2 relative flex flex-col">
     <div class="flex flex-row justify-between items-center">
       <a (click)="CloseDetail()" mat-icon-button>
-        <span class="material-symbols-outlined">
-          arrow_back
-        </span>
+        <span class="material-symbols-outlined"> arrow_back </span>
       </a>
-      <div class="font-bold text-xl truncate">{{Detail.Title||'Chưa có tiêu đề'}}</div>
+      <div class="font-bold text-xl truncate">
+        {{ Detail.Title || "Chưa có tiêu đề" }}
+      </div>
       <div class="flex flex-row space-x-2 items-center">
         <button mat-icon-button>
-          <span class="material-symbols-outlined">
-            open_in_full
-            </span>
+          <span class="material-symbols-outlined"> group </span>
+        </button>
+        <button mat-icon-button>
+          <span class="material-symbols-outlined">open_in_full</span>
         </button>
         @if (isEdit){
-          <button mat-icon-button (click)="UpdateDetail();">
-            <span class="material-symbols-outlined">save</span>
-          </button>
+        <button mat-icon-button (click)="UpdateDetail()">
+          <span class="material-symbols-outlined">save</span>
+        </button>
         }@else{
-          <button mat-icon-button (click)="isEdit=true">
-            <span class="material-symbols-outlined">edit_square</span>
-          </button>
+        <button mat-icon-button (click)="isEdit = true">
+          <span class="material-symbols-outlined">edit_square</span>
+        </button>
         }
         <button mat-icon-button (click)="CloseDetail()">
-          <span class="material-symbols-outlined">
-            close
-          </span>
+          <span class="material-symbols-outlined"> close </span>
         </button>
       </div>
-
     </div>
   </div>
   <div class="p-2 border-y relative flex flex-col h-full w-full overflow-auto">
     @if (isEdit){
-      <div class="flex flex-col space-y-2">
-        <!-- <div class="w-full flex flex-row space-x-2 p-2">
-          <editor (ngModelChange)="OnChange($event)" class="w-full" [apiKey]="APITINYMCE"
-           [(ngModel)]="Detail.Mota" [ngModelOptions]="{standalone: true}" [init]="configTiny"></editor>
-        </div> -->
-        <div class="flex flex-col space-y-2 p-2">
-          @for (item of Detail?.Content; track i; let i = $index) {
-            <div class="relative flex flex-col space-y-2 w-full">
-                <span class="flex justify-center items-center">
-                  <span class="bg-slate-100 p-2 rounded-lg">Section {{i+1}}</span>
-                    <button mat-icon-button (click)="CopyContent(item)">
-                      <span class="material-symbols-outlined">copy_all</span>
-                    </button>
-                    <button mat-icon-button (click)="DeleteContent(item)">
-                    <span class="material-symbols-outlined">delete</span>
-                  </button>
-                </span>
-              @if (item.type == 'text') {
-                <div class="w-full flex flex-row space-x-2 p-2">
-                  <editor (ngModelChange)="OnChange($event)" class="w-full" [apiKey]="APITINYMCE"
-                   [(ngModel)]="Detail.Content[i].detail" [ngModelOptions]="{standalone: true}" [init]="configTiny"></editor>
-                </div>
-              }
-            </div>
+    <div class="flex flex-col space-y-2">
+      <div class="flex flex-col space-y-2 p-2">
+        @for (item of Detail?.Content; track i; let i = $index) {
+        <div
+          class="relative flex flex-col space-y-2 w-full border border-dashed p-2"
+        >
+          <span class="flex justify-center items-center">
+            <button mat-icon-button (click)="dragContent(item)">
+              <span class="material-symbols-outlined">drag_indicator</span>
+            </button>
+            <span class="bg-slate-100 p-2 rounded-lg">Section {{ i + 1 }}</span>
+            <button mat-icon-button (click)="CopyContent(item)">
+              <span class="material-symbols-outlined">copy_all</span>
+            </button>
+            <button mat-icon-button (click)="DeleteContent(item)">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </span>
+          @if (item.type == 'text') {
+          <div class="w-full flex flex-row space-x-2 p-2">
+            <editor
+              (ngModelChange)="OnChange($event)"
+              class="w-full"
+              [apiKey]="APITINYMCE"
+              [(ngModel)]="Detail.Content[i].detail"
+              [ngModelOptions]="{ standalone: true }"
+              [init]="configTiny"
+            ></editor>
+          </div>
+          } @if(item.type == 'table') { kdsjfksdjfklsjf
+          <div class="w-full flex flex-row space-x-2 p-2 overflow-auto">
+            <table class="w-full border-collapse border">
+              <thead>
+                <tr>
+                  <th class="border p-2">ID</th>
+                  <th class="border p-2">Name</th>
+                  <th class="border p-2">Age</th>
+                  <th class="border p-2">Address</th>
+                  <th class="border p-2">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of item.detail; track row.id; let j = $index) {
+                <tr>
+                  <td class="border p-2">
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-full"
+                      subscriptSizing="dynamic"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="Detail.Content[i].detail[j].id"
+                      />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-full"
+                      subscriptSizing="dynamic"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="Detail.Content[i].detail[j].name"
+                      />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-full"
+                      subscriptSizing="dynamic"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="Detail.Content[i].detail[j].age"
+                      />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-full"
+                      subscriptSizing="dynamic"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="Detail.Content[i].detail[j].address"
+                      />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-full"
+                      subscriptSizing="dynamic"
+                    >
+                      <input
+                        matInput
+                        [(ngModel)]="Detail.Content[i].detail[j].price"
+                      />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                } @empty {
+                <tr>
+                  <td class="border p-2">
+                    <mat-form-field class="w-full">
+                      <input matInput placeholder="Enter ID" />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field class="w-full">
+                      <input matInput placeholder="Enter Name" />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field class="w-full">
+                      <input matInput placeholder="Enter Age" />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field class="w-full">
+                      <input matInput placeholder="Enter Address" />
+                    </mat-form-field>
+                  </td>
+                  <td class="border p-2">
+                    <mat-form-field class="w-full">
+                      <input matInput placeholder="Enter Price" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
           }
-          <div class="flex flex-col space-y-2 justify-center items-center border border-dashed p-3">
-            <span class="italic text-sm text-slate-500">(Vui lòng chọn loại nội dung để thêm)</span>
-            <div class="flex flex-row space-x-2 justify-center items-center overflow-auto py-2">
-              <div (click)="AddContent('text')"  class="flex flex-col space-y-2 items-center hover:bg-blue-200 p-2 bg-slate-100 rounded-lg">
-                <span class="material-symbols-outlined">text_fields</span>
-                <span class="text-xs">Văn bản</span>
-              </div>
-              <div (click)="AddContent('image')"  class="flex flex-col space-y-2 items-center hover:bg-blue-200 p-2 bg-slate-100 rounded-lg">
-                <span class="material-symbols-outlined">image</span>
-                <span class="text-xs">Hình ảnh</span>
-              </div>
-              <div (click)="AddContent('video')"  class="flex flex-col space-y-2 items-center hover:bg-blue-200 p-2 bg-slate-100 rounded-lg">
-                <span class="material-symbols-outlined">smart_display</span>
-                <span class="text-xs">Video</span>
-              </div>
+        </div>
+        }
+        <div
+          class="flex flex-col space-y-2 justify-center items-center border border-dashed p-3"
+        >
+          <span class="italic text-sm text-slate-500"
+            >(Vui lòng chọn loại nội dung để thêm)</span
+          >
+          <div
+            class="flex flex-row space-x-2 justify-center items-center overflow-auto py-2"
+          >
+            <div
+              (click)="AddContent('text')"
+              class="flex flex-col space-y-2 items-center hover:bg-blue-200 p-2 bg-slate-100 rounded-lg"
+            >
+              <span class="material-symbols-outlined">text_fields</span>
+              <span class="text-xs">Văn bản</span>
+            </div>
+            <div
+              (click)="AddContent('image')"
+              class="flex flex-col space-y-2 items-center hover:bg-blue-200 p-2 bg-slate-100 rounded-lg"
+            >
+              <span class="material-symbols-outlined">image</span>
+              <span class="text-xs">Hình ảnh</span>
+            </div>
+            <div
+              (click)="AddContent('video')"
+              class="flex flex-col space-y-2 items-center hover:bg-blue-200 p-2 bg-slate-100 rounded-lg"
+            >
+              <span class="material-symbols-outlined">smart_display</span>
+              <span class="text-xs">Video</span>
+            </div>
+            <div
+              (click)="AddContent('table')"
+              class="flex flex-col space-y-2 items-center hover:bg-blue-200 p-2 bg-slate-100 rounded-lg"
+            >
+              <span class="material-symbols-outlined">table</span>
+              <span class="text-xs">Table</span>
             </div>
           </div>
         </div>
       </div>
+    </div>
     } @else {
-      <div class="flex flex-col space-y-8 p-2">
-        @for (item of Detail?.Content; track i; let i = $index) {
-          @if (item.type == 'text') {
-            <div class="relative border border-dashed w-full flex flex-row space-x-2 p-2">
-              <div class="absolute -top-3 left-1/2">
-                <span class="rounded-lg bg-blue-500 text-white px-2 py-1 text-xs">Section {{i+1}}</span>
-              </div>
-              <div [innerHTML]="item.detail"></div>
-            </div>
-          }
-          @if (item.type == 'image') {
-            <div class="border border-dashed w-full flex flex-row space-x-2 p-2">
-              <img [src]="item.detail" class="w-full h-auto">
-            </div>
-          }
-          @if (item.type == 'video') {
-            <div class="border border-dashed w-full flex flex-row space-x-2 p-2">
-              <video [src]="item.detail" class="w-full h-auto"></video>
-            </div>
-          }
-        }
+    <div class="flex flex-col space-y-8 p-2">
+      @for (item of Detail?.Content; track i; let i = $index) { @if (item.type
+      == 'text') {
+      <div
+        class="relative border border-dashed w-full flex flex-row space-x-2 p-2"
+      >
+        <div class="absolute -top-3 left-1/2">
+          <span class="rounded-lg bg-blue-500 text-white px-2 py-1 text-xs"
+            >Section {{ i + 1 }}</span
+          >
+        </div>
+        <div [innerHTML]="item.detail"></div>
       </div>
+      } @if (item.type == 'image') {
+      <div class="border border-dashed w-full flex flex-row space-x-2 p-2">
+        <img [src]="item.detail" class="w-full h-auto" />
+      </div>
+      } @if (item.type == 'video') {
+      <div class="border border-dashed w-full flex flex-row space-x-2 p-2">
+        <video [src]="item.detail" class="w-full h-auto"></video>
+      </div>
+      } @if (item.type == 'table') {
+      <div
+        class="relative border border-dashed w-full flex flex-row space-x-2 p-2"
+      >
+        <div class="absolute -top-3 left-1/2">
+          <span class="rounded-lg bg-blue-500 text-white px-2 py-1 text-xs"
+            >Section {{ i + 1 }}</span
+          >
+        </div>
+        <table class="w-full border-collapse border">
+          <thead>
+            <tr>
+              <th class="border p-2">ID</th>
+              <th class="border p-2">Name</th>
+              <th class="border p-2">Age</th>
+              <th class="border p-2">Address</th>
+              <th class="border p-2">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of item.detail; track row.id; let j = $index) {
+            <tr>
+              <td class="border p-2">{{ row.id }}</td>
+              <td class="border p-2">{{ row.name }}</td>
+              <td class="border p-2">{{ row.age }}</td>
+              <td class="border p-2">{{ row.address }}</td>
+              <td class="border p-2">{{ row.price }}</td>
+            </tr>
+            } @empty {
+            <tr>
+              <td class="border p-2">1</td>
+              <td class="border p-2">2</td>
+              <td class="border p-2">3</td>
+              <td class="border p-2">4</td>
+              <td class="border p-2">5</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      } }
+    </div>
     }
   </div>
   <div class="p-2 relative flex flex-col flex-0 space-y-1 justify-center">
-      <div class="flex flex-row space-x-2 items-center">
-        <div class="font-bold">File đính Kèm ({{Detail?.attachments?.length}})</div>
+    <div class="flex flex-row space-x-2 items-center">
+      <div class="font-bold">
+        File đính Kèm ({{ Detail?.attachments?.length }})
       </div>
-        <div class="flex flex-row space-x-2 items-center overflow-x-auto py-2">
-          <div (click)="uploadfile.click()" class="cursor-pointer flex items-center justify-center border border-dashed border-blue-500 h-12 w-12 rounded-lg p-2">
-            <span class="material-symbols-outlined text-blue-500">add_circle</span>
-            <input class="hidden" (change)="attachment($event)" type="file" #uploadfile>
-          </div>
-          @for (item of Detail?.attachments; track i; let i = $index) {
-              @switch (item.type) {
-                  @case ("application/x-zip-compressed") {
-                    <div class="h-16 w-16 rounded-lg border p-2"  [matTooltip]="item.name">.zip</div>
-                  }
-                  @default {
-                    <img (click)="ViewImage(imageDialog);SelectImage=item" [src]="item.url" class="h-16 w-16 rounded-lg border p-2" [matTooltip]="item.name">
-                  }
-                }
-          }@empty {
-              <div>Chưa có file đính kèm</div>
-              }
-        </div>
+    </div>
+    <div class="flex flex-row space-x-2 items-center overflow-x-auto py-2">
+      <div
+        (click)="uploadfile.click()"
+        class="cursor-pointer flex items-center justify-center border border-dashed border-blue-500 h-12 w-12 rounded-lg p-2"
+      >
+        <span class="material-symbols-outlined text-blue-500">add_circle</span>
+        <input
+          class="hidden"
+          (change)="attachment($event)"
+          type="file"
+          #uploadfile
+        />
+      </div>
+      @for (item of Detail?.attachments; track i; let i = $index) { @switch
+      (item.type) { @case ("application/x-zip-compressed") {
+      <div class="h-16 w-16 rounded-lg border p-2" [matTooltip]="item.name">
+        .zip
+      </div>
+      } @default {
+      <img
+        (click)="ViewImage(imageDialog); SelectImage = item"
+        [src]="item.url"
+        class="h-16 w-16 rounded-lg border p-2"
+        [matTooltip]="item.name"
+      />
+      } } }@empty {
+      <div>Chưa có file đính kèm</div>
+      }
+    </div>
   </div>
 </div>
 
 <ng-template #imageDialog>
   <div class="relative flex flex-col space-y-2 h-[100vh] w-[100vw]">
-    <div class="cursor-pointer relative flex flex-row justify-between items-center border-b p-2">
-      <span class="truncate">{{SelectImage?.name}}</span>
+    <div
+      class="cursor-pointer relative flex flex-row justify-between items-center border-b p-2"
+    >
+      <span class="truncate">{{ SelectImage?.name }}</span>
       <div class="flex flex-row space-x-2">
-          <span (click)="DownloadImage()" class="p-2 rounded-lg hover:bg-slate-200 items-center justify-center material-symbols-outlined">download</span>
-          <span class="p-2 rounded-lg hover:bg-slate-200 items-center justify-center material-symbols-outlined" mat-dialog-close>close</span>
+        <span
+          (click)="DownloadImage()"
+          class="p-2 rounded-lg hover:bg-slate-200 items-center justify-center material-symbols-outlined"
+          >download</span
+        >
+        <span
+          class="p-2 rounded-lg hover:bg-slate-200 items-center justify-center material-symbols-outlined"
+          mat-dialog-close
+          >close</span
+        >
       </div>
     </div>
-    <mat-dialog-content class="relative justify-center items-center overflow-auto">
-      <img [src]="SelectImage?.url" [alt]="SelectImage?.name" class="max-w-full max-h-full mx-auto" loading="lazy">
+    <mat-dialog-content
+      class="relative justify-center items-center overflow-auto"
+    >
+      <img
+        [src]="SelectImage?.url"
+        [alt]="SelectImage?.name"
+        class="max-w-full max-h-full mx-auto"
+        loading="lazy"
+      />
     </mat-dialog-content>
     <div class="relative"></div>
   </div>
 </ng-template>
-
-
-

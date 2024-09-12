@@ -45,11 +45,11 @@ isFullScreen:boolean=false;
 APITINYMCE= environment.APITINYMCE;
 configTiny: EditorComponent['init'] = {
   // selector: '.dfree-header',
-  // content_style: '.mce-content-body { border: 1px dashed blue; padding: 10px;  } '+'.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
-  content_style: '.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
+  content_style: '.mce-content-body { border: 1px dashed blue; padding: 10px;  } '+'.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
+  //content_style: '.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
   menubar: false,
   language: 'vi',
-  // inline: true,
+  inline: true,
   toolbar: 'image link bold italic underline alignleft aligncenter alignright alignjustify code',
   plugins: [
      'autoresize','quickbars','advlist','autolink','lists','link','image','charmap','preview','anchor',
@@ -148,7 +148,37 @@ configTiny: EditorComponent['init'] = {
   }
   AddContent(type:string)
   {
-    this.Detail.Content.push({id:this.Detail.Content.length+1,type: type, detail: "Demo"});
+    if(type == 'text')
+    {
+      this.Detail.Content.push({id:this.Detail.Content.length+1,type: type, detail: "Demo"});
+    }
+    if(type == 'image')
+    {
+      this.Detail.Content.push({id:this.Detail.Content.length+1,type: type, detail: "Demo"});
+    }
+    if(type == 'video')
+    {
+      this.Detail.Content.push({id:this.Detail.Content.length+1,type: type, detail: "Demo"});
+    }
+    if(type == 'table')
+    {
+      this.Detail.Content.push({id:this.Detail.Content.length+1,type: type, detail: [
+        {
+          "id": 1,
+          "name": "Nguyễn Văn A",
+          "age": 20,
+          "address": "Hà Nội",
+          "price": 100000
+        },
+        {
+          "id": 2,
+          "name": "Nguyễn Văn B",
+          "age": 25,
+          "address": "Hồ Chí Minh",
+          "price": 200000
+        }
+      ]});
+    }
     console.log(this.Detail.Content);
   }
 
@@ -213,6 +243,10 @@ configTiny: EditorComponent['init'] = {
       this.notifier.notify('success', 'Sao chép thành công');
       this.ngOnInit()
     })
+  }
+  dragContent(item:any)
+  {
+    console.log(item);
   }
 }
 

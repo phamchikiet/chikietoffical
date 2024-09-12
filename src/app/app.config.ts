@@ -14,7 +14,7 @@ import { LoadingInterceptor } from './loading.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     AngularFireAuth,
-    { provide: ErrorHandler, useClass: CatcherrorService },
+    //{ provide: ErrorHandler, useClass: CatcherrorService },
     provideZoneChangeDetection({ eventCoalescing: true }),
     // provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },

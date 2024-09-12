@@ -101,11 +101,10 @@ export class QuanlyduanComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private router: Router
   ) {
-    this._UsersService.getProfile()
-    this._UsersService.profile$.subscribe((data) => {
-      if (data) {
-        this.Profile = data
-      }
+    this._UsersService.getProfile().then((data) => {
+      this.Profile = data
+      console.log(this.Profile);
+
     })
    this.spinner.show();
   }
@@ -127,8 +126,6 @@ export class QuanlyduanComponent implements OnInit {
       node => node.children,
     ));
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      // this.drawerMode = result.matches ? 'over' : 'side';
-      // this.isOpen = result.matches ? false : true;
       this.leftsidebar = result.matches ? false : true;
       if (result.matches) {
         this.drawer.mode = 'over';
@@ -142,7 +139,7 @@ export class QuanlyduanComponent implements OnInit {
     this._QuanlyduansService.isHaveQuanlyduan$.subscribe((data:any) => this.isHaveQuanlyduan = data);
     this.Categories = this.FilterCategories = await this._CategoryService.getAllCategory();
     Promise.all(this.Categories.map(async (v) => {
-      const children = await this._QuanlyduansService.SearchQuanlyduans({...this.SearchParams, idDM: v.id});
+      const children = await this._QuanlyduansService.SearchQuanlyduans({...this.SearchParams, idDM: v.id,idUser:this.Profile.id});
       v.TypeMenu ='Category'
       if (children.totalCount > 0) {
         children.items.forEach((v:any) => {
@@ -151,8 +148,11 @@ export class QuanlyduanComponent implements OnInit {
         v.children = children.items;
       }
       return v;
-    })).then((updatedCategories) => {
-      this.dataSource.data = updatedCategories;
+    })).then((updatedCategories:any) => {
+      const filterCategories = updatedCategories.filter((v:any) => v?.children?.length > 0);
+      console.log(filterCategories);
+
+      this.dataSource.data = filterCategories
     });
      this.spinner.hide();
 
@@ -240,6 +240,9 @@ applyFilter(event: Event) {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result=="true") {
+        console.log(this.Profile);
+
+          this.Task.idUser = [{idUser:this.Profile.id,name:this.Profile.name}]
           this._QuanlyduansService.CreateQuanlyduans(this.Task).then(() => this.ngOnInit())
       }
     });

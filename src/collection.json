@@ -3,7 +3,8 @@
   "schematics": {
     "kata-schematic": {
       "description": "A blank schematic.",
-      "factory": "./kata-schematic/index#kataSchematic"
+      "factory": "./kata-schematic/index#kataSchematic",
+      "schema": "./kata-schematic/schema.json"
     }
   }
 }

@@ -62,6 +62,9 @@ export class CategoryService {
     if (params.hasOwnProperty('Title')) {
       queryBuilder.andWhere('category.Title LIKE :Title', { Title: `%${params.Title}%` });
     }
+    if (params.hasOwnProperty('Type')) {
+      queryBuilder.andWhere('category.Type LIKE :Type', { Type: `${params.Type}` });
+    }
     if (params.hasOwnProperty('idDelete')) {
       queryBuilder.andWhere('category.idDelete LIKE :idDelete', { idDelete: params.idDelete });
     }

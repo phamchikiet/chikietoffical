@@ -1,5 +1,6 @@
 export declare class UsersEntity {
     id: string;
+    ref_id: string;
     gid: string;
     fid: string;
     zid: string;
@@ -8,6 +9,8 @@ export declare class UsersEntity {
     idGroup: string;
     Code: string;
     Hoten: string;
+    Avatar: string;
+    Ngaysinh: Date;
     email: string;
     Gioitinh: string;
     EditChinhanhs: string;

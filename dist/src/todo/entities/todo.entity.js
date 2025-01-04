@@ -8,14 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var TodoEntity_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodoEntity = void 0;
 const typeorm_1 = require("typeorm");
-let TodoEntity = class TodoEntity {
+let TodoEntity = TodoEntity_1 = class TodoEntity {
     checkTitle() {
         if (!this.Title || this.Title.trim() === '') {
             this.Title = 'Noname';
         }
+    }
+    async setOrdering() {
+        const repo = (0, typeorm_1.getRepository)(TodoEntity_1);
+        const maxOrdering = await repo
+            .createQueryBuilder("todo")
+            .select("MAX(todo.Ordering)", "max")
+            .getRawOne();
+        this.Ordering = (maxOrdering.max || 0) + 1;
     }
 };
 exports.TodoEntity = TodoEntity;
@@ -74,6 +83,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
+], TodoEntity.prototype, "Priority", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
 ], TodoEntity.prototype, "Status", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
@@ -98,7 +111,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], TodoEntity.prototype, "checkTitle", null);
-exports.TodoEntity = TodoEntity = __decorate([
+__decorate([
+    (0, typeorm_1.BeforeInsert)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TodoEntity.prototype, "setOrdering", null);
+exports.TodoEntity = TodoEntity = TodoEntity_1 = __decorate([
     (0, typeorm_1.Entity)('todos', { orderBy: { CreateAt: 'DESC' } })
 ], TodoEntity);
 //# sourceMappingURL=todo.entity.js.map

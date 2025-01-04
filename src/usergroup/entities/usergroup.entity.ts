@@ -5,6 +5,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 @Entity('usergroup', {orderBy: { CreateAt: 'DESC' } })
 export class UsergroupEntity {

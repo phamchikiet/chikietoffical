@@ -32,7 +32,8 @@ exports.UsersModule = UsersModule = __decorate([
             }),
         ],
         controllers: [users_controller_1.UsersController],
-        providers: [users_service_1.UsersService, jwt_strategy_1.JwtStrategy, local_strategy_1.LocalStrategy]
+        providers: [users_service_1.UsersService, jwt_strategy_1.JwtStrategy, local_strategy_1.LocalStrategy],
+        exports: [users_service_1.UsersService]
     })
 ], UsersModule);
 //# sourceMappingURL=users.module.js.map

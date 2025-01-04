@@ -6,10 +6,10 @@ export declare class UsersService {
     private usersRepository;
     private jwtService;
     constructor(usersRepository: Repository<UsersEntity>, jwtService: JwtService);
-    login(user: any): Promise<any>;
+    login(data: any): Promise<any>;
     loginsocial(data: any): Promise<(boolean | {
         access_token: string;
-        User: UsersEntity;
+        user: UsersEntity;
     })[] | (boolean | {
         access_token: string;
         newUser: any;
@@ -20,9 +20,9 @@ export declare class UsersService {
     findAll(): Promise<UsersEntity[]>;
     read(id: string): Promise<UsersEntity>;
     findid(id: string): Promise<UsersEntity>;
-    findbyEmail(user: any): Promise<UsersEntity>;
     findSDT(sdt: any): Promise<UsersEntity>;
     findbySDT(data: any): Promise<UsersEntity>;
+    findbyEmail(data: any): Promise<UsersEntity>;
     findAdmin(): Promise<UsersEntity[]>;
     findQuery(params: any): Promise<{
         items: UsersEntity[];

@@ -11,6 +11,8 @@ import { Role } from '../dto/create-user.dto';
  export class UsersEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
+  @Column({ nullable: true,default:'0'})
+  ref_id: string;
   @Column()
   gid: string;
   @Column()
@@ -27,6 +29,10 @@ import { Role } from '../dto/create-user.dto';
   Code: string;
   @Column()
   Hoten: string;
+  @Column()
+  Avatar: string;
+  @Column()
+  Ngaysinh: Date;
   @Column()
   email: string;
   @Column({ type: "text"})

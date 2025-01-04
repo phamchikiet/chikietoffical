@@ -19,6 +19,7 @@ import { LocalStrategy } from './entities/local.strategy';
   }),
   ],
   controllers: [UsersController],
-  providers: [UsersService,JwtStrategy,LocalStrategy]
+  providers: [UsersService,JwtStrategy,LocalStrategy],
+  exports:[UsersService]
 })
 export class UsersModule {}

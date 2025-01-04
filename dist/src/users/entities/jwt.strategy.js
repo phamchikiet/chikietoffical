@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JwtCustomStrategy = exports.JwtStrategy = void 0;
+exports.JwtStrategy = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
@@ -24,6 +24,8 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         this._UsersService = _UsersService;
     }
     async validate(payload) {
+        const data = await this._UsersService.findbyEmail(payload);
+        payload.roles = data?.Role;
         return payload;
     }
 };
@@ -32,22 +34,4 @@ exports.JwtStrategy = JwtStrategy = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], JwtStrategy);
-let JwtCustomStrategy = class JwtCustomStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'websitetoken') {
-    constructor(_UsersService) {
-        super({
-            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: "websitetoken"
-        });
-        this._UsersService = _UsersService;
-    }
-    async validate(payload) {
-        return payload;
-    }
-};
-exports.JwtCustomStrategy = JwtCustomStrategy;
-exports.JwtCustomStrategy = JwtCustomStrategy = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [users_service_1.UsersService])
-], JwtCustomStrategy);
 //# sourceMappingURL=jwt.strategy.js.map

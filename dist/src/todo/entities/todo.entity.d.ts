@@ -12,10 +12,12 @@ export declare class TodoEntity {
     Type: string;
     Ordering: number;
     isDelete: boolean;
+    Priority: number;
     Status: number;
     CreateAt: Date;
     UpdateAt: Date;
     DeleteAt: Date;
     idCreate: string;
     checkTitle(): void;
+    setOrdering(): Promise<void>;
 }

@@ -9,7 +9,7 @@ export declare class UsersController {
     login(user: any): Promise<any>;
     loginbygoogle(user: any): Promise<(boolean | {
         access_token: string;
-        User: import("./entities/user.entity").UsersEntity;
+        user: import("./entities/user.entity").UsersEntity;
     })[] | (boolean | {
         access_token: string;
         newUser: any;

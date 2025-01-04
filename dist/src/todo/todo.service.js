@@ -48,7 +48,7 @@ let TodoService = class TodoService {
         return await this.TodoRepository.findOne({
             where: {
                 Title: data.Title,
-                Type: data.Type,
+                Slug: data.Slug,
             },
         });
     }

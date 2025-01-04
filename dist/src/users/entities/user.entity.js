@@ -20,6 +20,10 @@ __decorate([
     __metadata("design:type", String)
 ], UsersEntity.prototype, "id", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true, default: '0' }),
+    __metadata("design:type", String)
+], UsersEntity.prototype, "ref_id", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "gid", void 0);
@@ -51,6 +55,14 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UsersEntity.prototype, "Hoten", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], UsersEntity.prototype, "Avatar", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Date)
+], UsersEntity.prototype, "Ngaysinh", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

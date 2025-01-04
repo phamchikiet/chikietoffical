@@ -5,6 +5,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UsergroupService } from 'src/usergroup/usergroup.service';
 import { ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from './entities/roles.guard';
+import { Roles } from './entities/roles.decorator';
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
@@ -27,7 +29,7 @@ export class UsersController {
   @Get('profile')
   @UseGuards(AuthGuard('websitetoken'))
   async getProfile(@Request() req) {    
-    const userPromise = this.usersService.findbySDT(req.user);
+    const userPromise = this.usersService.findbyEmail(req.user);
     const groupsPromise = this._UsergroupService.findAll();
     const [user, Groups] = await Promise.all([userPromise, groupsPromise]); 
     if (user) {
@@ -37,8 +39,7 @@ export class UsersController {
       return user;
     } else {
       return false;
-    }
-    
+    } 
   }
   @Post("register")
   async create(@Body() createUserDto: CreateUserDto) {
@@ -64,6 +65,8 @@ export class UsersController {
     // }
   }
   @Get()
+  @UseGuards(AuthGuard('websitetoken'),RolesGuard)
+  @Roles('admin')
   findAll() {
     return this.usersService.findAll();
   }

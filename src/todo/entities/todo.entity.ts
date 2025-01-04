@@ -6,7 +6,8 @@ import {
     UpdateDateColumn,
     DeleteDateColumn,
     BeforeInsert,
-    BeforeUpdate
+    BeforeUpdate,
+    getRepository
   } from 'typeorm';
 @Entity('todos', {orderBy: { CreateAt: 'DESC' } })
 export class TodoEntity {
@@ -37,6 +38,8 @@ export class TodoEntity {
   @Column({ default: false })
   isDelete: boolean;
   @Column({ default: 0 })
+  Priority: number;
+  @Column({ default: 0 })
   Status: number;
   @CreateDateColumn()
   CreateAt: Date;
@@ -52,5 +55,14 @@ export class TodoEntity {
     if (!this.Title || this.Title.trim() === '') {
       this.Title = 'Noname';
     }
+  }
+  @BeforeInsert()
+  async setOrdering() {
+    const repo = getRepository(TodoEntity);
+    const maxOrdering = await repo
+      .createQueryBuilder("todo")
+      .select("MAX(todo.Ordering)", "max")
+      .getRawOne();
+    this.Ordering = (maxOrdering.max || 0) + 1;
   }
 }

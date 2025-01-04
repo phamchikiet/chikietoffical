@@ -18,6 +18,17 @@ export class TodoService {
     }
   }
 
+
+  // async create(data: any) {
+  //   const check = await this.findSHD(data);
+  //   if (!check) {
+  //     this.TodoRepository.create(data);
+  //     return await this.TodoRepository.save(data);
+  //   } else {
+  //     return { error: 1001, data: 'Trùng Dữ Liệu' };
+  //   }
+  // }
+
   async findAll() {
     const result = await this.TodoRepository.find();
     // console.log(result);
@@ -41,7 +52,7 @@ export class TodoService {
     return await this.TodoRepository.findOne({
       where: {
         Title: data.Title,
-        Type: data.Type,
+        Slug: data.Slug,
       },
     });
   }

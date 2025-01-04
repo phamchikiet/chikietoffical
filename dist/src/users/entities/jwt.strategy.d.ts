@@ -5,10 +5,4 @@ export declare class JwtStrategy extends JwtStrategy_base {
     constructor(_UsersService: UsersService);
     validate(payload: any): Promise<any>;
 }
-declare const JwtCustomStrategy_base: new (...args: any[]) => any;
-export declare class JwtCustomStrategy extends JwtCustomStrategy_base {
-    private readonly _UsersService;
-    constructor(_UsersService: UsersService);
-    validate(payload: any): Promise<any>;
-}
 export {};

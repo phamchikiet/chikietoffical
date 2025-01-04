@@ -7,16 +7,16 @@ import { HoadonchitietModule } from './hoadonchitiet/hoadonchitiet.module';
 import { TodoModule } from './todo/todo.module';
 import { TodocategoryModule } from './todocategory/todocategory.module';
 import { CategoryModule } from './category/category.module';
+import { GoogledriveModule } from './shared/googledrive/googledrive.module';
+import { UploadModule } from './upload/upload.module';
+import { HighlightModule } from './highlight/highlight.module';
+import { DexuatModule } from './dexuat/dexuat.module';
+import { SettingModule } from './settings/settings.module';
+import { AclModule } from './acl/acl.module';
+import { ConversationModule } from './conversations/conversations.module';
+import { MenuModule } from './menu/menu.module';
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   url:"postgresql://admin:vyAg5HdyTgkZCvchZeCzcorm5Qq7vJ2R@dpg-cpvbmp3v2p9s7399peig-a.singapore-postgres.render.com/csvc?sslmode=require",
-    //   // url:"postgres://default:QKsghOH17GBE@ep-crimson-haze-a10m0yu9.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require",
-    //   autoLoadEntities: true,
-    //   entities: [UsersEntity],
-    //   synchronize: true,
-    // }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: '103.221.222.71',
@@ -32,7 +32,15 @@ import { CategoryModule } from './category/category.module';
     HoadonchitietModule,
     TodoModule,
     TodocategoryModule,
-    CategoryModule
+    CategoryModule,
+    GoogledriveModule,
+    UploadModule,
+    HighlightModule,
+    DexuatModule,
+    SettingModule,
+    AclModule,
+    ConversationModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],
